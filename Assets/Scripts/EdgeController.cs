@@ -7,8 +7,6 @@ public class EdgeController : MonoBehaviour {
     [SerializeField] NodeController nodeEdge1;
     [SerializeField] NodeController nodeEdge2;
 
-    [SerializeField] private bool isHost;
-
     private int idMessage = -1; // --1 for no connection on the node
 
 	// Use this for initialization
