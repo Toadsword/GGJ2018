@@ -101,5 +101,13 @@ public class NodeController : MonoBehaviour {
     {
         return this.transform;
     }
+
+    public void DisplayMessageBox(bool doDisplay)
+    {
+        if(isHost)
+        {
+            transform.Find("MessageBox").gameObject.SetActive(doDisplay);
+        }
+    }
    
 }
