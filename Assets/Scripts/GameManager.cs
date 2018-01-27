@@ -100,6 +100,9 @@ public class GameManager:MonoBehaviour {
     }
 
     void Update() {
+        if(Input.GetKeyDown(KeyCode.Escape)){
+            Application.Quit();
+        }
         //gestion démarrage partie
         if(inGame){
             //déplacement menu
@@ -167,7 +170,6 @@ public class GameManager:MonoBehaviour {
                 {
                     alreadyUsedEdges[i].TakePath(idUsedEdges[i]);
                 }
-
             }
             actualTrajectory.Clear();
             alreadyUsedEdges.Clear();
@@ -198,6 +200,25 @@ public class GameManager:MonoBehaviour {
         for (int i=0;i<callsInTransmission.Count;++i)
         {
             if(callsInTransmission[i].Update()){//autodestruction du call car terminé
+                //si on supprimer call alors qu'on était en cours de transmission, on doit supprimer la trajectoire
+                if(actualTrajectory.Count>0 && callsInTransmission[i].caller == actualTrajectory[0]){
+                    for(int j=0;j<actualTrajectory.Count-1;++j){
+                        actualTrajectory[j].edge(actualTrajectory[j+1]).TakePath(-1);
+                    }
+                    //mais attention de pas vider un edge qui était utile avant mais le supprimer si il doit être delete pour un nouveau call
+
+                    if(actualTrajectory.Count>0 && !actualTrajectory[actualTrajectory.Count-1].isHost)
+                    {
+                        for(int j=0;j<alreadyUsedEdges.Count;++j) 
+                        {
+                            alreadyUsedEdges[j].TakePath(idUsedEdges[j]);
+                        }
+                    }
+                    actualTrajectory.Clear();
+                    alreadyUsedEdges.Clear();
+                    idUsedEdges.Clear();
+                    edgeCursor.gameObject.SetActive(false);
+                }
                 UnlightPath(callsInTransmission[i].id);
                 callsInTransmission.RemoveAt(i);
                 i--;
@@ -246,7 +267,7 @@ public class GameManager:MonoBehaviour {
                 //move jack
 
                 JackPendu.transform.position = (Input.mousePosition+previousPos);
-                float limite = 300;
+                float limite = Screen.height/2.0f;
                 if(JackPendu.transform.position.y<limite){
                     JackPendu.transform.position = new Vector3(JackPendu.transform.position.x, limite,0);
                 }
@@ -260,7 +281,6 @@ public class GameManager:MonoBehaviour {
                 
                 click=true;
                 previousPos = JackPendu.transform.position-Input.mousePosition;
-                
             }
 
 
