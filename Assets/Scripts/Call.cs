@@ -74,26 +74,26 @@ public class Call
     {
         if (randomCountDown < 0.0f)
         {
-            reciever.DisplayMessageBox(false);
+            caller.DisplayMessageBox(false);
             gameManager.LibererDelivrer(caller);
             gameManager.LibererDelivrer(reciever);
             gameManager.EndCall(this);
             return true;
-        }
-         /*if(status == Status.inCall)
-            {
-                gameManager.LibererDelivrer(caller);
-                gameManager.LibererDelivrer(reciever);
-                gameManager.EndCall(true);
-                return true;
-            } 
-            else if (status == Status.calling || status == Status.interruptedCall)
-            {
-                gameManager.LibererDelivrer(caller);
-                gameManager.LibererDelivrer(reciever);
-                gameManager.EndCall(false);
-                return true;
-            }
+            /*if(status == Status.inCall)
+               {
+                   gameManager.LibererDelivrer(caller);
+                   gameManager.LibererDelivrer(reciever);
+                   gameManager.EndCall(true);
+                   return true;
+               } 
+               else if (status == Status.calling || status == Status.interruptedCall)
+               {
+                   gameManager.LibererDelivrer(caller);
+                   gameManager.LibererDelivrer(reciever);
+                   gameManager.EndCall(false);
+                   return true;
+               }
+           */
         }
         else
         {
@@ -105,7 +105,6 @@ public class Call
             //Debug.Log(randomCountDown);
             timerText.text = "Time until call finish : " + randomCountDown.ToString("F1");
         }
-        */
         return false;
     }
 
@@ -127,7 +126,7 @@ public class Call
                 {
                     //Alors on crée un Halo
                     HaloCurrentCount += 1;
-                    gameManager.InstantiateHalo(caller);
+                    gameManager.InstantiateHalo(reciever);
                     HaloTimeConsecutive = HALO_TIME_CONSECUTIVE;
                 }
             }

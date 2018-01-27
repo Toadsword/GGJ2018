@@ -147,7 +147,7 @@ public class GameManager:MonoBehaviour {
             call.caller = caller;
             call.reciever = reciever;
 
-            reciever.DisplayMessageBox(true);
+            caller.DisplayMessageBox(true);
 
             call.status = Call.Status.calling;
         }
@@ -276,9 +276,9 @@ public class GameManager:MonoBehaviour {
         return Mathf.Atan(y/x)*180/Mathf.PI;
     }
     
-    public void InstantiateHalo(NodeController caller)
+    public void InstantiateHalo(NodeController reciever)
     {
-        Transform transformReciever = caller.GetTransform();
+        Transform transformReciever = reciever.GetTransform();
         Instantiate(haloPrefab, transformReciever.position, transformReciever.rotation);
     }
 
