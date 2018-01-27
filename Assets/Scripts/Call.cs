@@ -8,24 +8,28 @@ public class Call
     private static int ID=0;
     public int id{get;private set;}
 
+    bool isInfinite;
+
     public int size{get;private set;}//nb de edges 
 
     private Text timerText;
 
-    public Call(){
+    public Call(bool isInf=false){
         id = ID;
         ID++;
+
+        isInfinite = isInf;
 
         size = 1;
 
         timerText = GameObject.Find("TimerText").GetComponent<Text>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        Debug.Log("Create call");
     }
 
     //premier chrono en seconde,
     //temps avant que la personne abandonne l'appel (-1 vie)
     private float randomCountDown = Random.Range(10, 20);
+
     // Temps avant plusieurs appels d'halo
     private const float HALO_COUNTDOWN_BEFORE_NEW = 2.0f;
     private const float HALO_TIME_BETWEEN_TWO = 0.5f;
@@ -51,7 +55,9 @@ public class Call
 
     public float Timers()
     {
-        randomCountDown -= Time.deltaTime;
+
+        if(!isInfinite)
+            randomCountDown -= Time.deltaTime;
 
         return randomCountDown;
     }
@@ -103,7 +109,9 @@ public class Call
             {
                 caller.DisplayMessageBox(true);
             }
-            randomCountDown -= Time.deltaTime;
+
+            if(!isInfinite)
+                randomCountDown -= Time.deltaTime;
             //Debug.Log(randomCountDown);
             timerText.text = "Time until call finish : " + randomCountDown.ToString("F1");
         }

@@ -42,6 +42,20 @@ public class GameManager:MonoBehaviour {
 
     float timerBeforeNextCall;
 
+    //--------------Lancement partie
+    Camera camera;
+
+    [SerializeField]
+    GameObject MenuPrincipal;
+
+    bool inGame=false;
+    float zoomCamera=10;
+
+    [SerializeField]
+    NodeController HostHomme;
+
+    [SerializeField]
+    NodeController HostFemme;
 
     //---------------PRISE JACK
     bool pause = false;
@@ -60,17 +74,77 @@ public class GameManager:MonoBehaviour {
 
     private void Start()
     {
+        camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
         scoreText.text = "Score : " + score;
         livesText = GameObject.Find("LivesText").GetComponent<Text>();
         livesText.text = "Lives : " + lives;
-        StartingCall();
 
 
         positionJackInitiale = JackPendu.transform.position;
+
+        //lancer call de tuto 
+        NodeController caller = HostHomme;
+        caller.status=NodeController.Status.calling;
+
+        NodeController reciever = HostFemme;
+        reciever.status = NodeController.Status.waitingCall;
+
+        Call call = new Call(true);//true = chrono infini
+
+        caller.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
+        reciever.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
+        callsInTransmission.Add(call);
+
+        caller.call = call;
+        reciever.call= call;
+        call.caller = caller;
+        call.reciever = reciever;
+
+
+        caller.DisplayMessageBox(true);
+
+        call.status = Call.Status.calling;
+
+
+
     }
 
     void Update() {
+        //gestion démarrage partie
+        if(inGame){
+            //déplacement menu
+            if(camera.transform.position.x<0){
+                camera.transform.position += (new Vector3(0,0,-10)-camera.transform.position)/30.0f;
+            }else{
+                camera.transform.position = new Vector3(0,0,-10);
+            }
+
+            MenuPrincipal.transform.position -= new Vector3(20,0,0);
+
+            //zoom caméra
+            float zoomCible=6.0f;
+            if(zoomCamera>zoomCible){
+                zoomCamera += (zoomCible-zoomCamera)/30.0f;
+                GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = zoomCamera;
+            }else{
+                zoomCamera = 5;
+            }
+            //lancement call
+
+            /*if(timer_starting_call>=0){
+                timer_starting_call -=Time.deltaTime;
+                if(timer_starting_call<0) {
+                    StartingCall();
+                }
+            }*/
+        }
+
+
+
+
+
         actualizePositionEdges();
         
         if(Input.GetMouseButtonUp(0)) {
@@ -126,9 +200,12 @@ public class GameManager:MonoBehaviour {
         }
 
         //actualisation timer next call
-        timerBeforeNextCall -= Time.deltaTime;
-        if(timerBeforeNextCall<0){
-            StartingCall();
+        if(inGame){
+            Debug.Log("In Game : " + timerBeforeNextCall);
+            timerBeforeNextCall -= Time.deltaTime;
+            if(timerBeforeNextCall<0){
+                StartingCall();
+            }
         }
 
         //-------prise jack
@@ -331,7 +408,8 @@ public class GameManager:MonoBehaviour {
 
                 call.setSize(actualTrajectory.Count-1);
 
-                launchScore(actualTrajectory.Count-1);
+                if(inGame)
+                    launchScore(actualTrajectory.Count-1);
 
                 edgeCursor.gameObject.SetActive(false);
 
@@ -341,6 +419,10 @@ public class GameManager:MonoBehaviour {
                 //mais attention de pas vider un edge qui était utile avant
                 for(int i=0;i<alreadyUsedEdges.Count;++i){
                     UnlightPath(idUsedEdges[i]);
+                }
+
+                if(destination==HostFemme){
+                    launchGame();
                 }
             }
 
@@ -449,4 +531,9 @@ public class GameManager:MonoBehaviour {
         }
         return null;
     }
+
+    public void launchGame(){
+        inGame = true;
+        timerBeforeNextCall=3.0f;
+    }   
 }
