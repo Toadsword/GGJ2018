@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4182507886595660}
   - component: {fileID: 212469345113138854}
   m_Layer: 8
-  m_Name: GameObject
+  m_Name: SteamGreenLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97186b4b122b63744a09b04544c57c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neightborhoodList: []
+  neighborhoodList: []
   cursorPrefab: {fileID: 1380868404847534, guid: 3dd2063ac9d035349b20651dc06f4688,
     type: 2}
   isHost: 0
