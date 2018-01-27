@@ -253,6 +253,11 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: d398f1dd22819f64d8d17431c6c4d53f,
         type: 3}
+    - target: {fileID: 114758763354354822, guid: 3564d43c4503d144b8cd247c0069f7ba,
+        type: 2}
+      propertyPath: isHost
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 2}
   m_IsPrefabParent: 0
@@ -989,6 +994,11 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: d398f1dd22819f64d8d17431c6c4d53f,
         type: 3}
+    - target: {fileID: 114758763354354822, guid: 3564d43c4503d144b8cd247c0069f7ba,
+        type: 2}
+      propertyPath: isHost
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 2}
   m_IsPrefabParent: 0
@@ -1242,6 +1252,11 @@ Prefab:
     - target: {fileID: 1123915527618762, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 2}
       propertyPath: m_Name
       value: Host6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114758763354354822, guid: 3564d43c4503d144b8cd247c0069f7ba,
+        type: 2}
+      propertyPath: isHost
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 2}
@@ -1518,6 +1533,11 @@ Prefab:
     - target: {fileID: 1123915527618762, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 2}
       propertyPath: m_Name
       value: Host2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114758763354354822, guid: 3564d43c4503d144b8cd247c0069f7ba,
+        type: 2}
+      propertyPath: isHost
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 2}
@@ -2124,6 +2144,7 @@ MonoBehaviour:
   - {fileID: 2063328652}
   - {fileID: 923352702}
   actualTrajectory: []
+  ListeEdges: {fileID: 1409172049}
 --- !u!4 &1481349216
 Transform:
   m_ObjectHideFlags: 0
@@ -2846,7 +2867,7 @@ Prefab:
         type: 2}
       propertyPath: nodeEdge2
       value: 
-      objectReference: {fileID: 2033266208}
+      objectReference: {fileID: 24940135}
     - target: {fileID: 1966086351365822, guid: 611c34ca63fef6e4d9210b5af8783b02, type: 2}
       propertyPath: m_Name
       value: Edge6
@@ -3012,6 +3033,11 @@ Prefab:
     - target: {fileID: 212935063105618852, guid: 3564d43c4503d144b8cd247c0069f7ba,
         type: 2}
       propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114758763354354822, guid: 3564d43c4503d144b8cd247c0069f7ba,
+        type: 2}
+      propertyPath: isHost
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3468,6 +3494,11 @@ Prefab:
     - target: {fileID: 1123915527618762, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 2}
       propertyPath: m_Name
       value: Host5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114758763354354822, guid: 3564d43c4503d144b8cd247c0069f7ba,
+        type: 2}
+      propertyPath: isHost
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 2}

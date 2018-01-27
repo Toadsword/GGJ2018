@@ -15,16 +15,21 @@ public class GameManager:MonoBehaviour {
 
     public Color[] colorArray;
 
-    [SerializeField]
-    List<NodeController> availableHosts;
-
     List<Call> callsInTransmission = new List<Call>();
 
+    [SerializeField]
+    List<NodeController> availableHosts;
     private List<NodeController> unavailableHosts = new List<NodeController>();
 
     //liste les nodes actuellement utilisés pour la transmission en cours
     [SerializeField]
     private List<NodeController> actualTrajectory = new List<NodeController>();
+
+    private List<EdgeController> alreadyUsedEdges = new List<EdgeController>();
+    private List<int> idUsedEdges = new List <int>();
+
+    [SerializeField]
+    GameObject ListeEdges;
 
     private int[] id;
 
@@ -44,9 +49,21 @@ public class GameManager:MonoBehaviour {
             edgeCursor.gameObject.SetActive(false);
             //LACHER
             for(int i=0;i<actualTrajectory.Count-1;++i){
-                actualTrajectory[i].edge(actualTrajectory[i+1]).ChangeColor(Color.black);
+                actualTrajectory[i].edge(actualTrajectory[i+1]).TakePath(-1);
             }
+            //mais attention de pas vider un edge qui était utile avant mais le supprimer si il doit être delete pour un nouveau call
+
+            if(actualTrajectory.Count>0 && !actualTrajectory[actualTrajectory.Count-1].isHost)
+            {
+                for(int i=0;i<alreadyUsedEdges.Count;++i) 
+                {
+                    alreadyUsedEdges[i].TakePath(idUsedEdges[i]);
+                }
+
+             }
             actualTrajectory.Clear();
+            alreadyUsedEdges.Clear();
+            idUsedEdges.Clear();
         }
 
         if(actualTrajectory.Count>0){
@@ -72,7 +89,8 @@ public class GameManager:MonoBehaviour {
 
         for (int i=0;i<callsInTransmission.Count;++i)
         {
-            if(callsInTransmission[i].Update()){
+            if(callsInTransmission[i].Update()){//autodestruction du call car terminé
+                UnlightPath(callsInTransmission[i].id);
                 callsInTransmission.RemoveAt(i);
                 i--;
             }
@@ -149,9 +167,11 @@ public class GameManager:MonoBehaviour {
     }
 
     public void BeginTrajectory(NodeController source) {
-        actualTrajectory.Clear();
-        actualTrajectory.Add(source);
         Debug.Log("Begin with " + source.name);
+        actualTrajectory.Clear();
+        alreadyUsedEdges.Clear();
+        idUsedEdges.Clear();
+        actualTrajectory.Add(source);
     }
 
     public void AddNodeToTrajectory(NodeController node) 
@@ -171,9 +191,17 @@ public class GameManager:MonoBehaviour {
                         call = c;
                     }
                 }
+
+                EdgeController actualEdge = node.edge(actualTrajectory[actualTrajectory.Count - 2]);
+
+                if (actualEdge.IsTaken())
+                {
+                   alreadyUsedEdges.Add(actualEdge);
+                   idUsedEdges.Add(actualEdge.idMessage);
+                }
                 //changer couleur du edge en question
                 //node.edge(actualTrajectory[actualTrajectory.Count - 2]).ChangeColor(new Color(1,0,0));
-                node.edge(actualTrajectory[actualTrajectory.Count - 2]).TakePath(call.id);
+                actualEdge.TakePath(call.id);
             }
         }
     }
@@ -202,6 +230,12 @@ public class GameManager:MonoBehaviour {
 
         actualTrajectory.Clear();
 
+        //suppresion de toutes les paths qui posent problemes
+        //mais attention de pas vider un edge qui était utile avant
+        for(int i=0;i<alreadyUsedEdges.Count;++i){
+            UnlightPath(idUsedEdges[i]);
+        }
+
         
     }
 
@@ -225,4 +259,39 @@ public class GameManager:MonoBehaviour {
         }
         return Mathf.Atan(y/x)*180/Mathf.PI;
     }
+
+    private void UnlightPath(int idCall)
+    {
+        Call call = null;
+        foreach(Call c in callsInTransmission){
+            if(c.id==idCall)
+                call = c;
+        }
+        if(call!=null && call.status==Call.Status.inCall){
+
+            foreach(Transform edgeTransform in ListeEdges.transform){
+                EdgeController edge = edgeTransform.GetComponent<EdgeController>();
+                if(edge.idMessage==call.id){
+                    edge.TakePath(-1);
+                }
+            }
+
+            /*NodeController actualNode = call.caller;
+
+            //chercher prochain node
+            int iter=0;
+            while(actualNode!=call.reciever && iter<100){
+                iter++;
+                foreach(EdgeController edge in actualNode.neighborhoodList){
+                    if(edge.idMessage == call.id){
+                        edge.TakePath(-1);
+                        actualNode = edge.KnowOtherSide(actualNode);
+                    
+                    }
+                }
+            }*/
+        }
+    }
+
+
 }

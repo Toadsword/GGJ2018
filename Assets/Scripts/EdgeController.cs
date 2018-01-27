@@ -11,7 +11,7 @@ public class EdgeController : MonoBehaviour {
 
     private SpriteRenderer render;
 
-    private int idMessage = -1; // -1 for no connection on the node
+    public int idMessage{get;private set;} // -1 for no connection on the node
 
 	// Use this for initialization
 	void Start () {
@@ -44,7 +44,10 @@ public class EdgeController : MonoBehaviour {
     {
         bool result = IsTaken();
         idMessage = newId;
-        ChangeColor(gameManager.colorArray[idMessage%10]);
+        if(idMessage>=0)
+            ChangeColor(gameManager.colorArray[idMessage%10]);
+        else
+            ChangeColor(Color.black);
         return result;
     }
 
