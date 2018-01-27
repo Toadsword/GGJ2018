@@ -9,7 +9,7 @@ public class NodeController : MonoBehaviour {
     [SerializeField] public List<EdgeController> neighborhoodList;
     [SerializeField] GameObject cursorPrefab;
 
-    [SerializeField] private bool isHost;
+    [SerializeField] public bool isHost;
 
     public enum Status{ idle, calling, waitingCall, inCall};
     public Status status=Status.idle;
