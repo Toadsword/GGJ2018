@@ -106,12 +106,19 @@ public class Call
         {
             if (gameManager.ActualSource() == caller)
             {
-                HaloManager();
+                if (status == Status.interruptedCall)
+                    HaloManager(reciever, Color.red);
+                else
+                    HaloManager(reciever, Color.white);
                 caller.DisplayMessageBox(false);
             }
             else if (status == Status.calling  || status == Status.interruptedCall)
             {
                 caller.DisplayMessageBox(true);
+                if(status == Status.interruptedCall)
+                    HaloManager(caller, Color.red);
+                else
+                    HaloManager(caller, Color.white);
             }
 
             if(!isInfinite)
@@ -122,7 +129,7 @@ public class Call
         return false;
     }
 
-    private void HaloManager()
+    private void HaloManager(NodeController location, Color color)
     {
         float timePassed = Time.deltaTime;
         HaloCountDownBeforeNew -= timePassed;
@@ -140,7 +147,7 @@ public class Call
                 {
                     //Alors on crée un Halo
                     HaloCurrentCount += 1;
-                    gameManager.InstantiateHalo(reciever);
+                    gameManager.InstantiateHalo(location, color);
                     HaloTimeConsecutive = HALO_TIME_CONSECUTIVE;
                 }
             }

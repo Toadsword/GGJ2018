@@ -124,6 +124,4 @@ public class NodeController : MonoBehaviour {
         timerTextGameObject.SetActive(time >= 0.0f);
         timerText.text = time.ToString("F1");
     }
-
-
 }

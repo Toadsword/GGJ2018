@@ -484,10 +484,11 @@ public class GameManager:MonoBehaviour {
         return Mathf.Atan(y/x)*180/Mathf.PI;
     }
     
-    public void InstantiateHalo(NodeController reciever)
+    public void InstantiateHalo(NodeController reciever, Color color)
     {
         Transform transformReciever = reciever.GetTransform();
-        Instantiate(haloPrefab, transformReciever.position, transformReciever.rotation);
+        GameObject instance =  Instantiate(haloPrefab, transformReciever.position, transformReciever.rotation);
+        instance.GetComponent<SpriteRenderer>().color = color;
     }
 
     private void UnlightPath(int idCall)
