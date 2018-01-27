@@ -12,6 +12,7 @@ public class Call
 
     public int size{get;private set;}//nb de edges 
 
+    private GameObject timerTextGameObject;
     private Text timerText;
 
     public Call(bool isInf=false){
@@ -22,7 +23,6 @@ public class Call
 
         size = 1;
 
-      //timerText = GameObject.Find("TimerText").GetComponent<Text>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         randomCountDown = durationWaiting();
@@ -59,7 +59,6 @@ public class Call
 
     public float Timers()
     {
-
         if(!isInfinite)
             randomCountDown -= Time.deltaTime;
 
@@ -118,7 +117,7 @@ public class Call
             if(!isInfinite)
                 randomCountDown -= Time.deltaTime;
             //Debug.Log(randomCountDown);
-            //timerText.text = "Time until call finish : " + randomCountDown.ToString("F1");
+            caller.UpdateTimer(randomCountDown);
         }
         return false;
     }
