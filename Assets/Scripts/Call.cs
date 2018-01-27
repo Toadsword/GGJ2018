@@ -8,7 +8,7 @@ public class Call
     private static int ID=0;
     public int id{get;private set;}
 
-    bool isInfinite;
+    public bool isInfinite{get;private set;}
 
     public int size{get;private set;}//nb de edges 
 
@@ -182,7 +182,7 @@ public class Call
         //on enregistre la durée de la conversation qu'il restait.
         previousCountDown = randomCountDown;
         status = Status.interruptedCall;
-        randomCountDown = durationWaiting();
+        randomCountDown = durationWaitingInterrupted();
         caller.status=NodeController.Status.calling;
         reciever.status=NodeController.Status.waitingCall;
     }
@@ -195,5 +195,9 @@ public class Call
     private float durationCall()
     {
         return Random.Range(10, 20);
+    }
+    private float durationWaitingInterrupted()
+    {
+        return Random.Range(5, 7);
     }
 }

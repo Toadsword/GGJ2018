@@ -126,8 +126,16 @@ public class NodeController : MonoBehaviour {
 
     public void UpdateTimer(float time)
     {
-        timerTextGameObject.SetActive(time >= 0.0f);
+        if(call==null || !call.isInfinite)
+            timerTextGameObject.SetActive(time >= 0.0f);
+
         timerText.text = time.ToString("F1");
         timerText.transform.position = positionInitialeText + new Vector3(Mathf.Cos(m_timer_movement * 1.05f), Mathf.Sin(m_timer_movement * 0.91f)) * 0.2f;
+
+        if(status == Status.calling)
+            timerText.color = Color.red;
+        else if(status == Status.inCall)
+            timerText.color = Color.green;
+        
     }
 }
