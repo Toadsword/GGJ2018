@@ -53,15 +53,15 @@ public class Call
         {
             if(status == Status.inCall)
             {
-                gameManager.Liberer(caller);
-                gameManager.Liberer(reciever);
+                gameManager.LibererDelivrer(caller);
+                gameManager.LibererDelivrer(reciever);
                 gameManager.EndCall(true);
                 return true;
             } 
             else if (status == Status.calling)
             {
-                gameManager.Liberer(caller);
-                gameManager.Liberer(reciever);
+                gameManager.LibererDelivrer(caller);
+                gameManager.LibererDelivrer(reciever);
                 gameManager.EndCall(false);
                 return true;
             }

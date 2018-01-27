@@ -9,7 +9,7 @@ public class NodeController : MonoBehaviour {
     [SerializeField] public List<EdgeController> neighborhoodList;
     [SerializeField] GameObject cursorPrefab;
 
-    [SerializeField] private bool isHost;
+    [SerializeField] public bool isHost;
 
     public enum Status{ idle, calling, waitingCall, inCall};
     public Status status=Status.idle;
@@ -46,7 +46,7 @@ public class NodeController : MonoBehaviour {
         //mouse up
         if(Input.GetMouseButtonUp(0) && (Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10))-transform.position).magnitude<limit_radius) {
             if(isHost && status==Status.waitingCall){
-                if(gameManager.trajectory().Count>0 && gameManager.trajectory()[0].call.reciever == this){
+                if(gameManager.Trajectory().Count>0 && gameManager.Trajectory()[0].call.reciever == this){
                     gameManager.EndTrajectory(this);
                 }
             }
