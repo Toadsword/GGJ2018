@@ -146,8 +146,19 @@ public class GameManager:MonoBehaviour {
 
 
         actualizePositionEdges();
-        
-        if(Input.GetMouseButtonUp(0)) {
+
+        //Set hosts opacity to know if they are available or not
+        foreach (NodeController hosts in availableHosts)
+        {
+            hosts.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 1);
+            hosts.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+        }
+        foreach (NodeController hosts in unavailableHosts)
+        {
+            hosts.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
+
+        if (Input.GetMouseButtonUp(0)) {
             edgeCursor.gameObject.SetActive(false);
             //LACHER
             for(int i=0;i<actualTrajectory.Count-1;++i){
@@ -272,7 +283,7 @@ public class GameManager:MonoBehaviour {
     private void StartingCall() {
         timerBeforeNextCall = Random.Range(5,10);
 
-        if(availableHosts.Count >= 2 && callsInTransmission.Count<10) {
+        if (availableHosts.Count >= 2 && callsInTransmission.Count<10) {
             Debug.Log("Au moins 2 travaillent");
 
             int randomCaller = Random.Range(0,availableHosts.Count);
