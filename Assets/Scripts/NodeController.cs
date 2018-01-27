@@ -9,6 +9,7 @@ public class NodeController : MonoBehaviour {
     float m_timer_movement = 0;
 
     Vector3 positionInitiale;
+    Vector3 positionInitialeText;
 
     [SerializeField] public List<EdgeController> neighborhoodList;
     [SerializeField] GameObject cursorPrefab;
@@ -39,6 +40,7 @@ public class NodeController : MonoBehaviour {
         {
             timerText = transform.Find("Canvas").transform.Find("TextTimer").GetComponent<Text>();
             timerTextGameObject = transform.Find("Canvas").transform.Find("TextTimer").gameObject;
+            positionInitialeText = timerText.transform.position;
         }
     }
 
@@ -126,5 +128,6 @@ public class NodeController : MonoBehaviour {
     {
         timerTextGameObject.SetActive(time >= 0.0f);
         timerText.text = time.ToString("F1");
+        timerText.transform.position = positionInitialeText + new Vector3(Mathf.Cos(m_timer_movement * 1.05f), Mathf.Sin(m_timer_movement * 0.91f)) * 0.2f;
     }
 }
