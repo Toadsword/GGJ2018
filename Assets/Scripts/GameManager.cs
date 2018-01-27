@@ -60,14 +60,14 @@ public class GameManager:MonoBehaviour {
             edgeCursor.transform.localScale = new Vector3(distance*1/8.5f,0.6f,1);
             edgeCursor.transform.localEulerAngles = new Vector3(0,0,alpha);
 
-            Call call =null;
+            Call call = null;
             foreach(Call c in callsInTransmission){
                 if(c.caller==actualTrajectory[0]){
                     call = c;
                 }
             }
 
-            edgeCursor.GetComponent<SpriteRenderer>().color = colorArray[call.id%10];
+            edgeCursor.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
         }
 
         for (int i=0;i<callsInTransmission.Count;++i)
@@ -98,7 +98,6 @@ public class GameManager:MonoBehaviour {
             unavailableHosts.Add(caller);
             caller.status=NodeController.Status.calling;
 
-            caller.GetComponent<SpriteRenderer>().color = Color.green;
             Debug.Log(caller.name + " is calling");
 
             int randomReciever = Random.Range(0, availableHosts.Count);
@@ -108,11 +107,12 @@ public class GameManager:MonoBehaviour {
             unavailableHosts.Add(reciever);
             reciever.status = NodeController.Status.waitingCall;
 
-            reciever.GetComponent<SpriteRenderer>().color = Color.red;
             Debug.Log(reciever.name + " is called");
 
             Call call = new Call();
 
+            caller.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
+            reciever.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
             callsInTransmission.Add(call);
 
             caller.call = call;
@@ -203,6 +203,11 @@ public class GameManager:MonoBehaviour {
         actualTrajectory.Clear();
 
         
+    }
+
+    public Color GetColorFromId(int id)
+    {
+        return colorArray[id % 10];
     }
 
     public float angle(float x, float y){
