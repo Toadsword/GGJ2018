@@ -12,19 +12,8 @@ public class Call
 
     public int size{get;private set;}//nb de edges 
 
+    private GameObject timerTextGameObject;
     private Text timerText;
-
-    public Call(bool isInf=false){
-        id = ID;
-        ID++;
-
-        isInfinite = isInf;
-
-        size = 1;
-
-        timerText = GameObject.Find("TimerText").GetComponent<Text>();
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-    }
 
     //premier chrono en seconde,
     //temps avant que la personne abandonne l'appel (-1 vie)
@@ -53,9 +42,20 @@ public class Call
 
     GameManager gameManager;
 
+    public Call(bool isInf = false)
+    {
+        id = ID;
+        ID++;
+
+        isInfinite = isInf;
+
+        size = 1;
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
     public float Timers()
     {
-
         if(!isInfinite)
             randomCountDown -= Time.deltaTime;
 
@@ -114,7 +114,7 @@ public class Call
             if(!isInfinite)
                 randomCountDown -= Time.deltaTime;
             //Debug.Log(randomCountDown);
-            timerText.text = "Time until call finish : " + randomCountDown.ToString("F1");
+            caller.UpdateTimer(randomCountDown);
         }
         return false;
     }
