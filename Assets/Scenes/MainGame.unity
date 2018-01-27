@@ -2089,6 +2089,7 @@ RectTransform:
   - {fileID: 594049594}
   - {fileID: 1721462549}
   - {fileID: 1708642350}
+  - {fileID: 1902721049}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2146,6 +2147,9 @@ MonoBehaviour:
   - {fileID: 923352702}
   actualTrajectory: []
   ListeEdges: {fileID: 1409172049}
+  ListeScore: {fileID: 1902721048}
+  prefabScore: {fileID: 114156023020878268, guid: 3586b666a5c4dbf48b1112b23abfabac,
+    type: 2}
 --- !u!4 &1481349216
 Transform:
   m_ObjectHideFlags: 0
@@ -2239,11 +2243,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4562650566244332, guid: 611c34ca63fef6e4d9210b5af8783b02, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.5599894
+      value: 0.55998945
       objectReference: {fileID: 0}
     - target: {fileID: 4562650566244332, guid: 611c34ca63fef6e4d9210b5af8783b02, type: 2}
       propertyPath: m_LocalRotation.w
-      value: -0.82849973
+      value: -0.8284998
       objectReference: {fileID: 0}
     - target: {fileID: 4562650566244332, guid: 611c34ca63fef6e4d9210b5af8783b02, type: 2}
       propertyPath: m_RootOrder
@@ -2849,11 +2853,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4562650566244332, guid: 611c34ca63fef6e4d9210b5af8783b02, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.59687436
+      value: 0.5968744
       objectReference: {fileID: 0}
     - target: {fileID: 4562650566244332, guid: 611c34ca63fef6e4d9210b5af8783b02, type: 2}
       propertyPath: m_LocalRotation.w
-      value: -0.80233467
+      value: -0.8023347
       objectReference: {fileID: 0}
     - target: {fileID: 4562650566244332, guid: 611c34ca63fef6e4d9210b5af8783b02, type: 2}
       propertyPath: m_RootOrder
@@ -3179,6 +3183,34 @@ Transform:
   m_PrefabParentObject: {fileID: 4562650566244332, guid: 611c34ca63fef6e4d9210b5af8783b02,
     type: 2}
   m_PrefabInternal: {fileID: 1870742892}
+--- !u!1 &1902721048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1902721049}
+  m_Layer: 0
+  m_Name: ListScore
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1902721049
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1902721048}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -402.14093, y: -174.2744, z: 0.22036548}
+  m_LocalScale: {x: 1.0695188, y: 1.0695188, z: 1.0695188}
+  m_Children: []
+  m_Father: {fileID: 1466795933}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1951745062 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114799337138276572, guid: 35426bf4d5d1b4040b28e4017d67a7c1,
