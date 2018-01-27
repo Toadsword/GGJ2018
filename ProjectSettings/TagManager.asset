@@ -7,6 +7,7 @@ TagManager:
   - Node
   - Edge
   - Cursor
+  - Host
   layers:
   - Default
   - TransparentFX

@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager:MonoBehaviour {
     private int score = 0;
     private int lives = 3;
+
+    private Text scoreText;
+    private Text livesText;
 
     [SerializeField]
     EdgeController edgeCursor;
@@ -27,7 +31,12 @@ public class GameManager:MonoBehaviour {
 
     float timerBeforeNextCall;
 
-    private void Start() {
+    private void Start()
+    {
+        scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
+        scoreText.text = "Score : " + score;
+        livesText = GameObject.Find("LivesText").GetComponent<Text>();
+        livesText.text = "Lives : " + lives;
         StartingCall();
     }
 
@@ -83,13 +92,6 @@ public class GameManager:MonoBehaviour {
         if(availableHosts.Count >= 2 && callsInTransmission.Count<10) {
             Debug.Log("Au moins 2 avail");
 
-            int randomReciever = Random.Range(0,availableHosts.Count);
-
-            NodeController reciever = availableHosts[randomReciever];
-            availableHosts.Remove(reciever);
-            unavailableHosts.Add(reciever);
-            reciever.status=NodeController.Status.waitingCall;
-
             int randomCaller = Random.Range(0,availableHosts.Count);
 
             NodeController caller = availableHosts[randomCaller];
@@ -97,7 +99,19 @@ public class GameManager:MonoBehaviour {
             unavailableHosts.Add(caller);
             caller.status=NodeController.Status.calling;
 
+            caller.GetComponent<SpriteRenderer>().color = Color.green;
             Debug.Log(caller.name + " is calling");
+
+            int randomReciever = Random.Range(0, availableHosts.Count);
+
+            NodeController reciever = availableHosts[randomReciever];
+            availableHosts.Remove(reciever);
+            unavailableHosts.Add(reciever);
+            reciever.status = NodeController.Status.waitingCall;
+
+            reciever.GetComponent<SpriteRenderer>().color = Color.red;
+            Debug.Log(reciever.name + " is called");
+
             Call call = new Call();
 
             callsInTransmission.Add(call);
@@ -119,12 +133,14 @@ public class GameManager:MonoBehaviour {
     public void EndCall(bool success) {
         if(success) {
             score++;
-            Debug.Log("Score : " +score);
+            //Debug.Log("Score : " +score);
+            scoreText.text = "Score : " + score;
         } else {
             lives--;
             if(lives <= 0)
                 lives=0;
-            Debug.Log("Lives : " +lives);
+            //Debug.Log("Lives : " +lives);
+            livesText.text = "Lives : " + lives;
         }
     }
 

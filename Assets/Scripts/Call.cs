@@ -1,16 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Call
 {
     private static int ID=0;
     public int id{get;private set;}
 
+    private Text timerText;
+
     public Call(){
         id = ID;
         ID++;
 
+        timerText = GameObject.Find("TimerText").GetComponent<Text>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         Debug.Log("Create call");
     }
@@ -65,7 +69,8 @@ public class Call
         else
         {
             randomCountDown -= Time.deltaTime;
-            Debug.Log(randomCountDown);
+            //Debug.Log(randomCountDown);
+            timerText.text = "Time until call finish : " + randomCountDown.ToString("F1");
         }
         return false;
     }
