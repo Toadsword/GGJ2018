@@ -5,6 +5,9 @@ using UnityEngine;
 public class NodeController : MonoBehaviour {
     
     const double limit_radius = 0.5;//distance à partir de laquelle, la souris "touche" un node
+    float m_timer_movement = 0;
+
+    Vector3 positionInitiale;
 
     [SerializeField] public List<EdgeController> neighborhoodList;
     [SerializeField] GameObject cursorPrefab;
@@ -23,10 +26,14 @@ public class NodeController : MonoBehaviour {
     {
         render = GetComponent<SpriteRenderer>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        positionInitiale = transform.position;
+        m_timer_movement = Random.Range(0,100);
     }
 
     private void Update()
     {
+        m_timer_movement += Time.deltaTime;
+        transform.position = positionInitiale + new Vector3(Mathf.Cos(m_timer_movement*0.97f), Mathf.Sin(m_timer_movement*1.02f))*0.2f;
     //ajouter la node parcequ'on est proche
         if((Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10))-transform.position).magnitude<limit_radius && !isHost){//si suffisamment proche
             gameManager.AddNodeToTrajectory(this);

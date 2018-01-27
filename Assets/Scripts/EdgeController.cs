@@ -60,4 +60,11 @@ public class EdgeController : MonoBehaviour {
         render.color = newColor;
     }
 
+    public NodeController Node1(){
+        return nodeEdge1;
+    }
+    public NodeController Node2(){
+        return nodeEdge2;
+    }
+
 }

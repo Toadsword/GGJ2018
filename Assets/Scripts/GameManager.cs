@@ -32,6 +32,12 @@ public class GameManager:MonoBehaviour {
     [SerializeField]
     GameObject ListeEdges;
 
+    [SerializeField]
+    GameObject ListeScore;
+
+    [SerializeField]
+    ScoreBehavior prefabScore;
+
     private int[] id;
 
     float timerBeforeNextCall;
@@ -46,6 +52,8 @@ public class GameManager:MonoBehaviour {
     }
 
     void Update() {
+        actualizePositionEdges();
+        
         if(Input.GetMouseButtonUp(0)) {
             edgeCursor.gameObject.SetActive(false);
             //LACHER
@@ -152,12 +160,14 @@ public class GameManager:MonoBehaviour {
         node.ChangeColor(new Color(1.0f,1.0f,1.0f,1.0f));
     }
 
-    public void EndCall(bool success) {
-        if(success) {
-            score++;
+    public void EndCall(Call call) {
+        
+        if(call.status==Call.Status.inCall) {
+            Debug.Log("SUCCESS");
+            score+=call.size;
             //Debug.Log("Score : " +score);
             scoreText.text = "Score : " + score;
-        } else {
+        } else if(call.status==Call.Status.calling) {
             lives--;
             if(lives <= 0)
                 lives=0;
@@ -232,6 +242,10 @@ public class GameManager:MonoBehaviour {
         actualTrajectory[actualTrajectory.Count - 1].status = NodeController.Status.inCall;
         actualTrajectory[0].status = NodeController.Status.inCall;
 
+        call.setSize(actualTrajectory.Count-1);
+
+        launchScore(actualTrajectory.Count-1);
+
         actualTrajectory.Clear();
 
         //suppresion de toutes les paths qui posent problemes
@@ -299,5 +313,39 @@ public class GameManager:MonoBehaviour {
                 }
             }*/
         }
+    }
+
+    private void actualizePositionEdges()
+    {
+        foreach(Transform edgeTransform in ListeEdges.transform){
+            EdgeController edge = edgeTransform.GetComponent<EdgeController>();
+            //pour chaque edge, on récupère les positions des deux bouts
+            //et on détermine où le edges doit aller
+            Vector3 pos1 = edge.Node1().GetTransform().position;
+            Vector3 pos2 = edge.Node2().GetTransform().position;
+
+            Vector3 n = pos2-pos1;
+
+            float distance = (n).magnitude;
+            float alpha = angle(n.x,n.y);
+
+            edge.transform.position = (pos1+pos2)/2.0f;
+            edge.transform.localScale = new Vector3(distance*1/8.5f,0.6f,1);
+            edge.transform.localEulerAngles = new Vector3(0,0,alpha);
+
+        }
+
+    }
+
+    private void launchScore(int nb)
+    {
+        Debug.Log("AFFICHAGE");
+        //create prefab Score
+        ScoreBehavior pfScore = Instantiate(prefabScore) ;
+        pfScore.transform.SetParent(ListeScore.transform);
+        pfScore.GetComponent<Text>().text = "+"+nb;
+
+        Vector2 sizeDelta = pfScore.GetComponent<RectTransform>().sizeDelta;
+        pfScore.transform.position = (Input.mousePosition)+new Vector3(sizeDelta.x, -sizeDelta.y,0)/2.0f;
     }
 }
