@@ -267,9 +267,20 @@ public class GameManager:MonoBehaviour {
                 //move jack
 
                 JackPendu.transform.position = (Input.mousePosition+previousPos);
-                float limite = Screen.height/2.0f;
-                if(JackPendu.transform.position.y<limite){
-                    JackPendu.transform.position = new Vector3(JackPendu.transform.position.x, limite,0);
+                float limitey = Screen.height/2.0f;
+                float limitex = Screen.width*0.9f;
+
+                if(JackPendu.transform.position.y<limitey){
+                    JackPendu.transform.position = new Vector3(JackPendu.transform.position.x, limitey,0);
+                }
+                if(JackPendu.transform.position.x<0) {
+                    JackPendu.transform.position = new Vector3(0, JackPendu.transform.position.y,0);
+                }
+                if(JackPendu.transform.position.x>limitex) {
+                    JackPendu.transform.position = new Vector3(limitex, JackPendu.transform.position.y,0);
+                }
+                if(JackPendu.transform.position.y>Screen.height*0.8f) {
+                    JackPendu.transform.position = new Vector3(JackPendu.transform.position.x, Screen.height*0.8f,0);
                 }
             }
 
