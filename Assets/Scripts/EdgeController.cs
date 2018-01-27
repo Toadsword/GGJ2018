@@ -55,7 +55,6 @@ public class EdgeController : MonoBehaviour {
 
     public void ChangeColor(Color newColor) {
         render.color = newColor;
-
     }
 
 }

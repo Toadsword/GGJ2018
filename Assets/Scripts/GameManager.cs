@@ -13,8 +13,7 @@ public class GameManager:MonoBehaviour {
     [SerializeField]
     EdgeController edgeCursor;
 
-    public
-    Color[] colorArray;
+    public Color[] colorArray;
 
     [SerializeField]
     List<NodeController> availableHosts;
@@ -90,7 +89,7 @@ public class GameManager:MonoBehaviour {
         timerBeforeNextCall = Random.Range(5,10);
 
         if(availableHosts.Count >= 2 && callsInTransmission.Count<10) {
-            Debug.Log("Au moins 2 avail");
+            Debug.Log("Au moins 2 travaillent");
 
             int randomCaller = Random.Range(0,availableHosts.Count);
 
@@ -124,10 +123,11 @@ public class GameManager:MonoBehaviour {
         }
     }
 
-    public void Liberer(NodeController node){
+    public void LibererDelivrer(NodeController node){
         node.status = NodeController.Status.idle;
         unavailableHosts.Remove(node);
         availableHosts.Add(node);
+        node.ChangeColor(new Color(1.0f,1.0f,1.0f,1.0f));
     }
 
     public void EndCall(bool success) {
@@ -144,7 +144,7 @@ public class GameManager:MonoBehaviour {
         }
     }
 
-    public List<NodeController> trajectory() {
+    public List<NodeController> Trajectory() {
         return actualTrajectory;
     }
 
