@@ -174,7 +174,7 @@ public class GameManager:MonoBehaviour {
             idUsedEdges.Clear();
         }
 
-        if(actualTrajectory.Count>0){
+        if(actualTrajectory.Count>0 && !pause){
             //afficher edgecurseur
             Vector3 n = Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10))-actualTrajectory[actualTrajectory.Count-1].transform.position;
             float distance = (n).magnitude;
@@ -220,6 +220,8 @@ public class GameManager:MonoBehaviour {
             if(click){
                 if((Input.mousePosition-Prise.transform.position).magnitude>60) {
                     pause = true;
+                    GameObject.Find("PauseText").GetComponent<Text>().color = new Color(1, 1, 1, 1);
+                    Time.timeScale = 0f;
                     JackTendu.gameObject.SetActive(false);
                     JackPendu.gameObject.SetActive(true);
                     
@@ -267,6 +269,8 @@ public class GameManager:MonoBehaviour {
                 if((Input.mousePosition-Prise.transform.position).magnitude<50){
                     //quitter pause
                     pause = false;
+                    GameObject.Find("PauseText").GetComponent<Text>().color = new Color(1, 1, 1, 0);
+                    Time.timeScale = 1f;
                     JackTendu.gameObject.SetActive(true);
                     JackPendu.gameObject.SetActive(false);
                 }
@@ -342,13 +346,17 @@ public class GameManager:MonoBehaviour {
         return actualTrajectory;
     }
 
-    public void BeginTrajectory(NodeController source) {
-        Debug.Log("Begin with " + source.name);
-        actualTrajectory.Clear();
-        alreadyUsedEdges.Clear();
-        idUsedEdges.Clear();
-        actualTrajectory.Add(source);
-        source.call.status = Call.Status.transmitting;
+    public void BeginTrajectory(NodeController source)
+    {
+        if (!pause)
+        {
+            Debug.Log("Begin with " + source.name);
+            actualTrajectory.Clear();
+            alreadyUsedEdges.Clear();
+            idUsedEdges.Clear();
+            actualTrajectory.Add(source);
+            source.call.status = Call.Status.transmitting;
+        }
     }
 
     public void AddNodeToTrajectory(NodeController node) 
