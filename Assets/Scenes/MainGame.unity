@@ -4447,38 +4447,6 @@ Prefab:
       propertyPath: m_Name
       value: Host1
       objectReference: {fileID: 0}
-    - target: {fileID: 212935063105618852, guid: 3564d43c4503d144b8cd247c0069f7ba,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 295867081c65e8841982133004b1037e,
-        type: 3}
-    - target: {fileID: 212629368698292974, guid: 3564d43c4503d144b8cd247c0069f7ba,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: d398f1dd22819f64d8d17431c6c4d53f,
-        type: 3}
-    - target: {fileID: 212935063105618852, guid: 3564d43c4503d144b8cd247c0069f7ba,
-        type: 2}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 212935063105618852, guid: 3564d43c4503d144b8cd247c0069f7ba,
-        type: 2}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 212935063105618852, guid: 3564d43c4503d144b8cd247c0069f7ba,
-        type: 2}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114758763354354822, guid: 3564d43c4503d144b8cd247c0069f7ba,
-        type: 2}
-      propertyPath: isHost
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 2}
   m_IsPrefabParent: 0

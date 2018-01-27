@@ -33,10 +33,13 @@ public class NodeController : MonoBehaviour {
         render = GetComponent<SpriteRenderer>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         positionInitiale = transform.position;
-        m_timer_movement = Random.Range(0,100);
+        m_timer_movement = Random.Range(0, 100);
 
-        timerText = transform.Find("Canvas").transform.Find("TextTimer").GetComponent<Text>();
-        timerTextGameObject = transform.Find("Canvas").transform.Find("TextTimer").gameObject;
+        if (isHost)
+        {
+            timerText = transform.Find("Canvas").transform.Find("TextTimer").GetComponent<Text>();
+            timerTextGameObject = transform.Find("Canvas").transform.Find("TextTimer").gameObject;
+        }
     }
 
     private void Update()
