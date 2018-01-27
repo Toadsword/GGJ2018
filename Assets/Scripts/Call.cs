@@ -39,10 +39,12 @@ public class Call
 
     private bool passedBetweenTwo = false;
 
+    private GameObject messageBox;
+
     public NodeController caller{get;set;}
     public NodeController reciever { get; set; }
 
-    public enum Status{calling, inCall};
+    public enum Status{calling, inCall, interruptedCall};
     public Status status{get;set;}
 
     GameManager gameManager;
@@ -56,35 +58,42 @@ public class Call
 
     public void SetInCall()
     {
-        status = Status.inCall;
-
         //second chrono en seconde,
         //temps avant que la communication s'achève
-        randomCountDown = Random.Range(10, 20);
+        if (status == Status.interruptedCall)
+            randomCountDown += 5.0f;
+        else
+            randomCountDown = Random.Range(10, 20);
+
+        reciever.DisplayMessageBox(false);
+
+        status = Status.inCall;
     }
 
     public bool Update()
     {
-        if(randomCountDown<0)
+        if (randomCountDown < 0.0f)
         {
+            reciever.DisplayMessageBox(false);
             gameManager.LibererDelivrer(caller);
             gameManager.LibererDelivrer(reciever);
             gameManager.EndCall(this);
             return true;
-            /*if(status == Status.inCall)
+        }
+         /*if(status == Status.inCall)
             {
                 gameManager.LibererDelivrer(caller);
                 gameManager.LibererDelivrer(reciever);
                 gameManager.EndCall(true);
                 return true;
             } 
-            else if (status == Status.calling)
+            else if (status == Status.calling || status == Status.interruptedCall)
             {
                 gameManager.LibererDelivrer(caller);
                 gameManager.LibererDelivrer(reciever);
                 gameManager.EndCall(false);
                 return true;
-            }*/
+            }
         }
         else
         {
@@ -96,21 +105,10 @@ public class Call
             //Debug.Log(randomCountDown);
             timerText.text = "Time until call finish : " + randomCountDown.ToString("F1");
         }
+        */
         return false;
     }
 
-    /*
-    *     
-    HALO_COUNTDOWN_BEFORE_NEW = 3.0f;
-    HALO_TIME_BETWEEN_TWO = 1.0f;
-    HALO_TIME_CONSECUTIVE = 0.02f;
-    HALO_COUNT = 3;
-
-    HaloCountDownBeforeNew = HALO_COUNTDOWN_BEFORE_NEW;
-    HaloTimeBetweenTwo = HALO_TIME_BETWEEN_TWO;
-    HaloTimeConsecutive = HALO_TIME_CONSECUTIVE;
-    HaloCurrentCount = 0;
-    */
     private void HaloManager()
     {
         float timePassed = Time.deltaTime;
@@ -129,7 +127,7 @@ public class Call
                 {
                     //Alors on crée un Halo
                     HaloCurrentCount += 1;
-                    gameManager.InstantiateHalo(reciever);
+                    gameManager.InstantiateHalo(caller);
                     HaloTimeConsecutive = HALO_TIME_CONSECUTIVE;
                 }
             }
