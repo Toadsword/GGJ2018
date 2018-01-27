@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScoreBehavior : MonoBehaviour {
     
-    float timer_destruction=0.8f;
+    float timer_destruction = 0.8f;
     Vector3 direction;
 	// Use this for initialization
 	void Start () {

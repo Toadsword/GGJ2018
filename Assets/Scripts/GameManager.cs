@@ -18,45 +18,32 @@ public class GameManager:MonoBehaviour {
 
     List<Call> callsInTransmission = new List<Call>();
 
-    [SerializeField]
-    List<NodeController> availableHosts;
+    [SerializeField] List<NodeController> availableHosts;
     private List<NodeController> unavailableHosts = new List<NodeController>();
 
     //liste les nodes actuellement utilisés pour la transmission en cours
-    [SerializeField]
-    private List<NodeController> actualTrajectory = new List<NodeController>();
+    [SerializeField] List<NodeController> actualTrajectory = new List<NodeController>();
 
     private List<EdgeController> alreadyUsedEdges = new List<EdgeController>();
     private List<int> idUsedEdges = new List <int>();
 
-    [SerializeField]
-    GameObject ListeEdges;
-
-    [SerializeField]
-    GameObject ListeScore;
-
-    [SerializeField]
-    ScoreBehavior prefabScore;
+    [SerializeField] GameObject ListeEdges;
+    [SerializeField] GameObject ListeScore;
+    [SerializeField] ScoreBehavior prefabScore;
 
     private int[] id;
 
     float timerBeforeNextCall;
 
-
     //---------------PRISE JACK
     bool pause = false;
     bool click=false;
     Vector3 previousPos;
-
-    [SerializeField]
-    Image JackPendu;
     Vector3 positionJackInitiale;
 
-    [SerializeField]
-    Image JackTendu;
-
-    [SerializeField]
-    Image Prise;
+    [SerializeField] Image JackPendu;
+    [SerializeField] Image JackTendu;
+    [SerializeField] Image Prise;
 
     private void Start()
     {
@@ -73,7 +60,16 @@ public class GameManager:MonoBehaviour {
     void Update() {
         actualizePositionEdges();
         
-        if(Input.GetMouseButtonUp(0)) {
+        if(Input.GetMouseButtonUp(0))
+        {
+            Call call = null;
+            foreach (Call c in callsInTransmission)
+            {
+                if (c.caller == actualTrajectory[0])
+                    call = c;
+            }
+            call.status = Call.Status.calling;
+
             edgeCursor.gameObject.SetActive(false);
             //LACHER
             for(int i=0;i<actualTrajectory.Count-1;++i){
@@ -87,12 +83,10 @@ public class GameManager:MonoBehaviour {
                 {
                     alreadyUsedEdges[i].TakePath(idUsedEdges[i]);
                 }
-
             }
             actualTrajectory.Clear();
             alreadyUsedEdges.Clear();
             idUsedEdges.Clear();
-            
         }
 
         if(actualTrajectory.Count>0){
@@ -313,10 +307,10 @@ public class GameManager:MonoBehaviour {
 
                 //changer couleur du edge en questionCall call = null;
                 Call call = null;
-                foreach(Call c in callsInTransmission){
-                    if(c.caller==actualTrajectory[0]){
+                foreach(Call c in callsInTransmission)
+                {
+                    if(c.caller==actualTrajectory[0])
                         call = c;
-                    }
                 }
                 //changer couleur du edge en question
                 //node.edge(actualTrajectory[actualTrajectory.Count - 2]).ChangeColor(new Color(1,0,0));
@@ -424,9 +418,7 @@ public class GameManager:MonoBehaviour {
             edge.transform.position = (pos1+pos2)/2.0f;
             edge.transform.localScale = new Vector3(distance*1/8.5f,0.6f,1);
             edge.transform.localEulerAngles = new Vector3(0,0,alpha);
-
         }
-
     }
 
     private void launchScore(int nb)
@@ -435,7 +427,7 @@ public class GameManager:MonoBehaviour {
         //create prefab Score
         ScoreBehavior pfScore = Instantiate(prefabScore) ;
         pfScore.transform.SetParent(ListeScore.transform);
-        pfScore.GetComponent<Text>().text = "+"+nb;
+        pfScore.GetComponent<Text>().text = "+" + nb;
 
         Vector2 sizeDelta = pfScore.GetComponent<RectTransform>().sizeDelta;
         pfScore.transform.position = (Input.mousePosition)+new Vector3(sizeDelta.x, -sizeDelta.y,0)/2.0f;

@@ -72,6 +72,7 @@ public class Call
     {
         if (randomCountDown < 0.0f)
         {
+            caller.DisplayMessageBox(false);
             gameManager.LibererDelivrer(caller);
             gameManager.LibererDelivrer(reciever);
             gameManager.EndCall(this);
