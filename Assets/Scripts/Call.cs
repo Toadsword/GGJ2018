@@ -8,11 +8,15 @@ public class Call
     private static int ID=0;
     public int id{get;private set;}
 
+    public int size{get;private set;}//nb de edges 
+
     private Text timerText;
 
     public Call(){
         id = ID;
         ID++;
+
+        size = 1;
 
         timerText = GameObject.Find("TimerText").GetComponent<Text>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -63,7 +67,11 @@ public class Call
     {
         if(randomCountDown<0)
         {
-            if(status == Status.inCall)
+            gameManager.LibererDelivrer(caller);
+            gameManager.LibererDelivrer(reciever);
+            gameManager.EndCall(this);
+            return true;
+            /*if(status == Status.inCall)
             {
                 gameManager.LibererDelivrer(caller);
                 gameManager.LibererDelivrer(reciever);
@@ -76,7 +84,7 @@ public class Call
                 gameManager.LibererDelivrer(reciever);
                 gameManager.EndCall(false);
                 return true;
-            }
+            }*/
         }
         else
         {
@@ -144,5 +152,10 @@ public class Call
                 }
             }
         }
+    }
+
+    public void setSize(int i)
+    {
+        size = i;
     }
 }
