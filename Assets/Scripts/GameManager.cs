@@ -60,6 +60,10 @@ public class GameManager:MonoBehaviour {
     [SerializeField] Image JackTendu;
     [SerializeField] Image Prise;
 
+    [SerializeField]
+    Image FondTransparent;
+
+
     private void Start()
     {
         camera = GameObject.Find("Main Camera").GetComponent<Camera>();
@@ -241,6 +245,7 @@ public class GameManager:MonoBehaviour {
             if(click){
                 if((Input.mousePosition-Prise.transform.position).magnitude>60) {
                     pause = true;
+                    FondTransparent.gameObject.SetActive(true);
                     GameObject.Find("PauseText").GetComponent<Text>().color = new Color(1, 1, 1, 1);
                     Time.timeScale = 0f;
                     JackTendu.gameObject.SetActive(false);
@@ -284,11 +289,11 @@ public class GameManager:MonoBehaviour {
                 }
             }
 
-
+            float marge = 30.0f;
             if(Input.GetMouseButtonDown(0) && 
-            Input.mousePosition.x>=JackPendu.transform.position.x && Input.mousePosition.x<=JackPendu.transform.position.x+JackPendu.rectTransform.sizeDelta.x
+            Input.mousePosition.x>=JackPendu.transform.position.x-marge && Input.mousePosition.x<=JackPendu.transform.position.x+JackPendu.rectTransform.sizeDelta.x + marge
             &&
-            Input.mousePosition.y>=JackPendu.transform.position.y && Input.mousePosition.y<=JackPendu.transform.position.y+JackPendu.rectTransform.sizeDelta.y) {
+            Input.mousePosition.y>=JackPendu.transform.position.y -marge && Input.mousePosition.y<=JackPendu.transform.position.y+JackPendu.rectTransform.sizeDelta.y +marge) {
                 
                 click=true;
                 previousPos = JackPendu.transform.position-Input.mousePosition;
@@ -300,6 +305,7 @@ public class GameManager:MonoBehaviour {
                 if((Input.mousePosition-Prise.transform.position).magnitude<50){
                     //quitter pause
                     pause = false;
+                    FondTransparent.gameObject.SetActive(false);
                     GameObject.Find("PauseText").GetComponent<Text>().color = new Color(1, 1, 1, 0);
                     Time.timeScale = 1f;
                     JackTendu.gameObject.SetActive(true);
@@ -364,7 +370,7 @@ public class GameManager:MonoBehaviour {
             score+=call.size;
             //Debug.Log("Score : " +score);
             scoreText.text = "Score : " + score;
-        } else if(call.status==Call.Status.calling) {
+        } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall) {
             lives--;
             if(lives <= 0)
                 lives=0;
