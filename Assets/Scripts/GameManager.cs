@@ -41,6 +41,22 @@ public class GameManager:MonoBehaviour {
 
     float timerBeforeNextCall;
 
+
+    //---------------PRISE JACK
+    bool pause = false;
+    bool click=false;
+    Vector3 previousPos;
+
+    [SerializeField]
+    Image JackPendu;
+    Vector3 positionJackInitiale;
+
+    [SerializeField]
+    Image JackTendu;
+
+    [SerializeField]
+    Image Prise;
+
     private void Start()
     {
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
@@ -48,6 +64,9 @@ public class GameManager:MonoBehaviour {
         livesText = GameObject.Find("LivesText").GetComponent<Text>();
         livesText.text = "Lives : " + lives;
         StartingCall();
+
+
+        positionJackInitiale = JackPendu.transform.position;
     }
 
     void Update() {
@@ -108,6 +127,66 @@ public class GameManager:MonoBehaviour {
         timerBeforeNextCall -= Time.deltaTime;
         if(timerBeforeNextCall<0){
             StartingCall();
+        }
+
+        //-------prise jack
+
+
+        if(!pause){
+            if(click){
+                if((Input.mousePosition-Prise.transform.position).magnitude>60) {
+                    pause = true;
+                    JackTendu.gameObject.SetActive(false);
+                    JackPendu.gameObject.SetActive(true);
+                    
+
+                    JackPendu.transform.position = Input.mousePosition-new Vector3(JackPendu.rectTransform.sizeDelta.x*3/4.0f,JackPendu.rectTransform.sizeDelta.y*2.0f/10.0f,0);
+
+                    previousPos = JackPendu.transform.position-Input.mousePosition;
+                }
+            }
+
+            if(Input.GetMouseButtonDown(0) && (Input.mousePosition-Prise.transform.position).magnitude<50){
+                click=true;
+            }
+            if(Input.GetMouseButtonUp(0)) {
+                click = false;
+            }
+
+
+        }else{
+
+            if(click) {
+                //move jack
+
+                JackPendu.transform.position = (Input.mousePosition+previousPos);
+                float limite = 300;
+                if(JackPendu.transform.position.y<limite){
+                    JackPendu.transform.position = new Vector3(JackPendu.transform.position.x, limite,0);
+                }
+            }
+
+
+            if(Input.GetMouseButtonDown(0) && 
+            Input.mousePosition.x>=JackPendu.transform.position.x && Input.mousePosition.x<=JackPendu.transform.position.x+JackPendu.rectTransform.sizeDelta.x
+            &&
+            Input.mousePosition.y>=JackPendu.transform.position.y && Input.mousePosition.y<=JackPendu.transform.position.y+JackPendu.rectTransform.sizeDelta.y) {
+                
+                click=true;
+                previousPos = JackPendu.transform.position-Input.mousePosition;
+                
+            }
+
+
+            if(Input.GetMouseButtonUp(0) && click) {
+                click=false;
+                if((Input.mousePosition-Prise.transform.position).magnitude<50){
+                    //quitter pause
+                    pause = false;
+                    JackTendu.gameObject.SetActive(true);
+                    JackPendu.gameObject.SetActive(false);
+                }
+            }
         }
     }
 
@@ -217,40 +296,49 @@ public class GameManager:MonoBehaviour {
     }
 
     public void EndTrajectory(NodeController destination) {
-        actualTrajectory.Add(destination);
-        Debug.Log("Finish with " + destination.name);
+       //vérifier que le node n'a jamais été ajouté, et qu'une trajectoire est en cours
+        if(actualTrajectory.Count>0 && !actualTrajectory.Contains(destination)) 
+        {
+            //vérifier si on respecte les edges
+            if(destination.IsConnectedTo(actualTrajectory[actualTrajectory.Count - 1]))
+            {
+                actualTrajectory.Add(destination);
+                Debug.Log("Finish with " + destination.name);
 
-        //changer couleur du edge en questionCall call = null;
-        Call call = null;
-        foreach(Call c in callsInTransmission){
-            if(c.caller==actualTrajectory[0]){
-                call = c;
+                //changer couleur du edge en questionCall call = null;
+                Call call = null;
+                foreach(Call c in callsInTransmission){
+                    if(c.caller==actualTrajectory[0]){
+                        call = c;
+                    }
+                }
+                //changer couleur du edge en question
+                //node.edge(actualTrajectory[actualTrajectory.Count - 2]).ChangeColor(new Color(1,0,0));
+                if(call!=null)
+                    destination.edge(actualTrajectory[actualTrajectory.Count - 2]).TakePath(call.id);
+                //...
+
+                //changer état call et des hosts
+                call.SetInCall();
+                actualTrajectory[actualTrajectory.Count - 1].status = NodeController.Status.inCall;
+                actualTrajectory[0].status = NodeController.Status.inCall;
+
+                call.setSize(actualTrajectory.Count-1);
+
+                launchScore(actualTrajectory.Count-1);
+
+                edgeCursor.gameObject.SetActive(false);
+
+                actualTrajectory.Clear();
+
+                //suppresion de toutes les paths qui posent problemes
+                //mais attention de pas vider un edge qui était utile avant
+                for(int i=0;i<alreadyUsedEdges.Count;++i){
+                    UnlightPath(idUsedEdges[i]);
+                }
             }
+
         }
-        //changer couleur du edge en question
-        //node.edge(actualTrajectory[actualTrajectory.Count - 2]).ChangeColor(new Color(1,0,0));
-        if(call!=null)
-            destination.edge(actualTrajectory[actualTrajectory.Count - 2]).TakePath(call.id);
-        //...
-
-        //changer état call et des hosts
-        call.SetInCall();
-        actualTrajectory[actualTrajectory.Count - 1].status = NodeController.Status.inCall;
-        actualTrajectory[0].status = NodeController.Status.inCall;
-
-        call.setSize(actualTrajectory.Count-1);
-
-        launchScore(actualTrajectory.Count-1);
-
-        actualTrajectory.Clear();
-
-        //suppresion de toutes les paths qui posent problemes
-        //mais attention de pas vider un edge qui était utile avant
-        for(int i=0;i<alreadyUsedEdges.Count;++i){
-            UnlightPath(idUsedEdges[i]);
-        }
-
-        
     }
 
     public Color GetColorFromId(int id)
