@@ -7,13 +7,20 @@ public class EdgeController : MonoBehaviour {
     [SerializeField] NodeController nodeEdge1;
     [SerializeField] NodeController nodeEdge2;
 
-    private int idMessage = -1; // --1 for no connection on the node
+    private GameManager gameManager;
+
+    private SpriteRenderer render;
+
+    private int idMessage = -1; // -1 for no connection on the node
 
 	// Use this for initialization
 	void Start () {
         idMessage = -1;
         nodeEdge1.AddEdge(this);
         nodeEdge2.AddEdge(this);
+
+        render = GetComponent<SpriteRenderer>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     public bool IsTaken()
@@ -37,12 +44,18 @@ public class EdgeController : MonoBehaviour {
     {
         bool result = IsTaken();
         idMessage = newId;
+        ChangeColor(gameManager.colorArray[idMessage%10]);
         return result;
     }
 
     public void ResetPath()
     {
         idMessage = -1;
+    }
+
+    public void ChangeColor(Color newColor) {
+        render.color = newColor;
+
     }
 
 }
