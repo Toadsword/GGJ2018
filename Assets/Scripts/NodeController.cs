@@ -88,7 +88,11 @@ public class NodeController : MonoBehaviour {
     public void ChangeColor(Color newColor)
     {
         render.color = newColor;
-        
+    }
+
+    public Transform GetTransform()
+    {
+        return this.transform;
     }
    
 }

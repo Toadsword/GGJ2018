@@ -10,8 +10,8 @@ public class GameManager:MonoBehaviour {
     private Text scoreText;
     private Text livesText;
 
-    [SerializeField]
-    EdgeController edgeCursor;
+    [SerializeField] EdgeController edgeCursor;
+    [SerializeField] GameObject haloPrefab;
 
     public Color[] colorArray;
 
@@ -225,4 +225,10 @@ public class GameManager:MonoBehaviour {
         }
         return Mathf.Atan(y/x)*180/Mathf.PI;
     }
+
+    public void InstantiateHalo(NodeController reciever)
+    {
+        Transform transformReciever = reciever.GetTransform();
+        Instantiate(haloPrefab, transformReciever.position, transformReciever.rotation);
+    }   
 }
