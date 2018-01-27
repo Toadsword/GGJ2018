@@ -14,10 +14,11 @@ public class Call
 
     private GameObject timerTextGameObject;
     private Text timerText;
-
+ 
     //premier chrono en seconde,
     //temps avant que la personne abandonne l'appel (-1 vie)
-    private float randomCountDown = Random.Range(10, 20);
+    private float randomCountDown;
+    private float previousCountDown;
 
     // Temps avant plusieurs appels d'halo
     private const float HALO_COUNTDOWN_BEFORE_NEW = 2.0f;
@@ -67,9 +68,9 @@ public class Call
         //second chrono en seconde,
         //temps avant que la communication s'achève
         if (status == Status.interruptedCall)
-            randomCountDown += 5.0f;
+            randomCountDown = previousCountDown + 5.0f;
         else
-            randomCountDown = Random.Range(10, 20);
+            randomCountDown = durationCall();
 
         status = Status.inCall;
     }
@@ -106,7 +107,7 @@ public class Call
                 HaloManager();
                 caller.DisplayMessageBox(false);
             }
-            else if (status == Status.calling)
+            else if (status == Status.calling  || status == Status.interruptedCall)
             {
                 caller.DisplayMessageBox(true);
             }
@@ -165,5 +166,25 @@ public class Call
     public void setSize(int i)
     {
         size = i;
+    }
+
+    public void Interrupt()
+    {
+        //on enregistre la durée de la conversation qu'il restait.
+        previousCountDown = randomCountDown;
+        status = Status.interruptedCall;
+        randomCountDown = durationWaiting();
+        caller.status=NodeController.Status.calling;
+        reciever.status=NodeController.Status.waitingCall;
+    }
+
+    private float durationWaiting()
+    {
+        return Random.Range(10, 20);
+    }
+
+    private float durationCall()
+    {
+        return Random.Range(10, 20);
     }
 }
