@@ -424,6 +424,7 @@ public class GameManager:MonoBehaviour {
                 //mais attention de pas vider un edge qui était utile avant
                 for(int i=0;i<alreadyUsedEdges.Count;++i){
                     UnlightPath(idUsedEdges[i]);
+                    getCallFromId(idUsedEdges[i]).Interrupt();
                 }
 
                 if(destination==HostFemme){
@@ -538,5 +539,15 @@ public class GameManager:MonoBehaviour {
     public void launchGame(){
         inGame = true;
         timerBeforeNextCall=3.0f;
-    }   
+    }
+
+    public Call getCallFromId(int id)
+    {
+        foreach(Call c in callsInTransmission){
+            if(c.id==id){
+                return c;
+            }
+        }
+        return null;
+    }
 }
