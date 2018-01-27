@@ -12,6 +12,7 @@ public class GameManager:MonoBehaviour {
 
     [SerializeField] EdgeController edgeCursor;
     [SerializeField] GameObject haloPrefab;
+    [SerializeField] GameObject messageBoxPrefab;
 
     public Color[] colorArray;
 
@@ -137,6 +138,9 @@ public class GameManager:MonoBehaviour {
             reciever.call= call;
             call.caller = caller;
             call.reciever = reciever;
+
+            reciever.DisplayMessageBox(true);
+
             call.status = Call.Status.calling;
         }
     }
@@ -234,9 +238,7 @@ public class GameManager:MonoBehaviour {
         //mais attention de pas vider un edge qui était utile avant
         for(int i=0;i<alreadyUsedEdges.Count;++i){
             UnlightPath(idUsedEdges[i]);
-        }
-
-        
+        }        
     }
 
     public Color GetColorFromId(int id)
@@ -260,11 +262,11 @@ public class GameManager:MonoBehaviour {
         return Mathf.Atan(y/x)*180/Mathf.PI;
     }
     
-    public void InstantiateHalo(NodeController reciever)
+    public void InstantiateHalo(NodeController caller)
     {
-        Transform transformReciever = reciever.GetTransform();
+        Transform transformReciever = caller.GetTransform();
         Instantiate(haloPrefab, transformReciever.position, transformReciever.rotation);
-    }   
+    }
 
     private void UnlightPath(int idCall)
     {
