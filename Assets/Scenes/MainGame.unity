@@ -2846,7 +2846,7 @@ Prefab:
         type: 2}
       propertyPath: nodeEdge2
       value: 
-      objectReference: {fileID: 2033266208}
+      objectReference: {fileID: 24940135}
     - target: {fileID: 1966086351365822, guid: 611c34ca63fef6e4d9210b5af8783b02, type: 2}
       propertyPath: m_Name
       value: Edge6
