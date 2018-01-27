@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NodeController : MonoBehaviour {
     
@@ -14,6 +15,9 @@ public class NodeController : MonoBehaviour {
 
     [SerializeField] public bool isHost;
 
+    private GameObject timerTextGameObject;
+    private Text timerText;
+
     public enum Status{ idle, calling, waitingCall, inCall};
     public Status status=Status.idle;
 
@@ -22,12 +26,17 @@ public class NodeController : MonoBehaviour {
     private SpriteRenderer render;
     private GameManager gameManager;
 
+
+
     private void Start()
     {
         render = GetComponent<SpriteRenderer>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         positionInitiale = transform.position;
         m_timer_movement = Random.Range(0,100);
+
+        timerText = transform.Find("Canvas").transform.Find("TextTimer").GetComponent<Text>();
+        timerTextGameObject = transform.Find("Canvas").transform.Find("TextTimer").gameObject;
     }
 
     private void Update()
@@ -109,5 +118,12 @@ public class NodeController : MonoBehaviour {
             transform.Find("MessageBox").gameObject.SetActive(doDisplay);
         }
     }
-   
+
+    public void UpdateTimer(float time)
+    {
+        timerTextGameObject.SetActive(time >= 0.0f);
+        timerText.text = time.ToString("F1");
+    }
+
+
 }
