@@ -44,7 +44,7 @@ public class Call
     public NodeController caller{get;set;}
     public NodeController reciever { get; set; }
 
-    public enum Status{calling, inCall, interruptedCall};
+    public enum Status{calling, transmitting, inCall, interruptedCall};
     public Status status{get;set;}
 
     GameManager gameManager;
@@ -65,8 +65,6 @@ public class Call
         else
             randomCountDown = Random.Range(10, 20);
 
-        reciever.DisplayMessageBox(false);
-
         status = Status.inCall;
     }
 
@@ -74,7 +72,6 @@ public class Call
     {
         if (randomCountDown < 0.0f)
         {
-            caller.DisplayMessageBox(false);
             gameManager.LibererDelivrer(caller);
             gameManager.LibererDelivrer(reciever);
             gameManager.EndCall(this);
@@ -97,9 +94,14 @@ public class Call
         }
         else
         {
-            if (status == Status.calling)
+            if (gameManager.ActualSource() == caller)
             {
                 HaloManager();
+                caller.DisplayMessageBox(false);
+            }
+            else if (status == Status.calling)
+            {
+                caller.DisplayMessageBox(true);
             }
             randomCountDown -= Time.deltaTime;
             //Debug.Log(randomCountDown);

@@ -69,10 +69,11 @@ public class GameManager:MonoBehaviour {
                     alreadyUsedEdges[i].TakePath(idUsedEdges[i]);
                 }
 
-             }
+            }
             actualTrajectory.Clear();
             alreadyUsedEdges.Clear();
             idUsedEdges.Clear();
+            
         }
 
         if(actualTrajectory.Count>0){
@@ -186,6 +187,7 @@ public class GameManager:MonoBehaviour {
         alreadyUsedEdges.Clear();
         idUsedEdges.Clear();
         actualTrajectory.Add(source);
+        source.call.status = Call.Status.transmitting;
     }
 
     public void AddNodeToTrajectory(NodeController node) 
@@ -347,5 +349,14 @@ public class GameManager:MonoBehaviour {
 
         Vector2 sizeDelta = pfScore.GetComponent<RectTransform>().sizeDelta;
         pfScore.transform.position = (Input.mousePosition)+new Vector3(sizeDelta.x, -sizeDelta.y,0)/2.0f;
+    }
+
+    public NodeController ActualSource()
+    {
+        if(actualTrajectory.Count >= 1)
+        {
+            return actualTrajectory[0];
+        }
+        return null;
     }
 }
