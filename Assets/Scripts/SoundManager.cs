@@ -85,11 +85,7 @@ public class SoundManager : MonoBehaviour
                                     dialogFurious2,
                                     dialogFurious3,
                                     dialogFurious4,
-                                    dialogFurious5,
-                                    dialog6,
-                                    dialog7,
-                                    dialog8,
-                                    dialog9
+                                    dialogFurious5
         };
         //audioSource = GetComponent<AudioSource>();
         emitters = new List<AudioSource> { emitter1,

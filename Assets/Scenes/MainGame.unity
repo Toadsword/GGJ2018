@@ -946,6 +946,11 @@ MonoBehaviour:
   dialog7: {fileID: 8300000, guid: 5df47677347b3be48908adbf2ada3f22, type: 3}
   dialog8: {fileID: 8300000, guid: 9f28a059a5e656249b99e511fd14d68c, type: 3}
   dialog9: {fileID: 8300000, guid: 12220f3c274bcf14689b361912844aa1, type: 3}
+  dialogFurious1: {fileID: 8300000, guid: d6e95383d3e4007408efdc2275127ebc, type: 3}
+  dialogFurious2: {fileID: 8300000, guid: a80ff5852b76e3840a5344efa377879b, type: 3}
+  dialogFurious3: {fileID: 8300000, guid: 4fc95d6b5b84e4f4b82292cd869ea7c6, type: 3}
+  dialogFurious4: {fileID: 8300000, guid: bd08b0936c7c6dc418c05cfe8dcaefff, type: 3}
+  dialogFurious5: {fileID: 8300000, guid: 9aa2b9dee0226e9448870b07504dd3ab, type: 3}
   emitter1: {fileID: 1619025736}
   emitter2: {fileID: 1687413020}
   emitter3: {fileID: 2072208118}
