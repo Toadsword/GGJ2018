@@ -70,9 +70,6 @@ public class GameManager:MonoBehaviour {
     [SerializeField]
     Image BatterieRouge;
 
-    [SerializeField] private GameObject jackParentPause;
-    [SerializeField] private GameObject jackParentPrincipal;
-
     private void Start()
     {
         camera = GameObject.Find("Main Camera").GetComponent<Camera>();
@@ -255,7 +252,7 @@ public class GameManager:MonoBehaviour {
                 if((Input.mousePosition-Prise.transform.position).magnitude>60) {
                     pause = true;
                     MenuPause.gameObject.SetActive(true);
-                    JackGLobal.transform.parent = MenuPause.transform; // CA FONCTIONNE
+                    JackGLobal.transform.SetParent(MenuPause.transform); // CA FONCTIONNE
 
                     Time.timeScale = 0f;
                     JackTendu.gameObject.SetActive(false);
@@ -316,7 +313,7 @@ public class GameManager:MonoBehaviour {
                     //quitter pause
                     pause = false;
                     MenuPause.gameObject.SetActive(false);
-                    JackGLobal.transform.parent = MenuPrincipal.transform;
+                    JackGLobal.transform.SetParent(MenuPrincipal.transform);
                     JackGLobal.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
                     Time.timeScale = 1f;
