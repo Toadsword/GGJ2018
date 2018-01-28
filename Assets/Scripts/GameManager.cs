@@ -595,4 +595,9 @@ public class GameManager:MonoBehaviour {
         }
         return null;
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
