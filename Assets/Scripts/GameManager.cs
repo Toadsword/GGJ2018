@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GameManager:MonoBehaviour {
     private int score = 0;
+    public int Score(){return score;}
+
     private int lives = 3;
 
     private Text scoreText;
@@ -329,7 +331,12 @@ public class GameManager:MonoBehaviour {
     }
 
     private void StartingCall() {
-        timerBeforeNextCall = Random.Range(5,10);
+        if(score<10)
+            timerBeforeNextCall = Random.Range(10,20);
+        if(score<50)
+            timerBeforeNextCall = Random.Range(8,14);
+        else
+            timerBeforeNextCall = Random.Range(7,10);
 
         if (availableHosts.Count >= 2 && callsInTransmission.Count<10) {
             Debug.Log("Au moins 2 travaillent");
