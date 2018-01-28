@@ -370,7 +370,7 @@ public class GameManager:MonoBehaviour {
             score+=call.size;
             //Debug.Log("Score : " +score);
             scoreText.text = "Score : " + score;
-        } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall) {
+        } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall || call.status == Call.Status.transmitting) {
             lives--;
             if(lives <= 0)
                 lives=0;
