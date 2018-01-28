@@ -15,6 +15,8 @@ public class Call
     private GameObject timerTextGameObject;
     private Text timerText;
 
+    private float timer_dialog=1.0f;
+
     public Call(bool isInf=false){
         id = ID;
         ID++;
@@ -79,6 +81,14 @@ public class Call
 
     public bool Update()
     {
+        if(timer_dialog>0 && status==Status.inCall && !isInfinite){
+            timer_dialog -= Time.deltaTime;
+            if(timer_dialog<=0 && randomCountDown>3.0f){//si on doit lancer un dialogue et qu'on aura le temps de la play entier
+                GameObject.Find("SoundManager").GetComponent<SoundManager>().PlaySound(SoundManager.SoundList.DIALOG);
+                timer_dialog = 5.0f;
+            }
+        }
+
         if (randomCountDown < 0.0f)
         {
             caller.DisplayMessageBox(false);
