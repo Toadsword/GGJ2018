@@ -4972,8 +4972,8 @@ MonoBehaviour:
   JackPendu: {fileID: 373579286}
   JackTendu: {fileID: 583120679}
   Prise: {fileID: 238173659}
-  MenuPause: {fileID: 1338342722}
-  CanvasPrincipale: {fileID: 0}
+  MenuPause: {fileID: 1338342723}
+  CanvasPrincipale: {fileID: 1466795932}
   BatterieJaune: {fileID: 2077652887}
   BatterieVerte: {fileID: 6219302}
   BatterieRouge: {fileID: 1680901921}
@@ -6595,7 +6595,7 @@ Prefab:
     - target: {fileID: 224147587677306552, guid: 3564d43c4503d144b8cd247c0069f7ba,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 1.16
+      value: 2.47
       objectReference: {fileID: 0}
     - target: {fileID: 224147587677306552, guid: 3564d43c4503d144b8cd247c0069f7ba,
         type: 2}
