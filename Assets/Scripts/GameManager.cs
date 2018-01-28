@@ -60,8 +60,7 @@ public class GameManager:MonoBehaviour {
     [SerializeField] Image JackTendu;
     [SerializeField] Image Prise;
 
-    [SerializeField]
-    Image FondTransparent;
+    [SerializeField] Canvas MenuPause;
 
     [SerializeField]
     Image BatterieJaune;
@@ -251,8 +250,8 @@ public class GameManager:MonoBehaviour {
             if(click){
                 if((Input.mousePosition-Prise.transform.position).magnitude>60) {
                     pause = true;
-                    FondTransparent.gameObject.SetActive(true);
-                    GameObject.Find("PauseText").GetComponent<Text>().color = new Color(1, 1, 1, 1);
+                    MenuPause.gameObject.SetActive(true);
+
                     Time.timeScale = 0f;
                     JackTendu.gameObject.SetActive(false);
                     JackPendu.gameObject.SetActive(true);
@@ -311,8 +310,8 @@ public class GameManager:MonoBehaviour {
                 if((Input.mousePosition-Prise.transform.position).magnitude<50){
                     //quitter pause
                     pause = false;
-                    FondTransparent.gameObject.SetActive(false);
-                    GameObject.Find("PauseText").GetComponent<Text>().color = new Color(1, 1, 1, 0);
+                    MenuPause.gameObject.SetActive(false);
+
                     Time.timeScale = 1f;
                     JackTendu.gameObject.SetActive(true);
                     JackPendu.gameObject.SetActive(false);
@@ -376,7 +375,7 @@ public class GameManager:MonoBehaviour {
             score+=call.size;
             //Debug.Log("Score : " +score);
             scoreText.text = "Score : " + score;
-        } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall) {
+        } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall || call.status == Call.Status.transmitting) {
             lives--;
             BatterieJaune.gameObject.SetActive(false);
             BatterieVerte.gameObject.SetActive(false);
