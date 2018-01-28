@@ -63,6 +63,12 @@ public class GameManager:MonoBehaviour {
     [SerializeField]
     Image FondTransparent;
 
+    [SerializeField]
+    Image BatterieJaune;
+    [SerializeField]
+    Image BatterieVerte;
+    [SerializeField]
+    Image BatterieRouge;
 
     private void Start()
     {
@@ -372,6 +378,16 @@ public class GameManager:MonoBehaviour {
             scoreText.text = "Score : " + score;
         } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall) {
             lives--;
+            BatterieJaune.gameObject.SetActive(false);
+            BatterieVerte.gameObject.SetActive(false);
+            BatterieRouge.gameObject.SetActive(false);
+            if(lives>=2) {
+                BatterieJaune.gameObject.SetActive(true);
+            }
+            if(lives>=1) {
+                BatterieRouge.gameObject.SetActive(true);
+            }
+
             if(lives <= 0)
                 lives=0;
             //Debug.Log("Lives : " +lives);
