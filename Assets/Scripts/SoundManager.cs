@@ -23,7 +23,7 @@ public class SoundManager : MonoBehaviour
     }
 
     [Header("Sounds")]
-    [SerializeField] AudioClip dialog;
+    List<AudioClip> dialogs = new List<AudioClip>();
     [SerializeField] AudioClip plug;
     [SerializeField] AudioClip unplug;
     [SerializeField] AudioClip endCallBad;
@@ -32,6 +32,18 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip validCall;
     [SerializeField] AudioClip endCallSuccess;
     [SerializeField] AudioClip linkNode;
+
+
+    [Header("Dialogs")]
+    [SerializeField] AudioClip dialog1;
+    [SerializeField] AudioClip dialog2;
+    [SerializeField] AudioClip dialog3;
+    [SerializeField] AudioClip dialog4;
+    [SerializeField] AudioClip dialog5;
+    [SerializeField] AudioClip dialog6;
+    [SerializeField] AudioClip dialog7;
+    [SerializeField] AudioClip dialog8;
+    [SerializeField] AudioClip dialog9;
 
     [Header("Emmiters")]
     [SerializeField] AudioSource emitter1;
@@ -49,6 +61,16 @@ public class SoundManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        dialogs = new List<AudioClip>{dialog1,
+                                    dialog2,
+                                    dialog3,
+                                    dialog4,
+                                    dialog5,
+                                    dialog6,
+                                    dialog7,
+                                    dialog8,
+                                    dialog9
+        };
         //audioSource = GetComponent<AudioSource>();
         emitters = new List<AudioSource> { emitter1,
                                     emitter2,
@@ -81,7 +103,8 @@ public class SoundManager : MonoBehaviour
             switch (sound)
             {
                 case SoundList.DIALOG:
-                    emitterAvailable.clip = dialog;
+                    int hasard = Random.RandomRange(0,dialogs.Count);
+                    emitterAvailable.clip = dialogs[hasard];
                     break;
                 case SoundList.PLUG:
                     emitterAvailable.clip = plug;

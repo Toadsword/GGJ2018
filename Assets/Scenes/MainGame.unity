@@ -929,15 +929,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c07a68cedd6dc4484ad9dfce654ebb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialog: {fileID: 8300000, guid: bcc9ac7093aa01a4d9ec30ed13acf8de, type: 3}
   plug: {fileID: 8300000, guid: 41bc8a419775b0448bb9a3478aab7240, type: 3}
   unplug: {fileID: 8300000, guid: 7722084064396ea44bd2850d209a28ac, type: 3}
   endCallBad: {fileID: 8300000, guid: 955bec0135de58a41a816ad101bcdcb1, type: 3}
   brokenLink: {fileID: 8300000, guid: ad4f5aeebd7371f4295ccf47085db392, type: 3}
   halo: {fileID: 8300000, guid: 5db421df31cdc324d9419667935aa6f8, type: 3}
-  validCall: {fileID: 8300000, guid: 15a10fbab07d8d142aba292e53d6ae4e, type: 3}
+  validCall: {fileID: 8300000, guid: 957aa85dabb64f447af6ecdddb1f627a, type: 3}
   endCallSuccess: {fileID: 8300000, guid: 15a10fbab07d8d142aba292e53d6ae4e, type: 3}
   linkNode: {fileID: 8300000, guid: 1771d60a772a15e4d9fdc0061ece958f, type: 3}
+  dialog1: {fileID: 8300000, guid: 48943c0799505dc44b37804c066461d4, type: 3}
+  dialog2: {fileID: 8300000, guid: 28389f5f9f4d79c409db2a0b5957acc1, type: 3}
+  dialog3: {fileID: 8300000, guid: 64abbe7549a6e8c48889f2afcfb9a358, type: 3}
+  dialog4: {fileID: 8300000, guid: 47c1e7a407929234d9ec0b78461cbdbe, type: 3}
+  dialog5: {fileID: 8300000, guid: 5e0c5e54b27bf37428fdc766768b2da3, type: 3}
+  dialog6: {fileID: 8300000, guid: 643cb85fbf9295c418bee5872bc03740, type: 3}
+  dialog7: {fileID: 8300000, guid: 5df47677347b3be48908adbf2ada3f22, type: 3}
+  dialog8: {fileID: 8300000, guid: 9f28a059a5e656249b99e511fd14d68c, type: 3}
+  dialog9: {fileID: 8300000, guid: 12220f3c274bcf14689b361912844aa1, type: 3}
   emitter1: {fileID: 1619025736}
   emitter2: {fileID: 1687413020}
   emitter3: {fileID: 2072208118}
@@ -1039,7 +1047,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
