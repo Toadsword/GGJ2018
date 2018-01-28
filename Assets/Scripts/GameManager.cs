@@ -60,8 +60,7 @@ public class GameManager:MonoBehaviour {
     [SerializeField] Image JackTendu;
     [SerializeField] Image Prise;
 
-    [SerializeField]
-    Image FondTransparent;
+    [SerializeField] Canvas MenuPause;
 
 
     private void Start()
@@ -245,8 +244,8 @@ public class GameManager:MonoBehaviour {
             if(click){
                 if((Input.mousePosition-Prise.transform.position).magnitude>60) {
                     pause = true;
-                    FondTransparent.gameObject.SetActive(true);
-                    GameObject.Find("PauseText").GetComponent<Text>().color = new Color(1, 1, 1, 1);
+                    MenuPause.gameObject.SetActive(true);
+
                     Time.timeScale = 0f;
                     JackTendu.gameObject.SetActive(false);
                     JackPendu.gameObject.SetActive(true);
@@ -305,8 +304,8 @@ public class GameManager:MonoBehaviour {
                 if((Input.mousePosition-Prise.transform.position).magnitude<50){
                     //quitter pause
                     pause = false;
-                    FondTransparent.gameObject.SetActive(false);
-                    GameObject.Find("PauseText").GetComponent<Text>().color = new Color(1, 1, 1, 0);
+                    MenuPause.gameObject.SetActive(false);
+
                     Time.timeScale = 1f;
                     JackTendu.gameObject.SetActive(true);
                     JackPendu.gameObject.SetActive(false);
