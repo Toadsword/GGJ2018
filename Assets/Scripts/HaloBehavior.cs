@@ -29,7 +29,11 @@ public class HaloBehavior : MonoBehaviour {
     {
         timePassedInTotal += Time.deltaTime;
         transform.localScale = startScale + deltaScalePerSec * timePassedInTotal;
-        render.color -= new Color(0.0f, 0.0f, 0.0f, deltaOpacityPerSec * Time.deltaTime);
+            if(render.color.r == 1 && render.color.g==0 && render.color.b == 0)
+                render.color -= new Color(0.0f,0.0f,0.0f,0.2f*deltaOpacityPerSec * Time.deltaTime);
+            else
+                render.color -= new Color(0.0f, 0.0f, 0.0f, deltaOpacityPerSec * Time.deltaTime);
+
         if(timeToFade <= timePassedInTotal)
         {
             Destroy(gameObject);

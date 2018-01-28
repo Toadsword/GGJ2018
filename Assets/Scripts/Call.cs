@@ -35,7 +35,7 @@ public class Call
     private float previousCountDown;
 
     // Temps avant plusieurs appels d'halo
-    private const float HALO_COUNTDOWN_BEFORE_NEW = 2.0f;
+    private const float HALO_COUNTDOWN_BEFORE_NEW = 1.0f;
     private const float HALO_TIME_BETWEEN_TWO = 0.5f;
     private const float HALO_TIME_CONSECUTIVE = 0.1f;
     private const int HALO_COUNT = 3;
@@ -116,7 +116,7 @@ public class Call
             {
                 caller.DisplayMessageBox(true);
                 if(status == Status.interruptedCall)
-                    HaloManager(caller, Color.red);
+                    HaloManager(caller,Color.red);
                 else
                     HaloManager(caller, Color.white);
             }
@@ -165,7 +165,11 @@ public class Call
                     else
                     {
                         passedBetweenTwo = false;
-                        HaloCountDownBeforeNew = HALO_COUNTDOWN_BEFORE_NEW;
+                        if(status == Status.interruptedCall){
+                            HaloCountDownBeforeNew = HALO_COUNTDOWN_BEFORE_NEW/3.0f;
+                        }else{
+                            HaloCountDownBeforeNew = HALO_COUNTDOWN_BEFORE_NEW;
+                        }
                     }
                 }
             }
@@ -185,19 +189,34 @@ public class Call
         randomCountDown = durationWaitingInterrupted();
         caller.status=NodeController.Status.calling;
         reciever.status=NodeController.Status.waitingCall;
+        HaloCountDownBeforeNew = 0;
     }
 
     private float durationWaiting()
     {
-        return Random.Range(10, 20);
+        if(gameManager.Score()<30)
+            return Random.Range(15, 20);
+        else if(gameManager.Score()<100)
+            return Random.Range(10,15);
+        else
+            return Random.Range(7,10);
     }
 
     private float durationCall()
     {
-        return Random.Range(10, 20);
+        if(gameManager.Score()<30)
+            return Random.Range(10, 15);
+        else if(gameManager.Score()<100)
+            return Random.Range(15, 25);
+        else
+            return Random.Range(20, 40);
     }
     private float durationWaitingInterrupted()
     {
-        return Random.Range(5, 7);
+        if(gameManager.Score()<100)
+            return Random.Range(7, 9);
+        else
+            return Random.Range(5,7);
+            
     }
 }

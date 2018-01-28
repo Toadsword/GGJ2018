@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GameManager:MonoBehaviour {
     private int score = 0;
+    public int Score(){return score;}
+
     private int lives = 3;
 
     private Text scoreText;
@@ -49,6 +51,9 @@ public class GameManager:MonoBehaviour {
 
     [SerializeField]
     NodeController HostFemme;
+
+    [SerializeField]
+    SoundManager soundManager;
     
     //---------------PRISE JACK
     bool pause = false;
@@ -78,14 +83,15 @@ public class GameManager:MonoBehaviour {
         scoreText.text = "Score : " + score;
         livesText = GameObject.Find("LivesText").GetComponent<Text>();
         livesText.text = "Lives : " + lives;
-
+        
         oSceneManager = FindObjectOfType<OSceneManager>();
-
+        
         positionJackInitiale = JackPendu.transform.position;
 
         //lancer call de tuto 
         NodeController caller = HostHomme;
         caller.status=NodeController.Status.calling;
+
 
         NodeController reciever = HostFemme;
         reciever.status = NodeController.Status.waitingCall;
@@ -105,6 +111,8 @@ public class GameManager:MonoBehaviour {
         caller.DisplayMessageBox(true);
 
         call.status = Call.Status.calling;
+
+        soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
     }
 
     void Update() {
@@ -235,7 +243,6 @@ public class GameManager:MonoBehaviour {
 
         //actualisation timer next call
         if(inGame){
-            Debug.Log("In Game : " + timerBeforeNextCall);
             timerBeforeNextCall -= Time.deltaTime;
             if(timerBeforeNextCall<0){
                 StartingCall();
@@ -323,7 +330,12 @@ public class GameManager:MonoBehaviour {
     }
 
     private void StartingCall() {
-        timerBeforeNextCall = Random.Range(5,10);
+        if(score<10)
+            timerBeforeNextCall = Random.Range(10,20);
+        if(score<50)
+            timerBeforeNextCall = Random.Range(8,14);
+        else
+            timerBeforeNextCall = Random.Range(7,10);
 
         if (availableHosts.Count >= 2 && callsInTransmission.Count<10) {
             Debug.Log("Au moins 2 travaillent");
@@ -375,6 +387,7 @@ public class GameManager:MonoBehaviour {
         if(call.status==Call.Status.inCall) {
             Debug.Log("SUCCESS");
             score+=call.size;
+            soundManager.PlaySound(SoundManager.SoundList.END_CALL_SUCCESS, false);
             //Debug.Log("Score : " +score);
             scoreText.text = "Score : " + score;
             oSceneManager.UpdateScore(score);
@@ -431,6 +444,7 @@ public class GameManager:MonoBehaviour {
             if(node.IsConnectedTo(actualTrajectory[actualTrajectory.Count - 1]))
             {
                 actualTrajectory.Add(node);
+                soundManager.PlaySound(SoundManager.SoundList.LINK_NODE, false);
                 Debug.Log("Add " + node.name);
 
                 Call call = null;
@@ -462,6 +476,7 @@ public class GameManager:MonoBehaviour {
             if(destination.IsConnectedTo(actualTrajectory[actualTrajectory.Count - 1]))
             {
                 actualTrajectory.Add(destination);
+                soundManager.PlaySound(SoundManager.SoundList.DIALOG, true);
                 Debug.Log("Finish with " + destination.name);
 
                 //changer couleur du edge en questionCall call = null;
@@ -495,6 +510,7 @@ public class GameManager:MonoBehaviour {
                 //mais attention de pas vider un edge qui était utile avant
                 for(int i=0;i<alreadyUsedEdges.Count;++i){
                     UnlightPath(idUsedEdges[i]);
+                    //soundManager.PlaySound(SoundManager.SoundList.END_CALL_BAD, false);
                     getCallFromId(idUsedEdges[i]).Interrupt();
                 }
 
@@ -531,6 +547,7 @@ public class GameManager:MonoBehaviour {
     {
         Transform transformReciever = reciever.GetTransform();
         GameObject instance =  Instantiate(haloPrefab, transformReciever.position, transformReciever.rotation);
+        soundManager.PlaySound(SoundManager.SoundList.HALO, false);
         instance.GetComponent<SpriteRenderer>().color = color;
     }
 
@@ -591,7 +608,8 @@ public class GameManager:MonoBehaviour {
     {
         Debug.Log("AFFICHAGE");
         //create prefab Score
-        ScoreBehavior pfScore = Instantiate(prefabScore) ;
+        ScoreBehavior pfScore = Instantiate(prefabScore);
+        soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
         pfScore.transform.SetParent(ListeScore.transform);
         pfScore.GetComponent<Text>().text = "+" + nb;
 

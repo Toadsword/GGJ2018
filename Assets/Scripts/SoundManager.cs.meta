@@ -1,11 +1,18 @@
 fileFormatVersion: 2
 guid: 52c07a68cedd6dc4484ad9dfce654ebb
-timeCreated: 1517134093
+timeCreated: 1517138155
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - dialog: {instanceID: 0}
+  - endCallBad: {instanceID: 0}
+  - brokenLink: {instanceID: 0}
+  - halo: {instanceID: 0}
+  - validCall: {instanceID: 0}
+  - endCallSuccess: {instanceID: 0}
+  - linkNode: {fileID: 8300000, guid: bcc9ac7093aa01a4d9ec30ed13acf8de, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

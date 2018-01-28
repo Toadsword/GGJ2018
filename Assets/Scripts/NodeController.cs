@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class NodeController : MonoBehaviour {
     
-    const double limit_radius = 0.5;//distance à partir de laquelle, la souris "touche" un node
+    const double limit_radius = 0.8;//distance à partir de laquelle, la souris "touche" un node
     float m_timer_movement = 0;
 
     Vector3 positionInitiale;

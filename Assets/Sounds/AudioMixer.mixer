@@ -18,6 +18,7 @@ AudioMixerController:
   m_AudioMixerGroupViews:
   - guids:
     - b26283539886f5245ab626ceb6b8011d
+    - cd0532a6120596746b3d1938ab35b794
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -29,7 +30,8 @@ AudioMixerGroupController:
   m_Name: Master
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: b26283539886f5245ab626ceb6b8011d
-  m_Children: []
+  m_Children:
+  - {fileID: 243400093089017238}
   m_Volume: e605d684d2cda044db96c71c6777dbd1
   m_Pitch: f4f7006b03f46064c8ba546759175cec
   m_Effects:
@@ -59,5 +61,37 @@ AudioMixerSnapshotController:
   m_Name: Snapshot
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 1466bed1e441213418f6d3015e16df8f
-  m_FloatValues: {}
+  m_FloatValues:
+    ebea26a33afdf5e428cca08f69308b5a: -21.302507
+    e605d684d2cda044db96c71c6777dbd1: -6.5566154
   m_TransitionOverrides: {}
+--- !u!243 &243400093089017238
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Halo
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: cd0532a6120596746b3d1938ab35b794
+  m_Children: []
+  m_Volume: ebea26a33afdf5e428cca08f69308b5a
+  m_Pitch: 41a60cb31ca9a5443b6e3b927d6a997e
+  m_Effects:
+  - {fileID: 244965562252512516}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &244965562252512516
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_EffectID: c23a3b2bb1b8e7340b009575e3ab50b7
+  m_EffectName: Attenuation
+  m_MixLevel: ddf925557a7412745afb8d1c711eb524
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
