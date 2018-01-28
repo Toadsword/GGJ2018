@@ -112,7 +112,7 @@ public class GameManager:MonoBehaviour {
 
         call.status = Call.Status.calling;
 
-        soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
+        //soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
     }
 
     void Update() {
@@ -256,6 +256,7 @@ public class GameManager:MonoBehaviour {
             if(click){
                 if((Input.mousePosition-Prise.transform.position).magnitude>60) {
                     pause = true;
+                    soundManager.PlaySound(SoundManager.SoundList.UNPLUG);
                     MenuPause.gameObject.SetActive(true);
                     JackGLobal.transform.SetParent(MenuPause); // CA FONCTIONNE
 
@@ -317,6 +318,7 @@ public class GameManager:MonoBehaviour {
                 if((Input.mousePosition-Prise.transform.position).magnitude<50){
                     //quitter pause
                     pause = false;
+                    soundManager.PlaySound(SoundManager.SoundList.PLUG);
                     MenuPause.gameObject.SetActive(false);
                     JackGLobal.transform.SetParent(CanvasPrincipale.transform);
                     JackGLobal.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
@@ -404,6 +406,7 @@ public class GameManager:MonoBehaviour {
                 BatterieRouge.gameObject.SetActive(true);
             }
             */
+            soundManager.PlaySound(SoundManager.SoundList.END_CALL_BAD,false);
             if(lives == 2)
                 BatterieVerte.gameObject.SetActive(false);
             if (lives == 1)
@@ -476,7 +479,9 @@ public class GameManager:MonoBehaviour {
             if(destination.IsConnectedTo(actualTrajectory[actualTrajectory.Count - 1]))
             {
                 actualTrajectory.Add(destination);
-                soundManager.PlaySound(SoundManager.SoundList.DIALOG, true);
+
+                //soundManager.PlaySound(SoundManager.SoundList.DIALOG, true);
+
                 Debug.Log("Finish with " + destination.name);
 
                 //changer couleur du edge en questionCall call = null;
@@ -508,6 +513,9 @@ public class GameManager:MonoBehaviour {
 
                 //suppresion de toutes les paths qui posent problemes
                 //mais attention de pas vider un edge qui était utile avant
+                if(idUsedEdges.Count>0) {
+                    soundManager.PlaySound(SoundManager.SoundList.BROKEN_LINK,false);
+                }
                 for(int i=0;i<alreadyUsedEdges.Count;++i){
                     UnlightPath(idUsedEdges[i]);
                     //soundManager.PlaySound(SoundManager.SoundList.END_CALL_BAD, false);
@@ -629,6 +637,7 @@ public class GameManager:MonoBehaviour {
     public void launchGame(){
         inGame = true;
         timerBeforeNextCall=3.0f;
+        soundManager.PlaySound(SoundManager.SoundList.VALID_CALL);
     }
 
     public Call getCallFromId(int id)

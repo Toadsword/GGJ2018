@@ -12,6 +12,8 @@ public class SoundManager : MonoBehaviour
     public enum SoundList
     {
         DIALOG,
+        PLUG,
+        UNPLUG,
         END_CALL_BAD,
         BROKEN_LINK,
         HALO,
@@ -22,6 +24,8 @@ public class SoundManager : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] AudioClip dialog;
+    [SerializeField] AudioClip plug;
+    [SerializeField] AudioClip unplug;
     [SerializeField] AudioClip endCallBad;
     [SerializeField] AudioClip brokenLink;
     [SerializeField] AudioClip halo;
@@ -78,6 +82,12 @@ public class SoundManager : MonoBehaviour
             {
                 case SoundList.DIALOG:
                     emitterAvailable.clip = dialog;
+                    break;
+                case SoundList.PLUG:
+                    emitterAvailable.clip = plug;
+                    break;
+                case SoundList.UNPLUG:
+                    emitterAvailable.clip = unplug;
                     break;
                 case SoundList.END_CALL_BAD:
                     emitterAvailable.clip = endCallBad;
