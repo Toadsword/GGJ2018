@@ -243,7 +243,6 @@ public class GameManager:MonoBehaviour {
 
         //actualisation timer next call
         if(inGame){
-            Debug.Log("In Game : " + timerBeforeNextCall);
             timerBeforeNextCall -= Time.deltaTime;
             if(timerBeforeNextCall<0){
                 StartingCall();
