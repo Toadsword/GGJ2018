@@ -66,14 +66,14 @@ public class GameManager:MonoBehaviour {
     [SerializeField] Image JackTendu;
     [SerializeField] Image Prise;
 
-    [SerializeField] Canvas MenuPause;
+    [SerializeField] Transform MenuPause;
+    [SerializeField] Canvas CanvasPrincipale;
 
-    [SerializeField]
-    Image BatterieJaune;
-    [SerializeField]
-    Image BatterieVerte;
-    [SerializeField]
-    Image BatterieRouge;
+    [SerializeField] Image BatterieJaune;
+    [SerializeField] Image BatterieVerte;
+    [SerializeField] Image BatterieRouge;
+
+    private OSceneManager oSceneManager;
 
     private void Start()
     {
@@ -83,7 +83,9 @@ public class GameManager:MonoBehaviour {
         scoreText.text = "Score : " + score;
         livesText = GameObject.Find("LivesText").GetComponent<Text>();
         livesText.text = "Lives : " + lives;
-
+        
+        oSceneManager = FindObjectOfType<OSceneManager>();
+        
         positionJackInitiale = JackPendu.transform.position;
 
         //lancer call de tuto 
@@ -109,10 +111,8 @@ public class GameManager:MonoBehaviour {
         caller.DisplayMessageBox(true);
 
         call.status = Call.Status.calling;
+
         soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
-
-
-
     }
 
     void Update() {
@@ -257,7 +257,7 @@ public class GameManager:MonoBehaviour {
                 if((Input.mousePosition-Prise.transform.position).magnitude>60) {
                     pause = true;
                     MenuPause.gameObject.SetActive(true);
-                    JackGLobal.transform.SetParent(MenuPause.transform); // CA FONCTIONNE
+                    JackGLobal.transform.SetParent(MenuPause); // CA FONCTIONNE
 
                     Time.timeScale = 0f;
                     JackTendu.gameObject.SetActive(false);
@@ -318,7 +318,7 @@ public class GameManager:MonoBehaviour {
                     //quitter pause
                     pause = false;
                     MenuPause.gameObject.SetActive(false);
-                    JackGLobal.transform.SetParent(MenuPrincipal.transform);
+                    JackGLobal.transform.SetParent(CanvasPrincipale.transform);
                     JackGLobal.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
                     Time.timeScale = 1f;
@@ -390,19 +390,28 @@ public class GameManager:MonoBehaviour {
             soundManager.PlaySound(SoundManager.SoundList.END_CALL_SUCCESS, false);
             //Debug.Log("Score : " +score);
             scoreText.text = "Score : " + score;
+            oSceneManager.UpdateScore(score);
         } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall || call.status == Call.Status.transmitting) {
             lives--;
-            BatterieJaune.gameObject.SetActive(false);
+            /*
             BatterieVerte.gameObject.SetActive(false);
+            BatterieJaune.gameObject.SetActive(false);
             BatterieRouge.gameObject.SetActive(false);
             if(lives>=2) {
                 BatterieJaune.gameObject.SetActive(true);
-            }
+            }else
             if(lives>=1) {
                 BatterieRouge.gameObject.SetActive(true);
             }
+            */
+            if(lives == 2)
+                BatterieVerte.gameObject.SetActive(false);
+            if (lives == 1)
+                BatterieJaune.gameObject.SetActive(false);
+            if (lives == 0)
+                oSceneManager.ChangeScene(OSceneManager.SceneNames.DIE_MENU_SCENE);
 
-            if(lives <= 0)
+                if (lives <= 0)
                 lives=0;
             //Debug.Log("Lives : " +lives);
             livesText.text = "Lives : " + lives;
@@ -630,10 +639,5 @@ public class GameManager:MonoBehaviour {
             }
         }
         return null;
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
     }
 }
