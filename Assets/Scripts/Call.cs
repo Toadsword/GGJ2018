@@ -200,6 +200,7 @@ public class Call
         caller.status=NodeController.Status.calling;
         reciever.status=NodeController.Status.waitingCall;
         HaloCountDownBeforeNew = 0;
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().PlaySound(SoundManager.SoundList.DIALOG_FURIOUS);
     }
 
     private float durationWaiting()

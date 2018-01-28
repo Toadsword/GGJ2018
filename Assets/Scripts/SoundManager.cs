@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
     public enum SoundList
     {
         DIALOG,
+        DIALOG_FURIOUS,
         PLUG,
         UNPLUG,
         END_CALL_BAD,
@@ -24,6 +25,7 @@ public class SoundManager : MonoBehaviour
 
     [Header("Sounds")]
     List<AudioClip> dialogs = new List<AudioClip>();
+    List<AudioClip> dialogsFurious = new List<AudioClip>();
     [SerializeField] AudioClip plug;
     [SerializeField] AudioClip unplug;
     [SerializeField] AudioClip endCallBad;
@@ -44,6 +46,14 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip dialog7;
     [SerializeField] AudioClip dialog8;
     [SerializeField] AudioClip dialog9;
+
+    
+    [Header("DialogsFurious")]
+    [SerializeField] AudioClip dialogFurious1;
+    [SerializeField] AudioClip dialogFurious2;
+    [SerializeField] AudioClip dialogFurious3;
+    [SerializeField] AudioClip dialogFurious4;
+    [SerializeField] AudioClip dialogFurious5;
 
     [Header("Emmiters")]
     [SerializeField] AudioSource emitter1;
@@ -66,6 +76,16 @@ public class SoundManager : MonoBehaviour
                                     dialog3,
                                     dialog4,
                                     dialog5,
+                                    dialog6,
+                                    dialog7,
+                                    dialog8,
+                                    dialog9
+        };
+        dialogsFurious = new List<AudioClip>{dialogFurious1,
+                                    dialogFurious2,
+                                    dialogFurious3,
+                                    dialogFurious4,
+                                    dialogFurious5,
                                     dialog6,
                                     dialog7,
                                     dialog8,
@@ -103,8 +123,12 @@ public class SoundManager : MonoBehaviour
             switch (sound)
             {
                 case SoundList.DIALOG:
-                    int hasard = Random.RandomRange(0,dialogs.Count);
+                    int hasard = Random.Range(0,dialogs.Count);
                     emitterAvailable.clip = dialogs[hasard];
+                    break;
+                case SoundList.DIALOG_FURIOUS:
+                    int hasardFurious = Random.Range(0,dialogsFurious.Count);
+                    emitterAvailable.clip = dialogsFurious[hasardFurious];
                     break;
                 case SoundList.PLUG:
                     emitterAvailable.clip = plug;
