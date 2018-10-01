@@ -11,7 +11,7 @@ public class EdgeController : MonoBehaviour {
 
     private SpriteRenderer render;
 
-    public int idMessage{get;private set;} // -1 for no connection on the node
+    public int idMessage{get;private set;} // -1 for no connection on the edge
 
 	// Use this for initialization
 	void Start () {

@@ -7,6 +7,7 @@ public class GameManager:MonoBehaviour {
     private int score = 0;
     public int Score(){return score;}
 
+    private int level = 1;
     private int lives = 3;
 
     private Text scoreText;
@@ -20,6 +21,11 @@ public class GameManager:MonoBehaviour {
 
     List<Call> callsInTransmission = new List<Call>();
 
+    public GameObject HostsMenu;
+    public GameObject Hosts1;
+    public GameObject Hosts2;
+    public GameObject Hosts3;
+
     [SerializeField] List<NodeController> availableHosts;
     private List<NodeController> unavailableHosts = new List<NodeController>();
 
@@ -29,7 +35,10 @@ public class GameManager:MonoBehaviour {
     private List<EdgeController> alreadyUsedEdges = new List<EdgeController>();
     private List<int> idUsedEdges = new List <int>();
 
-    [SerializeField] GameObject ListeEdges;
+    [SerializeField] GameObject ListeEdgesMenu;
+    [SerializeField] GameObject ListeEdges1;
+    [SerializeField] GameObject ListeEdges2;
+    [SerializeField] GameObject ListeEdges3;
     [SerializeField] GameObject ListeScore;
     [SerializeField] ScoreBehavior prefabScore;
 
@@ -47,10 +56,22 @@ public class GameManager:MonoBehaviour {
     float zoomCamera=10;
 
     [SerializeField]
-    NodeController HostHomme;
+    NodeController HostHomme1;
 
     [SerializeField]
-    NodeController HostFemme;
+    NodeController HostFemme1;
+
+    [SerializeField]
+    NodeController HostHomme2;
+
+    [SerializeField]
+    NodeController HostFemme2;
+    
+    [SerializeField]
+    NodeController HostHomme3;
+
+    [SerializeField]
+    NodeController HostFemme3;
 
     [SerializeField]
     SoundManager soundManager;
@@ -88,10 +109,19 @@ public class GameManager:MonoBehaviour {
         
         positionJackInitiale = JackPendu.transform.position;
 
-        //lancer call de tuto 
+        //lancer call de tuto
+        newCallTuto(HostHomme1, HostFemme1);
+        newCallTuto(HostHomme2, HostFemme2);
+        newCallTuto(HostHomme3, HostFemme3);
+
+
+        //soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
+    }
+
+    void newCallTuto(NodeController HostHomme, NodeController HostFemme) {
+    
         NodeController caller = HostHomme;
         caller.status=NodeController.Status.calling;
-
 
         NodeController reciever = HostFemme;
         reciever.status = NodeController.Status.waitingCall;
@@ -111,8 +141,6 @@ public class GameManager:MonoBehaviour {
         caller.DisplayMessageBox(true);
 
         call.status = Call.Status.calling;
-
-        //soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
     }
 
     void Update() {
@@ -122,10 +150,18 @@ public class GameManager:MonoBehaviour {
         //gestion démarrage partie
         if(inGame){
             //déplacement menu
-            if(camera.transform.position.x<0){
-                camera.transform.position += (new Vector3(0,0,-10)-camera.transform.position)/30.0f;
-            }else{
-                camera.transform.position = new Vector3(0,0,-10);
+            if(level==1) {
+                if(camera.transform.position.x<0){
+                    camera.transform.position += (new Vector3(0,0,-10)-camera.transform.position)/30.0f;
+                }else{
+                    camera.transform.position = new Vector3(0,0,-10);
+                }
+            }else if(level==2) {
+                if(camera.transform.position.y>-18 && camera.transform.position.x<0){
+                    camera.transform.position += (new Vector3(0,-18,-10)-camera.transform.position)/30.0f;
+                }else{
+                    camera.transform.position = new Vector3(0,-18,-10);
+                }
             }
 
             MenuPrincipal.transform.position -= new Vector3(20,0,0);
@@ -148,7 +184,10 @@ public class GameManager:MonoBehaviour {
             }*/
         }
 
-        actualizePositionEdges();
+        actualizePositionEdges(ListeEdgesMenu);
+        actualizePositionEdges(ListeEdges1);
+        actualizePositionEdges(ListeEdges2);
+        actualizePositionEdges(ListeEdges3);
         //Set hosts opacity to know if they are available or not
         foreach (NodeController hosts in availableHosts)
         {
@@ -522,8 +561,12 @@ public class GameManager:MonoBehaviour {
                     getCallFromId(idUsedEdges[i]).Interrupt();
                 }
 
-                if(destination==HostFemme){
-                    launchGame();
+                if(destination==HostFemme1){
+                    launchGame(1);
+                }else if(destination==HostFemme2){
+                    launchGame(2);
+                }else if(destination==HostFemme3){
+                    launchGame(3);
                 }
             }
 
@@ -568,7 +611,25 @@ public class GameManager:MonoBehaviour {
         }
         if(call!=null && call.status==Call.Status.inCall){
 
-            foreach(Transform edgeTransform in ListeEdges.transform){
+            foreach(Transform edgeTransform in ListeEdgesMenu.transform){
+                EdgeController edge = edgeTransform.GetComponent<EdgeController>();
+                if(edge.idMessage==call.id){
+                    edge.TakePath(-1);
+                }
+            }
+            foreach(Transform edgeTransform in ListeEdges1.transform){
+                EdgeController edge = edgeTransform.GetComponent<EdgeController>();
+                if(edge.idMessage==call.id){
+                    edge.TakePath(-1);
+                }
+            }
+            foreach(Transform edgeTransform in ListeEdges2.transform){
+                EdgeController edge = edgeTransform.GetComponent<EdgeController>();
+                if(edge.idMessage==call.id){
+                    edge.TakePath(-1);
+                }
+            }
+            foreach(Transform edgeTransform in ListeEdges3.transform){
                 EdgeController edge = edgeTransform.GetComponent<EdgeController>();
                 if(edge.idMessage==call.id){
                     edge.TakePath(-1);
@@ -592,9 +653,9 @@ public class GameManager:MonoBehaviour {
         }
     }
 
-    private void actualizePositionEdges()
+    private void actualizePositionEdges(GameObject liste_edges)
     {
-        foreach(Transform edgeTransform in ListeEdges.transform){
+        foreach(Transform edgeTransform in liste_edges.transform){
             EdgeController edge = edgeTransform.GetComponent<EdgeController>();
             //pour chaque edge, on récupère les positions des deux bouts
             //et on détermine où le edges doit aller
@@ -634,10 +695,34 @@ public class GameManager:MonoBehaviour {
         return null;
     }
 
-    public void launchGame(){
+    public void launchGame(int i){
+        //i is the level (1,2,3)
+        level = i;
         inGame = true;
         timerBeforeNextCall=3.0f;
         soundManager.PlaySound(SoundManager.SoundList.VALID_CALL);
+
+        //faire taire les autres messages de niveaux
+        callsInTransmission.Clear();
+
+        if(level==1) {
+            availableHosts.Clear();
+            foreach(Transform t in Hosts1.transform) {
+                availableHosts.Add(t.GetComponent<NodeController>());
+            }
+        }
+        if(level==2) {
+            availableHosts.Clear();
+            foreach(Transform t in Hosts2.transform) {
+                availableHosts.Add(t.GetComponent<NodeController>());
+            }
+        }
+        if(level==3) {
+            availableHosts.Clear();
+            foreach(Transform t in Hosts3.transform) {
+                availableHosts.Add(t.GetComponent<NodeController>());
+            }
+        }
     }
 
     public Call getCallFromId(int id)
@@ -649,4 +734,8 @@ public class GameManager:MonoBehaviour {
         }
         return null;
     }
+
+    public bool isPaused(){
+        return false;
+    }   
 }

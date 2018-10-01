@@ -83,7 +83,7 @@ public class Call
     {
         if(timer_dialog>0 && status==Status.inCall && !isInfinite){
             timer_dialog -= Time.deltaTime;
-            if(timer_dialog<=0 && randomCountDown>3.0f){//si on doit lancer un dialogue et qu'on aura le temps de la play entier
+            if(timer_dialog<=0 && randomCountDown>3.0f && !gameManager.isPaused()){//si on doit lancer un dialogue et qu'on aura le temps de la play entier
                 GameObject.Find("SoundManager").GetComponent<SoundManager>().PlaySound(SoundManager.SoundList.DIALOG);
                 timer_dialog = 5.0f;
             }
