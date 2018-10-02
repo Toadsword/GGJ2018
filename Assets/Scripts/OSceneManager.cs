@@ -58,6 +58,7 @@ public class OSceneManager : MonoBehaviour {
     
     public void QuitGame()
     {
+        //Debug.Log(""+GameObject.Find("GameManager").GetComponent<GameManager>().level);
         Application.Quit();
     }
 }

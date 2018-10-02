@@ -7,7 +7,7 @@ public class GameManager:MonoBehaviour {
     private int score = 0;
     public int Score(){return score;}
 
-    private int level = 1;
+    public int level = 0;//0 = menu
     private int lives = 3;
 
     private Text scoreText;
@@ -26,6 +26,10 @@ public class GameManager:MonoBehaviour {
     public GameObject Hosts2;
     public GameObject Hosts3;
 
+    public GameObject centreCamera1;
+    public GameObject centreCamera2;
+    public GameObject centreCamera3;
+
     [SerializeField] List<NodeController> availableHosts;
     private List<NodeController> unavailableHosts = new List<NodeController>();
 
@@ -35,6 +39,7 @@ public class GameManager:MonoBehaviour {
     private List<EdgeController> alreadyUsedEdges = new List<EdgeController>();
     private List<int> idUsedEdges = new List <int>();
 
+    GameObject ListeEdges;
     [SerializeField] GameObject ListeEdgesMenu;
     [SerializeField] GameObject ListeEdges1;
     [SerializeField] GameObject ListeEdges2;
@@ -114,6 +119,8 @@ public class GameManager:MonoBehaviour {
         newCallTuto(HostHomme2, HostFemme2);
         newCallTuto(HostHomme3, HostFemme3);
 
+        ListeEdges = ListeEdges1;
+
 
         //soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
     }
@@ -150,19 +157,15 @@ public class GameManager:MonoBehaviour {
         //gestion démarrage partie
         if(inGame){
             //déplacement menu
+            Vector3 cible = new Vector3(0, 0, 0);
             if(level==1) {
-                if(camera.transform.position.x<0){
-                    camera.transform.position += (new Vector3(0,0,-10)-camera.transform.position)/30.0f;
-                }else{
-                    camera.transform.position = new Vector3(0,0,-10);
-                }
+                cible = new Vector3(centreCamera1.transform.position.x, centreCamera1.transform.position.y, -10);
             }else if(level==2) {
-                if(camera.transform.position.y>-18 && camera.transform.position.x<0){
-                    camera.transform.position += (new Vector3(0,-18,-10)-camera.transform.position)/30.0f;
-                }else{
-                    camera.transform.position = new Vector3(0,-18,-10);
-                }
+                cible = new Vector3(centreCamera2.transform.position.x, centreCamera2.transform.position.y, -10);
+            }else if(level==3) {
+                cible = new Vector3(centreCamera3.transform.position.x, centreCamera3.transform.position.y, -10);
             }
+            camera.transform.position += (cible-camera.transform.position)/30.0f;
 
             MenuPrincipal.transform.position -= new Vector3(20,0,0);
 
@@ -185,9 +188,8 @@ public class GameManager:MonoBehaviour {
         }
 
         actualizePositionEdges(ListeEdgesMenu);
-        actualizePositionEdges(ListeEdges1);
-        actualizePositionEdges(ListeEdges2);
-        actualizePositionEdges(ListeEdges3);
+        actualizePositionEdges(ListeEdges);
+
         //Set hosts opacity to know if they are available or not
         foreach (NodeController hosts in availableHosts)
         {
@@ -617,19 +619,8 @@ public class GameManager:MonoBehaviour {
                     edge.TakePath(-1);
                 }
             }
-            foreach(Transform edgeTransform in ListeEdges1.transform){
-                EdgeController edge = edgeTransform.GetComponent<EdgeController>();
-                if(edge.idMessage==call.id){
-                    edge.TakePath(-1);
-                }
-            }
-            foreach(Transform edgeTransform in ListeEdges2.transform){
-                EdgeController edge = edgeTransform.GetComponent<EdgeController>();
-                if(edge.idMessage==call.id){
-                    edge.TakePath(-1);
-                }
-            }
-            foreach(Transform edgeTransform in ListeEdges3.transform){
+
+            foreach(Transform edgeTransform in ListeEdges.transform){
                 EdgeController edge = edgeTransform.GetComponent<EdgeController>();
                 if(edge.idMessage==call.id){
                     edge.TakePath(-1);
@@ -710,18 +701,21 @@ public class GameManager:MonoBehaviour {
             foreach(Transform t in Hosts1.transform) {
                 availableHosts.Add(t.GetComponent<NodeController>());
             }
+            ListeEdges = ListeEdges1;
         }
         if(level==2) {
             availableHosts.Clear();
             foreach(Transform t in Hosts2.transform) {
                 availableHosts.Add(t.GetComponent<NodeController>());
             }
+            ListeEdges = ListeEdges2;
         }
         if(level==3) {
             availableHosts.Clear();
             foreach(Transform t in Hosts3.transform) {
                 availableHosts.Add(t.GetComponent<NodeController>());
             }
+            ListeEdges = ListeEdges3;
         }
     }
 
