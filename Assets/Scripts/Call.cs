@@ -202,6 +202,14 @@ public class Call
         HaloCountDownBeforeNew = 0;
         GameObject.Find("SoundManager").GetComponent<SoundManager>().PlaySound(SoundManager.SoundList.DIALOG_FURIOUS);
     }
+    public void Suppress() {
+        caller.DisplayMessageBox(false);
+        gameManager.LibererDelivrer(caller);
+        gameManager.LibererDelivrer(reciever);
+        caller.Suppress();
+        reciever.Suppress();
+        gameManager.EndCall(this);
+    }
 
     private float durationWaiting()
     {

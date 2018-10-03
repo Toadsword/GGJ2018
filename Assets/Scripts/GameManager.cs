@@ -175,7 +175,7 @@ public class GameManager:MonoBehaviour {
                 zoomCamera += (zoomCible-zoomCamera)/30.0f;
                 GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = zoomCamera;
             }else{
-                zoomCamera = 5;
+                zoomCamera = zoomCible;
             }
             //lancement call
 
@@ -185,6 +185,21 @@ public class GameManager:MonoBehaviour {
                     StartingCall();
                 }
             }*/
+        }
+        else {
+            Vector3 cible = new Vector3(-8, 0, -10);
+            camera.transform.position += (cible-camera.transform.position)/30.0f;
+
+            //MenuPrincipal.transform.position -= new Vector3(20,0,0);
+
+            //zoom caméra
+            float zoomCible=10.0f;
+            if(zoomCamera<zoomCible){
+                zoomCamera += (zoomCible-zoomCamera)/30.0f;
+                GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = zoomCamera;
+            }else{
+                zoomCamera = zoomCible;
+            }
         }
 
         actualizePositionEdges(ListeEdgesMenu);
@@ -560,6 +575,7 @@ public class GameManager:MonoBehaviour {
                 for(int i=0;i<alreadyUsedEdges.Count;++i){
                     UnlightPath(idUsedEdges[i]);
                     //soundManager.PlaySound(SoundManager.SoundList.END_CALL_BAD, false);
+                    Debug.Log("id : " + getCallFromId(idUsedEdges[i]));
                     getCallFromId(idUsedEdges[i]).Interrupt();
                 }
 
@@ -694,7 +710,7 @@ public class GameManager:MonoBehaviour {
         soundManager.PlaySound(SoundManager.SoundList.VALID_CALL);
 
         //faire taire les autres messages de niveaux
-        callsInTransmission.Clear();
+        //callsInTransmission.Clear();
 
         if(level==1) {
             availableHosts.Clear();
@@ -732,4 +748,71 @@ public class GameManager:MonoBehaviour {
     public bool isPaused(){
         return false;
     }   
+
+    public void backToMenu() {
+        if(level==0) {
+            //we are in the menu so we quit
+            Application.Quit();
+        }
+        else {
+            //we are in a level, so we go back to the menu
+
+            
+            //interrupt each call
+            for (int i=0;i<callsInTransmission.Count;++i)
+            {
+                Debug.Log("id : "+ callsInTransmission[i].id);
+                UnlightPath(callsInTransmission[i].id);
+                callsInTransmission[i].Suppress();
+                callsInTransmission.RemoveAt(i);
+                i--;
+            }
+            foreach (NodeController hosts in availableHosts)
+            {
+                hosts.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 1);
+                hosts.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+            }
+            foreach (NodeController hosts in unavailableHosts)
+            {
+                hosts.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 1);
+                hosts.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+            }
+
+            //quitter pause
+            pause = false;
+            soundManager.PlaySound(SoundManager.SoundList.PLUG);
+            MenuPause.gameObject.SetActive(false);
+            JackGLobal.transform.SetParent(CanvasPrincipale.transform);
+            JackGLobal.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+            Time.timeScale = 1f;
+            JackTendu.gameObject.SetActive(true);
+            JackPendu.gameObject.SetActive(false);
+
+            //réinitialiser
+            score = 0;
+            lives = 3;
+
+            callsInTransmission = new List<Call>();
+
+            availableHosts = new List<NodeController>();
+            unavailableHosts = new List<NodeController>();
+            
+            actualTrajectory = new List<NodeController>();
+
+            alreadyUsedEdges = new List<EdgeController>();
+            idUsedEdges = new List <int>();
+
+            ListeEdges = ListeEdges1;
+
+
+            //call again from hostmenu
+            newCallTuto(HostHomme1, HostFemme1);
+            newCallTuto(HostHomme2, HostFemme2);
+            newCallTuto(HostHomme3, HostFemme3);
+            
+            level = 0;
+            inGame = false;
+        } 
+    }
 }

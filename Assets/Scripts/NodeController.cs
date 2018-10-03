@@ -138,4 +138,8 @@ public class NodeController : MonoBehaviour {
             timerText.color = Color.green;
         
     }
+
+    public void Suppress() {
+        timerTextGameObject.SetActive(false);
+    }
 }
