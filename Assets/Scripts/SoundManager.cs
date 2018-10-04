@@ -102,7 +102,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySound(SoundList sound, bool doLoop=false)
     {
-        Debug.Log("son :" + sound);
+        //Debug.Log("son :" + sound);
 
         AudioSource emitterAvailable = null;
 

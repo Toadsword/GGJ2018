@@ -26,6 +26,8 @@ public class GameManager:MonoBehaviour {
     public GameObject Hosts2;
     public GameObject Hosts3;
 
+    float timer_game_launched;//timer entre le lancement du jeu et l'interruption des appels du menu
+
     public GameObject centreCamera1;
     public GameObject centreCamera2;
     public GameObject centreCamera3;
@@ -118,9 +120,19 @@ public class GameManager:MonoBehaviour {
         newCallTuto(HostHomme1, HostFemme1);
         newCallTuto(HostHomme2, HostFemme2);
         newCallTuto(HostHomme3, HostFemme3);
-
+        
         ListeEdges = ListeEdges1;
 
+        //mettre tous les hosts dans la liste available pour que, au menu, tous les hosts soient noirs (sauf les hostsMenu)
+        foreach(Transform host in Hosts1.transform) {
+            availableHosts.Add(host.GetComponent<NodeController>());
+        }
+        foreach(Transform host in Hosts2.transform) {
+            availableHosts.Add(host.GetComponent<NodeController>());
+        }
+        foreach(Transform host in Hosts3.transform) {
+            availableHosts.Add(host.GetComponent<NodeController>());
+        }
 
         //soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
     }
@@ -185,6 +197,42 @@ public class GameManager:MonoBehaviour {
                     StartingCall();
                 }
             }*/
+
+            if(timer_game_launched>0) {
+                timer_game_launched -= Time.deltaTime;
+                if(timer_game_launched<=0) {
+                    //interrompre appels du menu
+                    for (int i=0;i<callsInTransmission.Count;++i)
+                    {
+                        //Debug.Log("id : "+ callsInTransmission[i].id);
+                        UnlightPath(callsInTransmission[i].id);
+                        callsInTransmission[i].Suppress();
+                        callsInTransmission.RemoveAt(i);
+                        i--;
+                    }
+                    if(level==1) {
+                        availableHosts.Clear();
+                        foreach(Transform t in Hosts1.transform) {
+                            availableHosts.Add(t.GetComponent<NodeController>());
+                        }
+                        ListeEdges = ListeEdges1;
+                    }
+                    if(level==2) {
+                        availableHosts.Clear();
+                        foreach(Transform t in Hosts2.transform) {
+                            availableHosts.Add(t.GetComponent<NodeController>());
+                        }
+                        ListeEdges = ListeEdges2;
+                    }
+                    if(level==3) {
+                        availableHosts.Clear();
+                        foreach(Transform t in Hosts3.transform) {
+                            availableHosts.Add(t.GetComponent<NodeController>());
+                        }
+                        ListeEdges = ListeEdges3;
+                    }
+                }
+            }
         }
         else {
             Vector3 cible = new Vector3(-8, 0, -10);
@@ -450,6 +498,7 @@ public class GameManager:MonoBehaviour {
             scoreText.text = "Score : " + score;
             oSceneManager.UpdateScore(score);
         } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall || call.status == Call.Status.transmitting) {
+            Debug.Log("Call : " + call.id+ " " + level);
             lives--;
             /*
             BatterieVerte.gameObject.SetActive(false);
@@ -467,8 +516,10 @@ public class GameManager:MonoBehaviour {
                 BatterieVerte.gameObject.SetActive(false);
             if (lives == 1)
                 BatterieJaune.gameObject.SetActive(false);
-            if (lives == 0)
+            if (lives == 0) {
+                Debug.Log("HAHA !");
                 oSceneManager.ChangeScene(OSceneManager.SceneNames.DIE_MENU_SCENE);
+            }
 
                 if (lives <= 0)
                 lives=0;
@@ -586,6 +637,8 @@ public class GameManager:MonoBehaviour {
                 }else if(destination==HostFemme3){
                     launchGame(3);
                 }
+
+                
             }
 
         }
@@ -631,15 +684,19 @@ public class GameManager:MonoBehaviour {
 
             foreach(Transform edgeTransform in ListeEdgesMenu.transform){
                 EdgeController edge = edgeTransform.GetComponent<EdgeController>();
-                if(edge.idMessage==call.id){
-                    edge.TakePath(-1);
+                if(edge.gameObject.activeSelf) {
+                    if(edge.idMessage==call.id){
+                        edge.TakePath(-1);
+                    }
                 }
             }
 
             foreach(Transform edgeTransform in ListeEdges.transform){
                 EdgeController edge = edgeTransform.GetComponent<EdgeController>();
-                if(edge.idMessage==call.id){
-                    edge.TakePath(-1);
+                if(edge.gameObject.activeSelf) {
+                    if(edge.idMessage==call.id){
+                        edge.TakePath(-1);
+                    }
                 }
             }
 
@@ -664,19 +721,21 @@ public class GameManager:MonoBehaviour {
     {
         foreach(Transform edgeTransform in liste_edges.transform){
             EdgeController edge = edgeTransform.GetComponent<EdgeController>();
-            //pour chaque edge, on récupère les positions des deux bouts
-            //et on détermine où le edges doit aller
-            Vector3 pos1 = edge.Node1().GetTransform().position;
-            Vector3 pos2 = edge.Node2().GetTransform().position;
+            if(edge.gameObject.activeSelf) {
+                //pour chaque edge, on récupère les positions des deux bouts
+                //et on détermine où le edges doit aller
+                Vector3 pos1 = edge.Node1().GetTransform().position;
+                Vector3 pos2 = edge.Node2().GetTransform().position;
 
-            Vector3 n = pos2-pos1;
+                Vector3 n = pos2-pos1;
 
-            float distance = (n).magnitude;
-            float alpha = angle(n.x,n.y);
+                float distance = (n).magnitude;
+                float alpha = angle(n.x,n.y);
 
-            edge.transform.position = (pos1+pos2)/2.0f;
-            edge.transform.localScale = new Vector3(distance*1/8.5f,0.6f,1);
-            edge.transform.localEulerAngles = new Vector3(0,0,alpha);
+                edge.transform.position = (pos1+pos2)/2.0f;
+                edge.transform.localScale = new Vector3(distance*1/8.5f,0.6f,1);
+                edge.transform.localEulerAngles = new Vector3(0,0,alpha);
+            }
         }
     }
 
@@ -711,28 +770,18 @@ public class GameManager:MonoBehaviour {
 
         //faire taire les autres messages de niveaux
         //callsInTransmission.Clear();
-
         if(level==1) {
-            availableHosts.Clear();
-            foreach(Transform t in Hosts1.transform) {
-                availableHosts.Add(t.GetComponent<NodeController>());
-            }
             ListeEdges = ListeEdges1;
         }
         if(level==2) {
-            availableHosts.Clear();
-            foreach(Transform t in Hosts2.transform) {
-                availableHosts.Add(t.GetComponent<NodeController>());
-            }
             ListeEdges = ListeEdges2;
         }
         if(level==3) {
-            availableHosts.Clear();
-            foreach(Transform t in Hosts3.transform) {
-                availableHosts.Add(t.GetComponent<NodeController>());
-            }
             ListeEdges = ListeEdges3;
         }
+        
+        
+        timer_game_launched = 1;
     }
 
     public Call getCallFromId(int id)
@@ -761,7 +810,7 @@ public class GameManager:MonoBehaviour {
             //interrupt each call
             for (int i=0;i<callsInTransmission.Count;++i)
             {
-                Debug.Log("id : "+ callsInTransmission[i].id);
+                //Debug.Log("id : "+ callsInTransmission[i].id);
                 UnlightPath(callsInTransmission[i].id);
                 callsInTransmission[i].Suppress();
                 callsInTransmission.RemoveAt(i);

@@ -57,6 +57,7 @@ public class EdgeController : MonoBehaviour {
     }
 
     public void ChangeColor(Color newColor) {
+        //Debug.Log("render : " + (render==null) + " " + name);
         render.color = newColor;
     }
 

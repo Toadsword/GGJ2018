@@ -208,7 +208,6 @@ public class Call
         gameManager.LibererDelivrer(reciever);
         caller.Suppress();
         reciever.Suppress();
-        gameManager.EndCall(this);
     }
 
     private float durationWaiting()

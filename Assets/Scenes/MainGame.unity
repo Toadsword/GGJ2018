@@ -5307,12 +5307,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4562650566244332, guid: 611c34ca63fef6e4d9210b5af8783b02,
     type: 2}
   m_PrefabInternal: {fileID: 983325557}
---- !u!114 &985107363 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114864056889373514, guid: 673fd44b611234c43bf086483c84c05f,
-    type: 2}
-  m_PrefabInternal: {fileID: 478957919}
-  m_Script: {fileID: 11500000, guid: b63e4744bd7938346a1e5754683b9f97, type: 3}
 --- !u!1001 &989781510
 Prefab:
   m_ObjectHideFlags: 0
@@ -6896,8 +6890,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 985107363}
-        m_MethodName: QuitGame
+      - m_Target: {fileID: 1481349215}
+        m_MethodName: backToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
