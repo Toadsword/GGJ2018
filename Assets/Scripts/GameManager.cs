@@ -8,7 +8,8 @@ public class GameManager:MonoBehaviour {
     public int Score(){return score;}
 
     public int level = 0;//0 = menu
-    private int lives = 3;
+    private int lives_max = 1;
+    private int lives;
 
     private Text scoreText;
     private Text livesText;
@@ -103,8 +104,15 @@ public class GameManager:MonoBehaviour {
 
     private OSceneManager oSceneManager;
 
+    public GameObject cibleMenu;
+    public GameObject cible1;
+    public GameObject cible2;
+    public GameObject cible3;
+
     private void Start()
     {
+        lives = lives_max;
+
         camera = GameObject.Find("Main Camera").GetComponent<Camera>();
 
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
@@ -167,19 +175,22 @@ public class GameManager:MonoBehaviour {
             Application.Quit();
         }
         //gestion démarrage partie
+        Vector3 cibleTitre = cibleMenu.transform.position;
         if(inGame){
-            //déplacement menu
+            //déplacement 
             Vector3 cible = new Vector3(0, 0, 0);
             if(level==1) {
                 cible = new Vector3(centreCamera1.transform.position.x, centreCamera1.transform.position.y, -10);
+                cibleTitre = cible1.transform.position;
             }else if(level==2) {
                 cible = new Vector3(centreCamera2.transform.position.x, centreCamera2.transform.position.y, -10);
+                cibleTitre = cible2.transform.position;
             }else if(level==3) {
                 cible = new Vector3(centreCamera3.transform.position.x, centreCamera3.transform.position.y, -10);
+                cibleTitre = cible3.transform.position;
             }
             camera.transform.position += (cible-camera.transform.position)/30.0f;
 
-            MenuPrincipal.transform.position -= new Vector3(20,0,0);
 
             //zoom caméra
             float zoomCible=6.0f;
@@ -249,6 +260,9 @@ public class GameManager:MonoBehaviour {
                 zoomCamera = zoomCible;
             }
         }
+
+        MenuPrincipal.transform.position += (cibleTitre-MenuPrincipal.transform.position) / 30.0f;
+
 
         actualizePositionEdges(ListeEdgesMenu);
         actualizePositionEdges(ListeEdges);
@@ -517,11 +531,10 @@ public class GameManager:MonoBehaviour {
             if (lives == 1)
                 BatterieJaune.gameObject.SetActive(false);
             if (lives == 0) {
-                Debug.Log("HAHA !");
                 oSceneManager.ChangeScene(OSceneManager.SceneNames.DIE_MENU_SCENE);
             }
 
-                if (lives <= 0)
+            if (lives <= 0)
                 lives=0;
             //Debug.Log("Lives : " +lives);
             livesText.text = "Lives : " + lives;
@@ -840,7 +853,7 @@ public class GameManager:MonoBehaviour {
 
             //réinitialiser
             score = 0;
-            lives = 3;
+            lives = lives_max;
 
             callsInTransmission = new List<Call>();
 
@@ -862,6 +875,12 @@ public class GameManager:MonoBehaviour {
             
             level = 0;
             inGame = false;
+
+            
+            scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
+            scoreText.text = "Score : " + score;
+            livesText = GameObject.Find("LivesText").GetComponent<Text>();
+            livesText.text = "Lives : " + lives;
         } 
     }
 }

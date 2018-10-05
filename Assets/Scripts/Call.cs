@@ -92,9 +92,9 @@ public class Call
         if (randomCountDown < 0.0f)
         {
             caller.DisplayMessageBox(false);
+            gameManager.EndCall(this);
             gameManager.LibererDelivrer(caller);
             gameManager.LibererDelivrer(reciever);
-            gameManager.EndCall(this);
             return true;
             /*if(status == Status.inCall)
                {
@@ -222,12 +222,18 @@ public class Call
 
     private float durationCall()
     {
-        if(gameManager.Score()<30)
+        /*if(gameManager.Score()<30)
             return Random.Range(10, 15);
         else if(gameManager.Score()<100)
             return Random.Range(15, 25);
         else
-            return Random.Range(20, 40);
+            return Random.Range(20, 40);*/
+        if(gameManager.Score()<30)
+            return Random.Range(10, 15);
+        else if(gameManager.Score()<100)
+            return Random.Range(8, 12);
+        else
+            return Random.Range(5, 8);
     }
     private float durationWaitingInterrupted()
     {
