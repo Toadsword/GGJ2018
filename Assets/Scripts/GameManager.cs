@@ -878,7 +878,7 @@ public class GameManager:MonoBehaviour {
 
             
             scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
-            scoreText.text = "Score : " + score;
+            scoreText.text = "SCORE : " + score;
             livesText = GameObject.Find("LivesText").GetComponent<Text>();
             livesText.text = "Lives : " + lives;
         } 
