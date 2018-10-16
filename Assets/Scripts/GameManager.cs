@@ -302,7 +302,17 @@ public class GameManager:MonoBehaviour {
             {
                 for(int i=0;i<alreadyUsedEdges.Count;++i) 
                 {
-                    alreadyUsedEdges[i].TakePath(idUsedEdges[i]);
+                    int currentId = -1;
+                    foreach (Call thatCall in callsInTransmission)
+                    {
+                        if(thatCall.id == currentId)
+                        {
+                            currentId = idUsedEdges[i];
+                            break;
+                        }
+                    }
+
+                    alreadyUsedEdges[i].TakePath(currentId);
                 }
             }
             actualTrajectory.Clear();
@@ -506,6 +516,7 @@ public class GameManager:MonoBehaviour {
         
         if(call.status==Call.Status.inCall) {
             Debug.Log("SUCCESS");
+            launchScore(call.size);
             score+=call.size;
             soundManager.PlaySound(SoundManager.SoundList.END_CALL_SUCCESS, false);
             //Debug.Log("Score : " +score);
@@ -624,8 +635,11 @@ public class GameManager:MonoBehaviour {
 
                 call.setSize(actualTrajectory.Count-1);
 
+                //Lance l'affichage du score quand on termine le call. On ne fait plus ainsi
+                //if(inGame)
+                //    launchScore(actualTrajectory.Count-1);
                 if(inGame)
-                    launchScore(actualTrajectory.Count-1);
+                    soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
 
                 edgeCursor.gameObject.SetActive(false);
 
@@ -757,7 +771,6 @@ public class GameManager:MonoBehaviour {
         Debug.Log("AFFICHAGE");
         //create prefab Score
         ScoreBehavior pfScore = Instantiate(prefabScore);
-        soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
         pfScore.transform.SetParent(ListeScore.transform);
         pfScore.GetComponent<Text>().text = "+" + nb;
 
