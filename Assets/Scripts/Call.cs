@@ -201,7 +201,9 @@ public class Call
         reciever.status=NodeController.Status.waitingCall;
         HaloCountDownBeforeNew = 0;
         GameObject.Find("SoundManager").GetComponent<SoundManager>().PlaySound(SoundManager.SoundList.DIALOG_FURIOUS);
+        gameManager.ResetMultiplier();
     }
+
     public void Suppress() {
         caller.DisplayMessageBox(false);
         gameManager.LibererDelivrer(caller);

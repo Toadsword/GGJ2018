@@ -7,12 +7,17 @@ public class GameManager:MonoBehaviour {
     private int score = 0;
     public int Score(){return score;}
 
+    private int multiplier = 1;
+    private int callsToIncreaseMulti = 3;
+    private int increaseMultiCount = 0;
+
     public int level = 0;//0 = menu
     private int lives_max = 1;
     private int lives;
 
     private Text scoreText;
     private Text livesText;
+    private Text multiplierText;
 
     [SerializeField] EdgeController edgeCursor;
     [SerializeField] GameObject haloPrefab;
@@ -112,6 +117,8 @@ public class GameManager:MonoBehaviour {
     private void Start()
     {
         lives = lives_max;
+        increaseMultiCount = 0;
+        multiplier = 1;
 
         camera = GameObject.Find("Main Camera").GetComponent<Camera>();
 
@@ -119,7 +126,9 @@ public class GameManager:MonoBehaviour {
         scoreText.text = "Score : " + score;
         livesText = GameObject.Find("LivesText").GetComponent<Text>();
         livesText.text = "Lives : " + lives;
-        
+        multiplierText = GameObject.Find("MultiplierText").GetComponent<Text>();
+        multiplierText.text = "Multiplier : " + multiplier + "X";
+
         oSceneManager = FindObjectOfType<OSceneManager>();
         
         positionJackInitiale = JackPendu.transform.position;
@@ -302,17 +311,11 @@ public class GameManager:MonoBehaviour {
             {
                 for(int i=0;i<alreadyUsedEdges.Count;++i) 
                 {
-                    int currentId = -1;
-                    foreach (Call thatCall in callsInTransmission)
-                    {
-                        if(thatCall.id == currentId)
-                        {
-                            currentId = idUsedEdges[i];
-                            break;
-                        }
-                    }
-
-                    alreadyUsedEdges[i].TakePath(currentId);
+                    Call currentCall = getCallFromId(idUsedEdges[i]);
+                    if(currentCall != null)
+                        alreadyUsedEdges[i].TakePath(currentCall.id);
+                    else
+                        alreadyUsedEdges[i].TakePath(-1);
                 }
             }
             actualTrajectory.Clear();
@@ -516,12 +519,22 @@ public class GameManager:MonoBehaviour {
         
         if(call.status==Call.Status.inCall) {
             Debug.Log("SUCCESS");
-            launchScore(call.size);
-            score+=call.size;
+            int scoreGet = call.size * multiplier;
+            launchScore(scoreGet);
+            score+= scoreGet;
+            increaseMultiCount++;
+            if(increaseMultiCount >= callsToIncreaseMulti)
+            {
+                increaseMultiCount = 0;
+                multiplier++;
+            }
+
             soundManager.PlaySound(SoundManager.SoundList.END_CALL_SUCCESS, false);
             //Debug.Log("Score : " +score);
             scoreText.text = "Score : " + score;
+            multiplierText.text = "Multiplier : " + multiplier + "x";
             oSceneManager.UpdateScore(score);
+
         } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall || call.status == Call.Status.transmitting) {
             Debug.Log("Call : " + call.id+ " " + level);
             lives--;
@@ -647,14 +660,18 @@ public class GameManager:MonoBehaviour {
 
                 //suppresion de toutes les paths qui posent problemes
                 //mais attention de pas vider un edge qui était utile avant
-                if(idUsedEdges.Count>0) {
-                    soundManager.PlaySound(SoundManager.SoundList.BROKEN_LINK,false);
-                }
                 for(int i=0;i<alreadyUsedEdges.Count;++i){
                     UnlightPath(idUsedEdges[i]);
                     //soundManager.PlaySound(SoundManager.SoundList.END_CALL_BAD, false);
+                    Call currentCall = getCallFromId(idUsedEdges[i]);
                     Debug.Log("id : " + getCallFromId(idUsedEdges[i]));
-                    getCallFromId(idUsedEdges[i]).Interrupt();
+
+                    //Check si le call n'est pas déjà terminé
+                    if(currentCall != null)
+                    {
+                        currentCall.Interrupt();
+                        soundManager.PlaySound(SoundManager.SoundList.BROKEN_LINK, false);
+                    }
                 }
 
                 if(destination==HostFemme1){
@@ -674,6 +691,13 @@ public class GameManager:MonoBehaviour {
     public Color GetColorFromId(int id)
     {
         return colorArray[id % 10];
+    }
+
+    public void ResetMultiplier()
+    {
+        multiplier = 1;
+        increaseMultiCount = 0;
+        multiplierText.text = "Multiplier : " + multiplier + "x";
     }
 
     public float angle(float x, float y){
@@ -867,6 +891,8 @@ public class GameManager:MonoBehaviour {
             //réinitialiser
             score = 0;
             lives = lives_max;
+            multiplier = 1;
+            increaseMultiCount = 0;
 
             callsInTransmission = new List<Call>();
 
@@ -888,12 +914,13 @@ public class GameManager:MonoBehaviour {
             
             level = 0;
             inGame = false;
-
             
             scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
             scoreText.text = "SCORE : " + score;
             livesText = GameObject.Find("LivesText").GetComponent<Text>();
             livesText.text = "Lives : " + lives;
+            multiplierText = GameObject.Find("MultiplierText").GetComponent<Text>();
+            multiplierText.text = "Multiplier : " + multiplier + "x";
         } 
     }
 }
