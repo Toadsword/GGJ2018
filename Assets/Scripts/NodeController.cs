@@ -126,8 +126,16 @@ public class NodeController : MonoBehaviour {
 
     public void UpdateTimer(float time)
     {
-        if(call==null || !call.isInfinite)
+        if(call==null || !call.isInfinite) {
             timerTextGameObject.SetActive(time >= 0.0f);
+        }
+
+        if(time==0) {
+            timerTextGameObject.transform.localScale = new Vector3(1, 1, 1)*(Mathf.Cos(m_timer_movement*5.05f)/2.0f+1.5f);
+        }
+        else {
+            timerTextGameObject.transform.localScale = new Vector3(1, 1, 1);
+        }
 
         timerText.text = time.ToString("F1");
         timerText.transform.position = positionInitialeText + new Vector3(Mathf.Cos(m_timer_movement * 1.05f), Mathf.Sin(m_timer_movement * 0.91f)) * 0.2f;

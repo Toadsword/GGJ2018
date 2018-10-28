@@ -79,62 +79,72 @@ public class Call
         status = Status.inCall;
     }
 
-    public bool Update()
+    public bool Update(bool gameIsOver)
     {
-        if(timer_dialog>0 && status==Status.inCall && !isInfinite){
-            timer_dialog -= Time.deltaTime;
-            if(timer_dialog<=0 && randomCountDown>3.0f && !gameManager.isPaused()){//si on doit lancer un dialogue et qu'on aura le temps de la play entier
-                GameObject.Find("SoundManager").GetComponent<SoundManager>().PlaySound(SoundManager.SoundList.DIALOG);
-                timer_dialog = 5.0f;
+        if(!gameIsOver) {
+            if(timer_dialog>0 && status==Status.inCall && !isInfinite){
+                timer_dialog -= Time.deltaTime;
+                if(timer_dialog<=0 && randomCountDown>3.0f && !gameManager.isPaused()){//si on doit lancer un dialogue et qu'on aura le temps de la play entier
+                    GameObject.Find("SoundManager").GetComponent<SoundManager>().PlaySound(SoundManager.SoundList.DIALOG);
+                    timer_dialog = 5.0f;
+                }
             }
-        }
-
-        if (randomCountDown < 0.0f)
-        {
-            caller.DisplayMessageBox(false);
-            gameManager.EndCall(this);
-            gameManager.LibererDelivrer(caller);
-            gameManager.LibererDelivrer(reciever);
-            return true;
-            /*if(status == Status.inCall)
-               {
-                   gameManager.LibererDelivrer(caller);
-                   gameManager.LibererDelivrer(reciever);
-                   gameManager.EndCall(true);
-                   return true;
-               } 
-               else if (status == Status.calling || status == Status.interruptedCall)
-               {
-                   gameManager.LibererDelivrer(caller);
-                   gameManager.LibererDelivrer(reciever);
-                   gameManager.EndCall(false);
-                   return true;
-               }
-           */
-        }
-        else
-        {
-            if (gameManager.ActualSource() == caller)
-            {
-                if (status == Status.interruptedCall)
-                    HaloManager(reciever, Color.red);
-                else
-                    HaloManager(reciever, Color.white);
-                caller.DisplayMessageBox(false);
-            }
-            else if (status == Status.calling  || status == Status.interruptedCall)
-            {
-                caller.DisplayMessageBox(true);
-                if(status == Status.interruptedCall)
-                    HaloManager(caller,Color.red);
-                else
-                    HaloManager(caller, Color.white);
-            }
-
+            
             if(!isInfinite)
                 randomCountDown -= Time.deltaTime;
+
+            if (randomCountDown < 0.0f)
+            {
+                gameManager.EndCall(this);
+                if(!gameManager.gameIsOver) {
+                    caller.DisplayMessageBox(false);
+                    gameManager.LibererDelivrer(caller);
+                    gameManager.LibererDelivrer(reciever);
+                }
+                
+                //Debug.Log(randomCountDown);
+                caller.UpdateTimer(randomCountDown);
+                return true;
+                /*if(status == Status.inCall)
+                   {
+                       gameManager.LibererDelivrer(caller);
+                       gameManager.LibererDelivrer(reciever);
+                       gameManager.EndCall(true);
+                       return true;
+                   } 
+                   else if (status == Status.calling || status == Status.interruptedCall)
+                   {
+                       gameManager.LibererDelivrer(caller);
+                       gameManager.LibererDelivrer(reciever);
+                       gameManager.EndCall(false);
+                       return true;
+                   }
+               */
+            }
+            else
+            {
+                if (gameManager.ActualSource() == caller)
+                {
+                    if (status == Status.interruptedCall)
+                        HaloManager(reciever, Color.red);
+                    else
+                        HaloManager(reciever, Color.white);
+                    caller.DisplayMessageBox(false);
+                }
+                else if (status == Status.calling  || status == Status.interruptedCall)
+                {
+                    caller.DisplayMessageBox(true);
+                    if(status == Status.interruptedCall)
+                        HaloManager(caller,Color.red);
+                    else
+                        HaloManager(caller, Color.white);
+                }
+
+            }
             //Debug.Log(randomCountDown);
             caller.UpdateTimer(randomCountDown);
+        }else {
+            caller.UpdateTimer(0);
         }
         return false;
     }
@@ -214,7 +224,7 @@ public class Call
 
     private float durationWaiting()
     {
-        if(gameManager.Score()<30)
+        if (gameManager.Score() < 30)
             return Random.Range(15, 20);
         else if(gameManager.Score()<100)
             return Random.Range(10,15);
@@ -230,7 +240,7 @@ public class Call
             return Random.Range(15, 25);
         else
             return Random.Range(20, 40);*/
-        if(gameManager.Score()<30)
+        if (gameManager.Score() < 30)
             return Random.Range(10, 15);
         else if(gameManager.Score()<100)
             return Random.Range(8, 12);
@@ -244,5 +254,9 @@ public class Call
         else
             return Random.Range(5,7);
             
+    }
+
+    public float timer_call() {
+        return randomCountDown;
     }
 }

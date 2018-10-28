@@ -160,8 +160,16 @@ public class SoundManager : MonoBehaviour
         {
             Debug.Log("no emitter available");
         }
+        
+    }
 
-        
-        
+    public void stopAllDialogs() {
+        foreach(AudioSource emitter in emitters)
+        {
+            if(emitter.isPlaying && dialogs.Contains(emitter.clip) )
+            {
+                emitter.Stop();
+            }
+        }
     }
 }

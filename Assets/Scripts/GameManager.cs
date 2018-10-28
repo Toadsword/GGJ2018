@@ -34,6 +34,10 @@ public class GameManager:MonoBehaviour {
 
     float timer_game_launched;//timer entre le lancement du jeu et l'interruption des appels du menu
 
+    float timer_gameOver;//sec
+    float duration_gameOver = 4;//sec
+    public bool gameIsOver;
+
     public GameObject centreCamera1;
     public GameObject centreCamera2;
     public GameObject centreCamera3;
@@ -150,6 +154,9 @@ public class GameManager:MonoBehaviour {
         foreach(Transform host in Hosts3.transform) {
             availableHosts.Add(host.GetComponent<NodeController>());
         }
+
+        timer_gameOver = 0;
+        gameIsOver = false;
 
         //soundManager.PlaySound(SoundManager.SoundList.VALID_CALL, false);
     }
@@ -343,10 +350,11 @@ public class GameManager:MonoBehaviour {
 
             edgeCursor.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
         }
-
+        
         for (int i=0;i<callsInTransmission.Count;++i)
         {
-            if(callsInTransmission[i].Update()){//autodestruction du call car terminé
+
+            if(callsInTransmission[i].Update(gameIsOver)){//autodestruction du call car terminé
                 //si on supprimer call alors qu'on était en cours de transmission, on doit supprimer la trajectoire
                 if(actualTrajectory.Count>0 && callsInTransmission[i].caller == actualTrajectory[0]){
                     for(int j=0;j<actualTrajectory.Count-1;++j){
@@ -367,18 +375,26 @@ public class GameManager:MonoBehaviour {
                     edgeCursor.gameObject.SetActive(false);
                 }
                 UnlightPath(callsInTransmission[i].id);
-                callsInTransmission.RemoveAt(i);
+                if(!gameIsOver) {
+                    callsInTransmission.RemoveAt(i);
+                }
                 i--;
             }
         }
 
-        //actualisation timer next call
-        if(inGame){
-            timerBeforeNextCall -= Time.deltaTime;
-            if(timerBeforeNextCall<0){
-                StartingCall();
+        if(!pause) {
+            //actualisation timer next call
+            if(inGame && !gameIsOver){
+                timerBeforeNextCall -= Time.deltaTime;
+                if(timerBeforeNextCall<0){
+                    StartingCall();
+                }
             }
+
+            manageGameOver();
         }
+
+
 
         //-------prise jack
 
@@ -463,12 +479,18 @@ public class GameManager:MonoBehaviour {
     }
 
     private void StartingCall() {
-        if(score<10)
+        /*if(score<10)
             timerBeforeNextCall = Random.Range(10,20);
         if(score<50)
             timerBeforeNextCall = Random.Range(8,14);
         else
-            timerBeforeNextCall = Random.Range(7,10);
+            timerBeforeNextCall = Random.Range(7,10);*/
+        if(score<10)
+            timerBeforeNextCall = Random.Range(10,20);
+        if(score<50)
+            timerBeforeNextCall = Random.Range(7,12);
+        else
+            timerBeforeNextCall = Random.Range(5,7);
 
         if (availableHosts.Count >= 2 && callsInTransmission.Count<10) {
             Debug.Log("Au moins 2 travaillent");
@@ -513,12 +535,12 @@ public class GameManager:MonoBehaviour {
         unavailableHosts.Remove(node);
         availableHosts.Add(node);
         node.ChangeColor(new Color(1.0f,1.0f,1.0f,1.0f));
+        
     }
 
     public void EndCall(Call call) {
         
         if(call.status==Call.Status.inCall) {
-            Debug.Log("SUCCESS");
             int scoreGet = call.size * multiplier;
             launchScore(scoreGet);
             score+= scoreGet;
@@ -536,7 +558,6 @@ public class GameManager:MonoBehaviour {
             oSceneManager.UpdateScore(score);
 
         } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall || call.status == Call.Status.transmitting) {
-            Debug.Log("Call : " + call.id+ " " + level);
             lives--;
             /*
             BatterieVerte.gameObject.SetActive(false);
@@ -555,7 +576,7 @@ public class GameManager:MonoBehaviour {
             if (lives == 1)
                 BatterieJaune.gameObject.SetActive(false);
             if (lives == 0) {
-                oSceneManager.ChangeScene(OSceneManager.SceneNames.DIE_MENU_SCENE);
+                gameOver();
             }
 
             if (lives <= 0)
@@ -832,6 +853,9 @@ public class GameManager:MonoBehaviour {
         
         
         timer_game_launched = 1;
+
+        timer_gameOver = 0;
+        gameIsOver = false;
     }
 
     public Call getCallFromId(int id)
@@ -922,5 +946,33 @@ public class GameManager:MonoBehaviour {
             multiplierText = GameObject.Find("MultiplierText").GetComponent<Text>();
             multiplierText.text = "Multiplier : " + multiplier + "x";
         } 
+    }
+
+    void gameOver() {
+        gameIsOver = true;
+
+        //supprimer chaque appel
+        for (int i=0;i<callsInTransmission.Count;++i)
+        {
+            if(callsInTransmission[i].timer_call()>0) {
+                //Debug.Log("id : "+ callsInTransmission[i].id);
+                UnlightPath(callsInTransmission[i].id);
+                callsInTransmission[i].Suppress();
+                callsInTransmission.RemoveAt(i);
+                i--;
+            }
+        }
+
+        soundManager.stopAllDialogs();
+    }
+
+    void manageGameOver() {
+        if(gameIsOver) {
+            timer_gameOver += Time.deltaTime;
+
+            
+            if(timer_gameOver>duration_gameOver)
+                oSceneManager.ChangeScene(OSceneManager.SceneNames.DIE_MENU_SCENE);
+        }
     }
 }
