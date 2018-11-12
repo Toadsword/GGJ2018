@@ -27,10 +27,15 @@ public class GameManager:MonoBehaviour {
 
     List<Call> callsInTransmission = new List<Call>();
 
+
+    public GameObject LevelGauche;
+    public GameObject LevelCentre;
+    public GameObject LevelDroite;
+
     public GameObject HostsMenu;
-    public GameObject Hosts1;
-    public GameObject Hosts2;
-    public GameObject Hosts3;
+    GameObject Hosts1;
+    GameObject Hosts2;
+    GameObject Hosts3;
 
     float timer_game_launched;//timer entre le lancement du jeu et l'interruption des appels du menu
 
@@ -38,9 +43,9 @@ public class GameManager:MonoBehaviour {
     float duration_gameOver = 4;//sec
     public bool gameIsOver;
 
-    public GameObject centreCamera1;
-    public GameObject centreCamera2;
-    public GameObject centreCamera3;
+    GameObject centreCamera1;
+    GameObject centreCamera2;
+    GameObject centreCamera3;
 
     [SerializeField] List<NodeController> availableHosts;
     private List<NodeController> unavailableHosts = new List<NodeController>();
@@ -53,9 +58,9 @@ public class GameManager:MonoBehaviour {
 
     GameObject ListeEdges;
     [SerializeField] GameObject ListeEdgesMenu;
-    [SerializeField] GameObject ListeEdges1;
-    [SerializeField] GameObject ListeEdges2;
-    [SerializeField] GameObject ListeEdges3;
+    GameObject ListeEdges1;
+    GameObject ListeEdges2;
+    GameObject ListeEdges3;
     [SerializeField] GameObject ListeScore;
     [SerializeField] ScoreBehavior prefabScore;
 
@@ -114,12 +119,33 @@ public class GameManager:MonoBehaviour {
     private OSceneManager oSceneManager;
 
     public GameObject cibleMenu;
-    public GameObject cible1;
-    public GameObject cible2;
-    public GameObject cible3;
+    GameObject cible1;
+    GameObject cible2;
+    GameObject cible3;
 
     private void Start()
     {
+        //***********************
+        //  RECUPERER NIVEAUX
+        //***********************
+        Hosts1 = LevelGauche.transform.GetChild(1).gameObject;
+        Hosts2 = LevelCentre.transform.GetChild(1).gameObject;
+        Hosts3 = LevelDroite.transform.GetChild(1).gameObject;
+
+        
+        ListeEdges1 = LevelGauche.transform.GetChild(2).gameObject;
+        ListeEdges2 = LevelCentre.transform.GetChild(2).gameObject;
+        ListeEdges3 = LevelDroite.transform.GetChild(2).gameObject;
+        
+        centreCamera1 = LevelGauche.transform.GetChild(3).gameObject;
+        centreCamera2 = LevelCentre.transform.GetChild(3).gameObject;
+        centreCamera3 = LevelDroite.transform.GetChild(3).gameObject;
+
+        cible1 = LevelGauche.transform.GetChild(4).gameObject;
+        cible2 = LevelCentre.transform.GetChild(4).gameObject;
+        cible3 = LevelDroite.transform.GetChild(4).gameObject;
+        
+        //***********************
         lives = lives_max;
         increaseMultiCount = 0;
         multiplier = 1;
