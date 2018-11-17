@@ -511,12 +511,19 @@ public class GameManager:MonoBehaviour {
             timerBeforeNextCall = Random.Range(8,14);
         else
             timerBeforeNextCall = Random.Range(7,10);*/
-        if(score<10)
+
+        /*if(score<10)
             timerBeforeNextCall = Random.Range(10,20);
         if(score<50)
             timerBeforeNextCall = Random.Range(7,12);
         else
-            timerBeforeNextCall = Random.Range(5,7);
+            timerBeforeNextCall = Random.Range(5,7);*/
+        if(score<10)
+            timerBeforeNextCall = Random.Range(10,20);
+        if(score<50)
+            timerBeforeNextCall = Random.Range(6,10);
+        else
+            timerBeforeNextCall = Random.Range(3,5);
 
         if (availableHosts.Count >= 2 && callsInTransmission.Count<10) {
             Debug.Log("Au moins 2 travaillent");
