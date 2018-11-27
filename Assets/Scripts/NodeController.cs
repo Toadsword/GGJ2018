@@ -26,9 +26,7 @@ public class NodeController : MonoBehaviour {
 
     private SpriteRenderer render;
     private GameManager gameManager;
-
-
-
+    
     private void Start()
     {
         render = GetComponent<SpriteRenderer>();
@@ -48,11 +46,11 @@ public class NodeController : MonoBehaviour {
     {
         m_timer_movement += Time.deltaTime;
         transform.position = positionInitiale + new Vector3(Mathf.Cos(m_timer_movement*0.97f), Mathf.Sin(m_timer_movement*1.02f))*0.2f;
-    //ajouter la node parcequ'on est proche
+        
+        //ajouter la node parcequ'on est proche
         if((Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10))-transform.position).magnitude<limit_radius && !isHost){//si suffisamment proche
             gameManager.AddNodeToTrajectory(this);
         }
-
 
         //mouse down
         if(Input.GetMouseButtonDown(0) && (Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10))-transform.position).magnitude<limit_radius){

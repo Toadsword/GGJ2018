@@ -11765,8 +11765,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000047683716}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: 0.0000038146973}
+  m_SizeDelta: {x: 160, y: 69.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1043200205
 MonoBehaviour:
@@ -14246,8 +14246,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: -39.8}
+  m_SizeDelta: {x: 160, y: 69.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1288856839
 MonoBehaviour:
@@ -16475,12 +16475,13 @@ MonoBehaviour:
   HostHomme3: {fileID: 782571455}
   HostFemme3: {fileID: 139704943}
   soundManager: {fileID: 255172513}
-  JackGLobal: {fileID: 1441788693}
+  JackGlobalTransform: {fileID: 1441788694}
   JackPendu: {fileID: 373579286}
-  JackTendu: {fileID: 583120679}
-  Prise: {fileID: 238173659}
-  MenuPause: {fileID: 1338342723}
+  JackTendu: {fileID: 583120677}
+  PriseTransform: {fileID: 238173658}
+  MenuPause: {fileID: 1338342719}
   CanvasPrincipale: {fileID: 1466795932}
+  TextPause: {fileID: 1043200205}
   BatterieJaune: {fileID: 2077652887}
   BatterieVerte: {fileID: 6219302}
   BatterieRouge: {fileID: 1680901921}

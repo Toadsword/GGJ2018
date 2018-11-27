@@ -10,7 +10,8 @@ public class ScoreBehavior : MonoBehaviour {
 	void Start () {
 		direction = new Vector3(Random.Range(-300,300)/100.0f, Random.Range(-300,300)/100.0f);
         direction = direction.normalized*10.0f;
-	}
+	    Destroy(gameObject, timer_destruction);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -18,7 +19,5 @@ public class ScoreBehavior : MonoBehaviour {
         transform.position += direction;
 
         direction = direction*0.9f;
-
-        Destroy(gameObject, timer_destruction);
 	}
 }

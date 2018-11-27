@@ -104,13 +104,14 @@ public class GameManager:MonoBehaviour {
     Vector3 previousPos;
     Vector3 positionJackInitiale;
 
-    [SerializeField] GameObject JackGLobal;
+    [SerializeField] Transform JackGlobalTransform;
     [SerializeField] Image JackPendu;
-    [SerializeField] Image JackTendu;
-    [SerializeField] Image Prise;
+    [SerializeField] GameObject JackTendu;
+    [SerializeField] Transform PriseTransform;
 
-    [SerializeField] Transform MenuPause;
+    [SerializeField] GameObject MenuPause;
     [SerializeField] Canvas CanvasPrincipale;
+    [SerializeField] Text TextPause;
 
     [SerializeField] Image BatterieJaune;
     [SerializeField] Image BatterieVerte;
@@ -216,6 +217,7 @@ public class GameManager:MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Escape)){
             Application.Quit();
         }
+
         //gestion démarrage partie
         Vector3 cibleTitre = cibleMenu.transform.position;
         if(inGame){
@@ -427,16 +429,21 @@ public class GameManager:MonoBehaviour {
 
         if(!pause){
             if(click){
-                if((Input.mousePosition-Prise.transform.position).magnitude>60) {
+                if((Input.mousePosition-PriseTransform.position).magnitude>60) {
                     pause = true;
                     soundManager.PlaySound(SoundManager.SoundList.UNPLUG);
-                    MenuPause.gameObject.SetActive(true);
-                    JackGLobal.transform.SetParent(MenuPause); // CA FONCTIONNE
+                    MenuPause.SetActive(true);
+                    JackGlobalTransform.SetParent(MenuPause.transform); // CA FONCTIONNE
+
+                    if (level != 0)
+                        TextPause.text = "Return to main menu";
+                    else
+                        TextPause.text = "Quit";
+
 
                     Time.timeScale = 0f;
                     JackTendu.gameObject.SetActive(false);
                     JackPendu.gameObject.SetActive(true);
-                    
 
                     JackPendu.transform.position = Input.mousePosition-new Vector3(JackPendu.rectTransform.sizeDelta.x*3/4.0f,JackPendu.rectTransform.sizeDelta.y*2.0f/10.0f,0);
 
@@ -444,7 +451,7 @@ public class GameManager:MonoBehaviour {
                 }
             }
 
-            if(Input.GetMouseButtonDown(0) && (Input.mousePosition-Prise.transform.position).magnitude<50){
+            if(Input.GetMouseButtonDown(0) && (Input.mousePosition-PriseTransform.position).magnitude<50){
                 click=true;
             }
             if(Input.GetMouseButtonUp(0)) {
@@ -488,16 +495,16 @@ public class GameManager:MonoBehaviour {
 
             if(Input.GetMouseButtonUp(0) && click) {
                 click=false;
-                if((Input.mousePosition-Prise.transform.position).magnitude<50){
+                if((Input.mousePosition-PriseTransform.position).magnitude<50){
                     //quitter pause
                     pause = false;
                     soundManager.PlaySound(SoundManager.SoundList.PLUG);
-                    MenuPause.gameObject.SetActive(false);
-                    JackGLobal.transform.SetParent(CanvasPrincipale.transform);
-                    JackGLobal.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    MenuPause.SetActive(false);
+                    JackGlobalTransform.SetParent(CanvasPrincipale.transform);
+                    JackGlobalTransform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
                     Time.timeScale = 1f;
-                    JackTendu.gameObject.SetActive(true);
+                    JackTendu.SetActive(true);
                     JackPendu.gameObject.SetActive(false);
                 }
             }
@@ -568,14 +575,13 @@ public class GameManager:MonoBehaviour {
         unavailableHosts.Remove(node);
         availableHosts.Add(node);
         node.ChangeColor(new Color(1.0f,1.0f,1.0f,1.0f));
-        
     }
 
     public void EndCall(Call call) {
         
         if(call.status==Call.Status.inCall) {
             int scoreGet = call.size * multiplier;
-            launchScore(scoreGet);
+            launchScore(scoreGet, call.id);
             score+= scoreGet;
             increaseMultiCount++;
             if(increaseMultiCount >= callsToIncreaseMulti)
@@ -844,13 +850,14 @@ public class GameManager:MonoBehaviour {
         }
     }
 
-    private void launchScore(int nb)
+    private void launchScore(int nb, int idFinished)
     {
         Debug.Log("AFFICHAGE");
         //create prefab Score
         ScoreBehavior pfScore = Instantiate(prefabScore);
         pfScore.transform.SetParent(ListeScore.transform);
         pfScore.GetComponent<Text>().text = "+" + nb;
+        pfScore.GetComponent<Text>().color = GetColorFromId(idFinished);
 
         Vector2 sizeDelta = pfScore.GetComponent<RectTransform>().sizeDelta;
         pfScore.transform.position = (Input.mousePosition)+new Vector3(sizeDelta.x, -sizeDelta.y,0)/2.0f;
@@ -937,12 +944,12 @@ public class GameManager:MonoBehaviour {
             //quitter pause
             pause = false;
             soundManager.PlaySound(SoundManager.SoundList.PLUG);
-            MenuPause.gameObject.SetActive(false);
-            JackGLobal.transform.SetParent(CanvasPrincipale.transform);
-            JackGLobal.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            MenuPause.SetActive(false);
+            JackGlobalTransform.SetParent(CanvasPrincipale.transform);
+            JackGlobalTransform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
             Time.timeScale = 1f;
-            JackTendu.gameObject.SetActive(true);
+            JackTendu.SetActive(true);
             JackPendu.gameObject.SetActive(false);
 
             //réinitialiser
