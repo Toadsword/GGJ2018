@@ -22,6 +22,7 @@ public class ScoreManager : MonoBehaviour {
 
     [SerializeField] private string playerName = "Billy";
     [SerializeField] private int scoreMade = 0;
+    [SerializeField] private int level = 0;
 
     // Use this for initialization
     void Start ()
@@ -34,23 +35,24 @@ public class ScoreManager : MonoBehaviour {
         //Get name of player
         playerName = FindObjectOfType<Canvas>().transform.GetChild(1).transform.Find("Text").GetComponent<Text>().text;
         Debug.Log(playerName);
+        if (level == 0)
+            return;
 
-        if (!PlayerPrefs.HasKey("Name1"))
+        if (!PlayerPrefs.HasKey(level + "Name1"))
         {
             InitScore();
         }
 
         // Parcours chaque ocurence du tableau des scores
         int indexToReplace = 0;
-        bool getOut = false;
-        for (int i = 1; i <= 10 && getOut == false; i++)
+        for (int i = 1; i <= 10; i++)
         {
-            Debug.Log(PlayerPrefs.GetInt("Score" + i.ToString()));
-            if (PlayerPrefs.GetInt("Score" + i.ToString()) < scoreMade)
+            Debug.Log(PlayerPrefs.GetInt(level + "Score" + i.ToString()));
+            if (PlayerPrefs.GetInt(level + "Score" + i.ToString()) < scoreMade)
             {
                 Debug.Log("On remplace !");
                 indexToReplace = i;
-                getOut = true;
+                break;
             }
         }
         Debug.Log(indexToReplace);
@@ -58,37 +60,37 @@ public class ScoreManager : MonoBehaviour {
         {
             for (int j = 10; j >= indexToReplace; j--)
             {
-                PlayerPrefs.SetInt("Score" + j.ToString(), PlayerPrefs.GetInt("Score" + (j - 1).ToString()));
-                PlayerPrefs.SetString("Name" + j.ToString(), PlayerPrefs.GetString("Name" + (j - 1).ToString()));
+                PlayerPrefs.SetInt(level + "Score" + j.ToString(), PlayerPrefs.GetInt(level + "Score" + (j - 1).ToString()));
+                PlayerPrefs.SetString(level + "Name" + j.ToString(), PlayerPrefs.GetString(level + "Name" + (j - 1).ToString()));
             }
-            PlayerPrefs.SetInt("Score" + indexToReplace.ToString(), scoreMade);
-            PlayerPrefs.SetString("Name" + indexToReplace.ToString(), playerName);
+            PlayerPrefs.SetInt(level + "Score" + indexToReplace.ToString(), scoreMade);
+            PlayerPrefs.SetString(level + "Name" + indexToReplace.ToString(), playerName);
         }
     }
 
     private void InitScore()
     {
-        PlayerPrefs.SetString("Name1", "Toadysword");
-        PlayerPrefs.SetString("Name2", "Fuhria");
-        PlayerPrefs.SetString("Name3", "Brand12");
-        PlayerPrefs.SetString("Name4", "Surue");
-        PlayerPrefs.SetString("Name5", "Echo123");
-        PlayerPrefs.SetString("Name6", "Le T Froa");
-        PlayerPrefs.SetString("Name7", "Léon");
-        PlayerPrefs.SetString("Name8", "Gaëlle");
-        PlayerPrefs.SetString("Name9", "Jordan");
-        PlayerPrefs.SetString("Name10", "Internet Explorer");
+        PlayerPrefs.SetString(level + "Name1", "Toadysword");
+        PlayerPrefs.SetString(level + "Name2", "Fuhria");
+        PlayerPrefs.SetString(level + "Name3", "Brand12");
+        PlayerPrefs.SetString(level + "Name4", "Surue");
+        PlayerPrefs.SetString(level + "Name5", "Echo123");
+        PlayerPrefs.SetString(level + "Name6", "Le T Froa");
+        PlayerPrefs.SetString(level + "Name7", "Léon");
+        PlayerPrefs.SetString(level + "Name8", "Gaëlle");
+        PlayerPrefs.SetString(level + "Name9", "Jordan");
+        PlayerPrefs.SetString(level + "Name10", "Internet Explorer");
 
-        PlayerPrefs.SetInt("Score1", 134);
-        PlayerPrefs.SetInt("Score2", 121);
-        PlayerPrefs.SetInt("Score3", 120);
-        PlayerPrefs.SetInt("Score4", 90);
-        PlayerPrefs.SetInt("Score5", 70);
-        PlayerPrefs.SetInt("Score6", 55);
-        PlayerPrefs.SetInt("Score7", 43);
-        PlayerPrefs.SetInt("Score8", 13);
-        PlayerPrefs.SetInt("Score9", 9);
-        PlayerPrefs.SetInt("Score10", 5);
+        PlayerPrefs.SetInt(level + "Score1", 134);
+        PlayerPrefs.SetInt(level + "Score2", 121);
+        PlayerPrefs.SetInt(level + "Score3", 120);
+        PlayerPrefs.SetInt(level + "Score4", 90);
+        PlayerPrefs.SetInt(level + "Score5", 70);
+        PlayerPrefs.SetInt(level + "Score6", 55);
+        PlayerPrefs.SetInt(level + "Score7", 43);
+        PlayerPrefs.SetInt(level + "Score8", 13);
+        PlayerPrefs.SetInt(level + "Score9", 9);
+        PlayerPrefs.SetInt(level + "Score10", 5);
     }
 
     public void UpdateScore(int newScore)
@@ -99,5 +101,15 @@ public class ScoreManager : MonoBehaviour {
     public int GetScore()
     {
         return scoreMade;
+    }
+
+    public void SetLevel(int newLevel)
+    {
+        level = newLevel;
+    }
+
+    public int GetLevel()
+    {
+        return level;
     }
 }

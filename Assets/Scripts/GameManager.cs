@@ -875,6 +875,7 @@ public class GameManager:MonoBehaviour {
     public void launchGame(int i){
         //i is the level (1,2,3)
         level = i;
+        oSceneManager.UpdateLevel(i);
         inGame = true;
         timerBeforeNextCall=3.0f;
         soundManager.PlaySound(SoundManager.SoundList.VALID_CALL);

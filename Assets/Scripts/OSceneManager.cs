@@ -51,6 +51,11 @@ public class OSceneManager : MonoBehaviour {
         scoreManager.UpdateScore(score);
     }
 
+    public void UpdateLevel(int level)
+    {
+        scoreManager.SetLevel(level);
+    }
+
     public void PlayGame()
     {
         ChangeScene(SceneNames.MAIN_GAME);
