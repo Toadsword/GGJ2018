@@ -112,4 +112,9 @@ public class ScoreManager : MonoBehaviour {
     {
         return level;
     }
+
+    public string GetPlayerName()
+    {
+        return playerName;
+    }
 }
