@@ -22,6 +22,8 @@ public class NodeController : MonoBehaviour {
     public enum Status{ idle, calling, waitingCall, inCall};
     public Status status=Status.idle;
 
+    public bool isUsed {get; set;}//représente si un node obligatoire pour un call est utilisé par ledit call.
+
     public Call call{get;set;}//référence à l'appel associé au host
 
     private SpriteRenderer render;
@@ -40,6 +42,10 @@ public class NodeController : MonoBehaviour {
             timerTextGameObject = transform.Find("Canvas").transform.Find("TextTimer").gameObject;
             positionInitialeText = timerText.transform.position;
         }
+    }
+
+    public void Initialiser() {
+        isUsed = false;
     }
 
     private void Update()
@@ -65,7 +71,7 @@ public class NodeController : MonoBehaviour {
         //mouse up
         if(/*Input.GetMouseButtonUp(0) &&*/ (Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10))-transform.position).magnitude<limit_radius*2) {
             if(isHost && status==Status.waitingCall){
-                if(gameManager.Trajectory().Count>0 && gameManager.Trajectory()[0].call.reciever == this){
+                if(gameManager.Trajectory().Count>0 && gameManager.Trajectory()[0].call.reciever == this && (gameManager.Trajectory()[0].call.node_obligatory==null || gameManager.Trajectory()[0].call.node_obligatory.isUsed)){
                     gameManager.EndTrajectory(this);
                 }
             }

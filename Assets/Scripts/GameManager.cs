@@ -333,9 +333,12 @@ public class GameManager:MonoBehaviour {
                         call = c;
                 }
                 call.status = Call.Status.calling;
+                if(call.node_obligatory!= null)
+                    call.node_obligatory.isUsed = false;
             }
                   
             edgeCursor.gameObject.SetActive(false);
+
             //LACHER
             for(int i=0;i<actualTrajectory.Count-1;++i){
                 actualTrajectory[i].edge(actualTrajectory[i+1]).TakePath(-1);
@@ -401,6 +404,7 @@ public class GameManager:MonoBehaviour {
                     alreadyUsedEdges.Clear();
                     idUsedEdges.Clear();
                     edgeCursor.gameObject.SetActive(false);
+                        
                 }
                 UnlightPath(callsInTransmission[i].id);
                 if(!gameIsOver) {
@@ -432,6 +436,7 @@ public class GameManager:MonoBehaviour {
                 if((Input.mousePosition-PriseTransform.position).magnitude>60) {
                     pause = true;
                     soundManager.PlaySound(SoundManager.SoundList.UNPLUG);
+                    soundManager.PlaySound(SoundManager.SoundList.SHUSH);
                     MenuPause.SetActive(true);
                     JackGlobalTransform.SetParent(MenuPause.transform); // CA FONCTIONNE
 
@@ -554,9 +559,18 @@ public class GameManager:MonoBehaviour {
             Debug.Log(reciever.name + " is called");
 
             Call call = new Call();
+            if(level==3) {
+                call.node_obligatory = randomNode();
+                if(call.node_obligatory!= null) {
+                    call.node_obligatory.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
+                    call.node_obligatory.call = call;
+                    call.node_obligatory.isUsed = false;
+                }
+            }
 
             caller.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
             reciever.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
+
             callsInTransmission.Add(call);
 
             caller.call = call;
@@ -671,6 +685,11 @@ public class GameManager:MonoBehaviour {
                 //changer couleur du edge en question
                 //node.edge(actualTrajectory[actualTrajectory.Count - 2]).ChangeColor(new Color(1,0,0));
                 actualEdge.TakePath(call.id);
+
+                //si c'est un node obligatoire, alors il devient "utilisé"
+                if(call.node_obligatory== node) {
+                    node.isUsed = true;
+                }
             }
         }
     }
@@ -856,11 +875,16 @@ public class GameManager:MonoBehaviour {
         //create prefab Score
         ScoreBehavior pfScore = Instantiate(prefabScore);
         pfScore.transform.SetParent(ListeScore.transform);
-        pfScore.GetComponent<Text>().text = "+" + nb;
-        pfScore.GetComponent<Text>().color = GetColorFromId(idFinished);
+        pfScore.GetComponent<TextMesh>().text = "+" + nb;
+        pfScore.GetComponent<TextMesh>().color = GetColorFromId(idFinished);
 
-        Vector2 sizeDelta = pfScore.GetComponent<RectTransform>().sizeDelta;
-        pfScore.transform.position = (Input.mousePosition)+new Vector3(sizeDelta.x, -sizeDelta.y,0)/2.0f;
+        //get call from idFinished
+        Call c = getCallFromId(idFinished);
+
+        //Vector2 sizeDelta = pfScore.GetComponent<RectTransform>().sizeDelta;
+        //place score in the position of the reciever
+        Debug.Log("POSITION SCORE");
+        pfScore.transform.position = (c.reciever.transform.position)-new Vector3(0,0,1);// +new Vector3(sizeDelta.x, -sizeDelta.y,0)/2.0f;
     }
 
     public NodeController ActualSource()
@@ -941,6 +965,17 @@ public class GameManager:MonoBehaviour {
                 hosts.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 1);
                 hosts.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
             }
+            
+            GameObject niveau = LevelCentre;
+            if(level==1) { niveau = LevelGauche;}
+            if(level==3) { niveau = LevelDroite;}
+            GameObject Nodes = niveau.transform.GetChild(0).gameObject;
+            foreach (Transform node in Nodes.transform)
+            {
+                node.GetComponent<SpriteRenderer>().color = new Color(1, 1,1, 1);
+                node.GetComponent<NodeController>().isUsed = false;
+                node.GetComponent<NodeController>().call = null;
+            }
 
             //quitter pause
             pause = false;
@@ -1015,5 +1050,35 @@ public class GameManager:MonoBehaviour {
             if(timer_gameOver>duration_gameOver)
                 oSceneManager.ChangeScene(OSceneManager.SceneNames.DIE_MENU_SCENE);
         }
+    }
+
+
+    public Vector3 centreLevel() {
+        Vector3 cible = new Vector3(0, 0, 0);
+        if(level==1) {
+            cible = new Vector3(centreCamera1.transform.position.x, centreCamera1.transform.position.y, -10);
+        }else if(level==2) {
+            cible = new Vector3(centreCamera2.transform.position.x, centreCamera2.transform.position.y, -10);
+        }else if(level==3) {
+            cible = new Vector3(centreCamera3.transform.position.x, centreCamera3.transform.position.y, -10);
+        }
+        return cible;
+    }
+
+    NodeController randomNode() {
+        GameObject niveau = LevelCentre;
+        if(level==1) { niveau = LevelGauche;}
+        if(level==3) { niveau = LevelDroite;}
+        GameObject Nodes = niveau.transform.GetChild(0).gameObject;
+        System.Random rand = new System.Random();
+        NodeController node_candidat = null;
+        int iter = 0;
+        do
+        {
+            int hasard = rand.Next(0, Nodes.transform.childCount - 1);
+            node_candidat = Nodes.transform.GetChild(hasard).GetComponent<NodeController>();
+            iter++;
+        } while (node_candidat.call != null && iter<10);
+        return node_candidat;
     }
 }

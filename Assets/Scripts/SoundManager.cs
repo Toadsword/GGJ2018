@@ -15,6 +15,7 @@ public class SoundManager : MonoBehaviour
         DIALOG_FURIOUS,
         PLUG,
         UNPLUG,
+        SHUSH,
         END_CALL_BAD,
         BROKEN_LINK,
         HALO,
@@ -34,6 +35,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip validCall;
     [SerializeField] AudioClip endCallSuccess;
     [SerializeField] AudioClip linkNode;
+    [SerializeField] AudioClip shush;
 
 
     [Header("Dialogs")]
@@ -128,6 +130,9 @@ public class SoundManager : MonoBehaviour
                     break;
                 case SoundList.PLUG:
                     emitterAvailable.clip = plug;
+                    break;
+                case SoundList.SHUSH:
+                    emitterAvailable.clip = shush;
                     break;
                 case SoundList.UNPLUG:
                     emitterAvailable.clip = unplug;

@@ -17,6 +17,11 @@ public class Call
 
     private float timer_dialog=1.0f;
 
+    //node which must be used to validate the transmission
+    //if null, no node is obligatory
+    public NodeController node_obligatory = null;
+
+
     public Call(bool isInf=false){
         id = ID;
         ID++;
@@ -100,6 +105,11 @@ public class Call
                     caller.DisplayMessageBox(false);
                     gameManager.LibererDelivrer(caller);
                     gameManager.LibererDelivrer(reciever);
+                    if(node_obligatory!=null) {
+                        node_obligatory.ChangeColor(new Color(1.0f,1.0f,1.0f,1.0f));
+                        node_obligatory.call = null;
+                        node_obligatory.isUsed = false;
+                    }
                 }
                 
                 //Debug.Log(randomCountDown);
@@ -125,10 +135,17 @@ public class Call
             {
                 if (gameManager.ActualSource() == caller)
                 {
-                    if (status == Status.interruptedCall)
-                        HaloManager(reciever, Color.red);
-                    else
-                        HaloManager(reciever, Color.white);
+                    if(node_obligatory!=null && !node_obligatory.isUsed) {
+                        if (status == Status.interruptedCall)
+                            HaloManager(node_obligatory, Color.red);
+                        else
+                            HaloManager(node_obligatory, Color.white);
+                    }else {
+                        if (status == Status.interruptedCall)
+                            HaloManager(reciever, Color.red);
+                        else
+                            HaloManager(reciever, Color.white);
+                    }
                     caller.DisplayMessageBox(false);
                 }
                 else if (status == Status.calling  || status == Status.interruptedCall)
@@ -209,6 +226,8 @@ public class Call
         randomCountDown = durationWaitingInterrupted();
         caller.status=NodeController.Status.calling;
         reciever.status=NodeController.Status.waitingCall;
+        if (node_obligatory != null)
+            node_obligatory.isUsed = false;
         HaloCountDownBeforeNew = 0;
         GameObject.Find("SoundManager").GetComponent<SoundManager>().PlaySound(SoundManager.SoundList.DIALOG_FURIOUS);
         gameManager.ResetMultiplier();
