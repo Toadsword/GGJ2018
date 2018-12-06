@@ -18,13 +18,17 @@ public class ScoreBoardManager : MonoBehaviour
         if (scoreManager != null)
         {
             int level = scoreManager.GetLevel();
-            levelText.text = "level " + level;
+            levelText.text = "L e v e l    " + level;
             for (int i = 1; i <= 10; i++)
             {
-                string text = PlayerPrefs.GetString(level+"Name" + i.ToString()) + " - " + PlayerPrefs.GetInt(level + "Score" + i.ToString()).ToString();
+                string nom_joueur = PlayerPrefs.GetString(level + "Name" + i.ToString());
+                string score_joueur = PlayerPrefs.GetInt(level + "Score" + i.ToString()).ToString();
                 playerRanksObjects.transform.Find("PlayerRank" + i.ToString()).gameObject
                     .GetComponent<Text>()
-                    .text = text;
+                    .text = nom_joueur;
+                playerRanksObjects.transform.Find("PlayerScore" + i.ToString()).gameObject
+                    .GetComponent<Text>()
+                    .text = score_joueur;
             }
         }
     }

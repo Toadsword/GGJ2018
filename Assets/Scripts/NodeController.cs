@@ -76,7 +76,9 @@ public class NodeController : MonoBehaviour {
                 }
             }
         }
+
     }
+
 
     public void AddEdge(EdgeController edge)
     {
