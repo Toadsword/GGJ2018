@@ -1096,7 +1096,7 @@ public class GameManager:MonoBehaviour {
      
         string connetionString = null;
         SqlConnection cnn ;
-        connetionString = "Server=tcp:https://databases.000webhost.com/, 21;Database=id8181508_videogame;User ID=id8181508_brandon@2a02:4780:bad:c0de::13;Password=yoda1210hostinger";
+        connetionString = "server=tcp:mysql-brandygonz12.alwaysdata.net, 3306;Database=brandygonz12_videogames;UID=173028;PWD=yoda1210alwaysdata";
         cnn = new SqlConnection(connetionString);
         try
         {
