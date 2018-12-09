@@ -163,7 +163,7 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("no emitter available");
+            //Debug.Log("no emitter available");
         }
         
     }

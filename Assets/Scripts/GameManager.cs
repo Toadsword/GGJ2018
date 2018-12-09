@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using System.Data;
+using System.Data.SqlClient;
+
+
 public class GameManager:MonoBehaviour {
     private int score = 0;
     public int Score(){return score;}
@@ -10,6 +14,8 @@ public class GameManager:MonoBehaviour {
     private int multiplier = 1;
     private int callsToIncreaseMulti = 3;
     private int increaseMultiCount = 0;
+
+    
 
     public int level = 0;//0 = menu
     private int lives_max = 1;
@@ -1081,4 +1087,30 @@ public class GameManager:MonoBehaviour {
         } while (node_candidat.call != null && iter<10);
         return node_candidat;
     }
+
+
+
+
+
+    public void test_sql() {
+     
+        string connetionString = null;
+        SqlConnection cnn ;
+        connetionString = "Server=tcp:https://databases.000webhost.com/, 21;Database=id8181508_videogame;User ID=id8181508_brandon@2a02:4780:bad:c0de::13;Password=yoda1210hostinger";
+        cnn = new SqlConnection(connetionString);
+        try
+        {
+            cnn.Open();
+            Debug.Log("Connection Open ! ");
+            cnn.Close();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.Log("Can not open connection ! " + ex.Message);
+        }
+
+    }
+
+
+
 }
