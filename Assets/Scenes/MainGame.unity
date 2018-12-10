@@ -3036,7 +3036,7 @@ GameObject:
   - component: {fileID: 272638657}
   - component: {fileID: 272638656}
   m_Layer: 8
-  m_Name: Button
+  m_Name: TestSql
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3048,18 +3048,18 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 272638654}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 53264093}
-  m_Father: {fileID: 1957972894}
-  m_RootOrder: 1
+  m_Father: {fileID: 1466795933}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 862.31, y: 560.9}
-  m_SizeDelta: {x: 380.61, y: 163.04}
+  m_AnchoredPosition: {x: -164.52, y: -331.7}
+  m_SizeDelta: {x: 120.27, y: 49.34}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &272638656
 MonoBehaviour:
@@ -16795,6 +16795,7 @@ RectTransform:
   - {fileID: 1441788694}
   - {fileID: 2085473727}
   - {fileID: 524731008}
+  - {fileID: 272638655}
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22308,11 +22309,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4562650566244332, guid: 611c34ca63fef6e4d9210b5af8783b02,
     type: 2}
   m_PrefabInternal: {fileID: 1955963259}
---- !u!224 &1957972894 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 224147587677306552, guid: 3564d43c4503d144b8cd247c0069f7ba,
-    type: 2}
-  m_PrefabInternal: {fileID: 1862173735}
 --- !u!1001 &1976095413
 Prefab:
   m_ObjectHideFlags: 0
