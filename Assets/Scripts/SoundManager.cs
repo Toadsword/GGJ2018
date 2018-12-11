@@ -58,17 +58,9 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip dialogFurious5;
 
     [Header("Emmiters")]
-    [SerializeField] AudioSource emitter1;
-    [SerializeField] AudioSource emitter2;
-    [SerializeField] AudioSource emitter3;
-    [SerializeField] AudioSource emitter4; 
-    [SerializeField] AudioSource emitter5;
-    [SerializeField] AudioSource emitter6;
-    [SerializeField] AudioSource emitter7;
-    [SerializeField] AudioSource emitter8;
-    [SerializeField] AudioSource emitter9;
-    [SerializeField] AudioSource emitter10;
-   
+    [SerializeField] GameObject emitterPrefab;
+    [SerializeField] int numEmitters = 20;
+
 
     // Use this for initialization
     void Start ()
@@ -90,16 +82,12 @@ public class SoundManager : MonoBehaviour
                                     dialogFurious5
         };
         //audioSource = GetComponent<AudioSource>();
-        emitters = new List<AudioSource> { emitter1,
-                                    emitter2,
-                                    emitter3,
-                                    emitter4,
-                                    emitter5,
-                                    emitter6,
-                                    emitter7,
-                                    emitter8,
-                                    emitter9,
-                                    emitter10};
+        emitters = new List<AudioSource>();
+        for (int i = 0; i <= numEmitters; i++)
+        {
+            AudioSource newEmitter = Instantiate(emitterPrefab, emitterPrefab.transform.position, emitterPrefab.transform.rotation).GetComponent<AudioSource>();
+            emitters.Add(newEmitter);
+        }
     }
 
     public void PlaySound(SoundList sound, bool doLoop=false)

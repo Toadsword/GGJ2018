@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/*
 using System.Data;
 using System.Data.SqlClient;
 
 using ByteFX.Data.MySqlClient;
+*/
 
 public class GameManager:MonoBehaviour {
     private int score = 0;
     public int Score(){return score;}
 
     private int multiplier = 1;
-    private int callsToIncreaseMulti = 3;
+    private int maxMultiplier = 3;
     private int increaseMultiCount = 0;
+    private int callsToIncreaseMulti = 5;
 
-    
+    private const int maxCalls = 4;
 
     public int level = 0;//0 = menu
     private int lives_max = 1;
@@ -76,7 +78,7 @@ public class GameManager:MonoBehaviour {
     float timerBeforeNextCall;
 
     //--------------Lancement partie
-    Camera camera;
+    private Camera camera;
 
     [SerializeField]
     GameObject MenuPrincipal;
@@ -84,29 +86,17 @@ public class GameManager:MonoBehaviour {
     bool inGame=false;
     float zoomCamera=10;
 
-    [SerializeField]
-    NodeController HostHomme1;
+    [SerializeField] NodeController HostHomme1;
+    [SerializeField] NodeController HostFemme1;
+    [SerializeField] NodeController HostHomme2;
+    [SerializeField] NodeController HostFemme2;
+    [SerializeField] NodeController HostHomme3;
+    [SerializeField] NodeController HostFemme3;
 
-    [SerializeField]
-    NodeController HostFemme1;
-
-    [SerializeField]
-    NodeController HostHomme2;
-
-    [SerializeField]
-    NodeController HostFemme2;
-    
-    [SerializeField]
-    NodeController HostHomme3;
-
-    [SerializeField]
-    NodeController HostFemme3;
-
-    [SerializeField]
-    SoundManager soundManager;
+    [SerializeField] public SoundManager soundManager;
     
     //---------------PRISE JACK
-    bool pause = false;
+    public bool pause = false;
     bool click=false;
     Vector3 previousPos;
     Vector3 positionJackInitiale;
@@ -272,24 +262,29 @@ public class GameManager:MonoBehaviour {
                         callsInTransmission.RemoveAt(i);
                         i--;
                     }
-                    if(level==1) {
-                        availableHosts.Clear();
-                        foreach(Transform t in Hosts1.transform) {
-                            availableHosts.Add(t.GetComponent<NodeController>());
+                    
+                    availableHosts.Clear();
+                    if (level==1)
+                    {
+                        foreach (Transform host in Hosts1.transform)
+                        {
+                            availableHosts.Add(host.GetComponent<NodeController>());
                         }
                         ListeEdges = ListeEdges1;
                     }
-                    if(level==2) {
-                        availableHosts.Clear();
-                        foreach(Transform t in Hosts2.transform) {
-                            availableHosts.Add(t.GetComponent<NodeController>());
+                    if(level==2)
+                    {
+                        foreach (Transform host in Hosts2.transform)
+                        {
+                            availableHosts.Add(host.GetComponent<NodeController>());
                         }
                         ListeEdges = ListeEdges2;
                     }
-                    if(level==3) {
-                        availableHosts.Clear();
-                        foreach(Transform t in Hosts3.transform) {
-                            availableHosts.Add(t.GetComponent<NodeController>());
+                    if(level==3)
+                    {
+                        foreach (Transform host in Hosts3.transform)
+                        {
+                            availableHosts.Add(host.GetComponent<NodeController>());
                         }
                         ListeEdges = ListeEdges3;
                     }
@@ -313,7 +308,6 @@ public class GameManager:MonoBehaviour {
         }
 
         MenuPrincipal.transform.position += (cibleTitre-MenuPrincipal.transform.position) / 30.0f;
-
 
         actualizePositionEdges(ListeEdgesMenu);
         actualizePositionEdges(ListeEdges);
@@ -347,7 +341,7 @@ public class GameManager:MonoBehaviour {
             edgeCursor.gameObject.SetActive(false);
 
             //LACHER
-            for(int i=0;i<actualTrajectory.Count-1;++i){
+            for(int i = 0; i < actualTrajectory.Count - 1; ++i){
                 actualTrajectory[i].edge(actualTrajectory[i+1]).TakePath(-1);
             }
             //mais attention de pas vider un edge qui était utile avant mais le supprimer si il doit être delete pour un nouveau call
@@ -395,14 +389,14 @@ public class GameManager:MonoBehaviour {
             if(callsInTransmission[i].Update(gameIsOver)){//autodestruction du call car terminé
                 //si on supprimer call alors qu'on était en cours de transmission, on doit supprimer la trajectoire
                 if(actualTrajectory.Count>0 && callsInTransmission[i].caller == actualTrajectory[0]){
-                    for(int j=0;j<actualTrajectory.Count-1;++j){
+                    for(int j = 0; j < actualTrajectory.Count - 1; ++j){
                         actualTrajectory[j].edge(actualTrajectory[j+1]).TakePath(-1);
                     }
                     //mais attention de pas vider un edge qui était utile avant mais le supprimer si il doit être delete pour un nouveau call
 
                     if(actualTrajectory.Count>0 && !actualTrajectory[actualTrajectory.Count-1].isHost)
                     {
-                        for(int j=0;j<alreadyUsedEdges.Count;++j) 
+                        for(int j = 0 ; j < alreadyUsedEdges.Count; ++j) 
                         {
                             alreadyUsedEdges[j].TakePath(idUsedEdges[j]);
                         }
@@ -411,12 +405,12 @@ public class GameManager:MonoBehaviour {
                     alreadyUsedEdges.Clear();
                     idUsedEdges.Clear();
                     edgeCursor.gameObject.SetActive(false);
-                        
                 }
+
                 UnlightPath(callsInTransmission[i].id);
-                if(!gameIsOver) {
+                if(!gameIsOver)
                     callsInTransmission.RemoveAt(i);
-                }
+                
                 i--;
             }
         }
@@ -454,7 +448,7 @@ public class GameManager:MonoBehaviour {
 
 
                     Time.timeScale = 0f;
-                    JackTendu.gameObject.SetActive(false);
+                    JackTendu.SetActive(false);
                     JackPendu.gameObject.SetActive(true);
 
                     JackPendu.transform.position = Input.mousePosition-new Vector3(JackPendu.rectTransform.sizeDelta.x*3/4.0f,JackPendu.rectTransform.sizeDelta.y*2.0f/10.0f,0);
@@ -463,13 +457,11 @@ public class GameManager:MonoBehaviour {
                 }
             }
 
-            if(Input.GetMouseButtonDown(0) && (Input.mousePosition-PriseTransform.position).magnitude<50){
-                click=true;
-            }
-            if(Input.GetMouseButtonUp(0)) {
+            if(Input.GetMouseButtonDown(0) && (Input.mousePosition-PriseTransform.position).magnitude<50)
+                click = true;
+            
+            if(Input.GetMouseButtonUp(0)) 
                 click = false;
-            }
-
 
         }else{
 
@@ -477,29 +469,28 @@ public class GameManager:MonoBehaviour {
                 //move jack
 
                 JackPendu.transform.position = (Input.mousePosition+previousPos);
-                float limitey = Screen.height/2.0f;
-                float limitex = Screen.width*0.9f;
+                float limitey = Screen.height / 2.0f;
+                float limitex = Screen.width * 0.9f;
 
-                if(JackPendu.transform.position.y<limitey){
+                if(JackPendu.transform.position.y < limitey){
                     JackPendu.transform.position = new Vector3(JackPendu.transform.position.x, limitey,0);
                 }
-                if(JackPendu.transform.position.x<0) {
+                if(JackPendu.transform.position.x < 0) {
                     JackPendu.transform.position = new Vector3(0, JackPendu.transform.position.y,0);
                 }
-                if(JackPendu.transform.position.x>limitex) {
+                if(JackPendu.transform.position.x > limitex) {
                     JackPendu.transform.position = new Vector3(limitex, JackPendu.transform.position.y,0);
                 }
-                if(JackPendu.transform.position.y>Screen.height*0.8f) {
+                if(JackPendu.transform.position.y > Screen.height*0.8f) {
                     JackPendu.transform.position = new Vector3(JackPendu.transform.position.x, Screen.height*0.8f,0);
                 }
             }
 
             float marge = 30.0f;
-            if(Input.GetMouseButtonDown(0) && 
-            Input.mousePosition.x>=JackPendu.transform.position.x-marge && Input.mousePosition.x<=JackPendu.transform.position.x+JackPendu.rectTransform.sizeDelta.x + marge
-            &&
-            Input.mousePosition.y>=JackPendu.transform.position.y -marge && Input.mousePosition.y<=JackPendu.transform.position.y+JackPendu.rectTransform.sizeDelta.y +marge) {
-                
+            if(Input.GetMouseButtonDown(0) 
+                && Input.mousePosition.x >= JackPendu.transform.position.x - marge && Input.mousePosition.x <= JackPendu.transform.position.x + JackPendu.rectTransform.sizeDelta.x + marge
+                && Input.mousePosition.y >= JackPendu.transform.position.y - marge && Input.mousePosition.y <= JackPendu.transform.position.y + JackPendu.rectTransform.sizeDelta.y + marge)
+            {
                 click=true;
                 previousPos = JackPendu.transform.position-Input.mousePosition;
             }
@@ -537,6 +528,8 @@ public class GameManager:MonoBehaviour {
             timerBeforeNextCall = Random.Range(7,12);
         else
             timerBeforeNextCall = Random.Range(5,7);*/
+        
+        //Balancing Calls
         if(score<10)
             timerBeforeNextCall = Random.Range(10,20);
         if(score<50)
@@ -544,7 +537,7 @@ public class GameManager:MonoBehaviour {
         else
             timerBeforeNextCall = Random.Range(3,5);
 
-        if (availableHosts.Count >= 2 && callsInTransmission.Count<10) {
+        if (availableHosts.Count >= 2 && callsInTransmission.Count< maxCalls) {
             Debug.Log("Au moins 2 travaillent");
 
             int randomCaller = Random.Range(0,availableHosts.Count);
@@ -609,6 +602,8 @@ public class GameManager:MonoBehaviour {
             {
                 increaseMultiCount = 0;
                 multiplier++;
+                if (maxMultiplier < multiplier)
+                    multiplier = maxMultiplier;
             }
 
             soundManager.PlaySound(SoundManager.SoundList.END_CALL_SUCCESS, false);
@@ -746,7 +741,7 @@ public class GameManager:MonoBehaviour {
 
                 //suppresion de toutes les paths qui posent problemes
                 //mais attention de pas vider un edge qui était utile avant
-                for(int i=0;i<alreadyUsedEdges.Count;++i){
+                for(int i = 0; i < alreadyUsedEdges.Count; ++i){
                     UnlightPath(idUsedEdges[i]);
                     //soundManager.PlaySound(SoundManager.SoundList.END_CALL_BAD, false);
                     Call currentCall = getCallFromId(idUsedEdges[i]);
@@ -760,13 +755,13 @@ public class GameManager:MonoBehaviour {
                     }
                 }
 
-                if(destination==HostFemme1){
+                if(destination == HostFemme1)
                     launchGame(1);
-                }else if(destination==HostFemme2){
+                else if(destination == HostFemme2)
                     launchGame(2);
-                }else if(destination==HostFemme3){
+                else if(destination == HostFemme3)
                     launchGame(3);
-                }
+                
 
                 
             }
@@ -908,24 +903,17 @@ public class GameManager:MonoBehaviour {
         level = i;
         oSceneManager.UpdateLevel(i);
         inGame = true;
-        timerBeforeNextCall=3.0f;
+        timerBeforeNextCall = 3.0f;
         soundManager.PlaySound(SoundManager.SoundList.VALID_CALL);
 
         //faire taire les autres messages de niveaux
         //callsInTransmission.Clear();
-        if(level==1) {
-            ListeEdges = ListeEdges1;
-        }
-        if(level==2) {
-            ListeEdges = ListeEdges2;
-        }
-        if(level==3) {
-            ListeEdges = ListeEdges3;
-        }
-        
+
+        if(level==1) { ListeEdges = ListeEdges1;}
+        if(level==2) { ListeEdges = ListeEdges2;}
+        if(level==3) { ListeEdges = ListeEdges3;}
         
         timer_game_launched = 1;
-
         timer_gameOver = 0;
         gameIsOver = false;
     }
@@ -939,10 +927,6 @@ public class GameManager:MonoBehaviour {
         }
         return null;
     }
-
-    public bool isPaused(){
-        return false;
-    }   
 
     public void backToMenu() {
         if(level==0) {
@@ -1092,28 +1076,24 @@ public class GameManager:MonoBehaviour {
 
 
 
-
+    /*
     public void test_sql() {
-     
-
-
-
 
         string connectionSring = null;
         SqlConnection cnn ;
         connectionSring = "Server=mysql-brandygonz12.alwaysdata.net, 21;Database=brandygonz12_videogames;UID=173028;PWD=yoda1210alwaysdata";
-        /*cnn = new SqlConnection(connectionSring);
+        cnn = new SqlConnection(connectionSring);
         Debug.Log(cnn.ConnectionString);
-        try
-        {
-            cnn.Open();
-            Debug.Log("Connection Open ! ");
-            cnn.Close();
-        }
-        catch (System.Exception ex)
-        {
-            Debug.Log("Can not open connection ! " + ex.Message);
-        }*/
+        //try
+        //{
+        //    cnn.Open();
+        //    Debug.Log("Connection Open ! ");
+        //    cnn.Close();
+        //}
+        //catch (System.Exception ex)
+        //{
+        //    Debug.Log("Can not open connection ! " + ex.Message);
+        //}
 
 
         
@@ -1147,7 +1127,7 @@ public class GameManager:MonoBehaviour {
             Debug.Log("Exception : " + ex);
         }
     }
-
+    */
 
 
 }

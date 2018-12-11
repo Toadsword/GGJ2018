@@ -77,7 +77,14 @@ public class Call
         //second chrono en seconde,
         //temps avant que la communication s'achève
         if (status == Status.interruptedCall)
-            randomCountDown = previousCountDown + 5.0f;
+        {
+            if (gameManager.Score() < 100)
+                randomCountDown = previousCountDown + 3.0f;
+            else if (gameManager.Score() < 300)
+                randomCountDown = previousCountDown + 4.0f;
+            else
+                randomCountDown = previousCountDown + 5.0f;
+        }
         else
             randomCountDown = durationCall();
 
@@ -89,8 +96,8 @@ public class Call
         if(!gameIsOver) {
             if(timer_dialog>0 && status==Status.inCall && !isInfinite){
                 timer_dialog -= Time.deltaTime;
-                if(timer_dialog<=0 && randomCountDown>3.0f && !gameManager.isPaused()){//si on doit lancer un dialogue et qu'on aura le temps de la play entier
-                    GameObject.Find("SoundManager").GetComponent<SoundManager>().PlaySound(SoundManager.SoundList.DIALOG);
+                if(timer_dialog <= 0 && randomCountDown > 3.0f && !gameManager.pause){//si on doit lancer un dialogue et qu'on aura le temps de la play entier
+                    gameManager.soundManager.PlaySound(SoundManager.SoundList.DIALOG);
                     timer_dialog = 5.0f;
                 }
             }
@@ -229,7 +236,7 @@ public class Call
         if (node_obligatory != null)
             node_obligatory.isUsed = false;
         HaloCountDownBeforeNew = 0;
-        GameObject.Find("SoundManager").GetComponent<SoundManager>().PlaySound(SoundManager.SoundList.DIALOG_FURIOUS);
+        gameManager.soundManager.PlaySound(SoundManager.SoundList.DIALOG_FURIOUS);
         gameManager.ResetMultiplier();
     }
 
@@ -247,8 +254,10 @@ public class Call
             return Random.Range(15, 20);
         else if(gameManager.Score()<100)
             return Random.Range(10,15);
-        else
+        else if (gameManager.Score() < 200)
             return Random.Range(7,10);
+        else
+            return Random.Range(3, 5);
     }
 
     private float durationCall()
@@ -261,18 +270,23 @@ public class Call
             return Random.Range(20, 40);*/
         if (gameManager.Score() < 30)
             return Random.Range(10, 15);
-        else if(gameManager.Score()<100)
+        else if(gameManager.Score() < 100)
             return Random.Range(8, 12);
+        else if (gameManager.Score() < 300)
+            return Random.Range(10, 12);
         else
-            return Random.Range(5, 8);
+            return Random.Range(6, 8);
+
     }
     private float durationWaitingInterrupted()
     {
         if(gameManager.Score()<100)
             return Random.Range(7, 9);
-        else
+        else if (gameManager.Score() < 300)
             return Random.Range(5,7);
-            
+        else
+            return Random.Range(3, 5);
+
     }
 
     public float timer_call() {
