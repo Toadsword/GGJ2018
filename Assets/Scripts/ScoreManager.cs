@@ -66,6 +66,14 @@ public class ScoreManager : MonoBehaviour {
             PlayerPrefs.SetInt(level + "Score" + indexToReplace.ToString(), scoreMade);
             PlayerPrefs.SetString(level + "Name" + indexToReplace.ToString(), playerName);
         }
+
+        //pour insérer (sauver) un nouveau score
+        WWWForm form = new WWWForm();
+			form.AddField("pseudo", playerName);
+			form.AddField("score", scoreMade);
+			form.AddField("level", level);
+		WWW requete = new WWW("https://brandygonz12.alwaysdata.net/save_score.php", form);
+		StartCoroutine(insertScore(requete));
     }
 
     private void InitScore()
@@ -117,4 +125,19 @@ public class ScoreManager : MonoBehaviour {
     {
         return playerName;
     }
+
+    IEnumerator insertScore (WWW requete){
+		yield return requete;
+
+		if (requete.error == null){
+
+            Debug.Log("INSERT REUSSI");
+            Debug.Log(requete.text);
+
+            
+		}
+		else {
+			Debug.Log("ERROR: " +requete.error);   
+		}
+	}
 }

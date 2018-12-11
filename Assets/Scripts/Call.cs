@@ -250,6 +250,7 @@ public class Call
 
     private float durationWaiting()
     {
+        return 2;
         if (gameManager.Score() < 30)
             return Random.Range(15, 20);
         else if(gameManager.Score()<100)

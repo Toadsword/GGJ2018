@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-/*
-using System.Data;
-using System.Data.SqlClient;
 
-using ByteFX.Data.MySqlClient;
-*/
+
 
 public class GameManager:MonoBehaviour {
     private int score = 0;
@@ -1072,62 +1068,6 @@ public class GameManager:MonoBehaviour {
         } while (node_candidat.call != null && iter<10);
         return node_candidat;
     }
-
-
-
-
-    /*
-    public void test_sql() {
-
-        string connectionSring = null;
-        SqlConnection cnn ;
-        connectionSring = "Server=mysql-brandygonz12.alwaysdata.net, 21;Database=brandygonz12_videogames;UID=173028;PWD=yoda1210alwaysdata";
-        cnn = new SqlConnection(connectionSring);
-        Debug.Log(cnn.ConnectionString);
-        //try
-        //{
-        //    cnn.Open();
-        //    Debug.Log("Connection Open ! ");
-        //    cnn.Close();
-        //}
-        //catch (System.Exception ex)
-        //{
-        //    Debug.Log("Can not open connection ! " + ex.Message);
-        //}
-
-
-        
-        MySqlConnection Connection = new MySqlConnection();
-        Connection.ConnectionString = connectionSring;
-        try
-        {
-            // Ici, on ouvre la connexion au serveur
-            Connection.Open();
-            // On définit la requête SELECT à exécuter
-            string MySQLCmd = "SELECT * FROM `limited_connection_scores`";
-
-            // On associe cette requête à la propriété SelectCommand du MySqlDataAdapter
-            MySqlCommand cmd = new MySqlCommand(MySQLCmd, Connection);
-        
- 
-           scoreText.text = ("State = " + Connection.State + " ; " + Connection.ServerVersion + " ; " + Connection.Database);
-
-           
-            MySqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read()) {
-                multiplierText.text = (reader.GetName(0));
-            }
-
-
-            Connection.Close();
-        }
-        catch(MySqlException ex)
-        {
-            Debug.Log("Exception : " + ex);
-        }
-    }
-    */
 
 
 }
