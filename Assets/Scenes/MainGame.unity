@@ -20473,23 +20473,6 @@ Prefab:
       propertyPath: m_Name
       value: Host1
       objectReference: {fileID: 0}
-    - target: {fileID: 224147587677306552, guid: 3564d43c4503d144b8cd247c0069f7ba,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -1.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 212629368698292974, guid: 3564d43c4503d144b8cd247c0069f7ba,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 4351c3cfe9a0066439f8a1cbcfa5df63,
-        type: 3}
-    - target: {fileID: 212883717996863928, guid: 3564d43c4503d144b8cd247c0069f7ba,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: c228249e9906bac4ab29211a4ebd74a8,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 2}
   m_IsPrefabAsset: 0
