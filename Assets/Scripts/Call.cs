@@ -233,6 +233,9 @@ public class Call
         randomCountDown = durationWaitingInterrupted();
         caller.status=NodeController.Status.calling;
         reciever.status=NodeController.Status.waitingCall;
+         
+        //remettre le node obligatory comme non utilisé
+
         if (node_obligatory != null)
             node_obligatory.isUsed = false;
         HaloCountDownBeforeNew = 0;
@@ -244,13 +247,20 @@ public class Call
         caller.DisplayMessageBox(false);
         gameManager.LibererDelivrer(caller);
         gameManager.LibererDelivrer(reciever);
+        //retirer la couleur de node obligatory
+        
+        if (node_obligatory != null) {
+            node_obligatory.ChangeColor(new Color(1.0f,1.0f,1.0f,1.0f));
+            node_obligatory.call = null;
+            node_obligatory.isUsed = false;
+            
+        }
         caller.Suppress();
         reciever.Suppress();
     }
 
     private float durationWaiting()
     {
-        return 2;
         if (gameManager.Score() < 30)
             return Random.Range(15, 20);
         else if(gameManager.Score()<100)
