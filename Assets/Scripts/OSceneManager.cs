@@ -44,7 +44,7 @@ public class OSceneManager : MonoBehaviour {
     public void SaveScore()
     {
         scoreManager.SaveScore();
-        ChangeScene(SceneNames.SCOREBOARD);
+        //ChangeScene(SceneNames.SCOREBOARD); //ce bout de code est maintenant appelé qu'après avoir inséré le score dans la base de donnée
     }
     public void UpdateScore(int score)
     {
@@ -66,4 +66,5 @@ public class OSceneManager : MonoBehaviour {
         //Debug.Log(""+GameObject.Find("GameManager").GetComponent<GameManager>().level);
         Application.Quit();
     }
+    
 }

@@ -11,12 +11,18 @@ public class ScoreBoardManager : MonoBehaviour
     [SerializeField] private Text levelText;
     private GameObject playerRanksObjects;
 
+    string playerName;
+    double scoreMade;
+
     // Use this for initialization
     void Start ()
     {
     
         playerRanksObjects = FindObjectOfType<Canvas>().transform.Find("PlayerRanks").gameObject;
         ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
+
+        playerName = scoreManager.GetPlayerName();
+        scoreMade = scoreManager.GetScore();
 
         if (scoreManager != null)
         {
@@ -35,6 +41,17 @@ public class ScoreBoardManager : MonoBehaviour
                 playerRanksObjects.transform.Find("PlayerScore" + i.ToString()).gameObject
                     .GetComponent<Text>()
                     .text = "";
+
+                    
+                        playerRanksObjects.transform.Find("PlayerRank" + i.ToString()).gameObject
+                            .GetComponent<Text>()
+                            .color = new Color(1,1,1);
+                        playerRanksObjects.transform.Find("PlayerScore" + i.ToString()).gameObject
+                            .GetComponent<Text>()
+                            .color = new Color(1,1,1);
+                        playerRanksObjects.transform.Find("PlayerIndicator" + i.ToString()).gameObject
+                            .GetComponent<Text>()
+                            .color = new Color(1,1,1);
             }
         }
     }
@@ -59,6 +76,8 @@ public class ScoreBoardManager : MonoBehaviour
 
                 string[] lignes = requete.text.Split(sepLigne, StringSplitOptions.None);
 
+                bool premiereCorrespondance = true;
+
                 for(int i=1;i<=10 && i<lignes.Length;i++) {
                     string[] joueurScore = lignes[i-1].Split(sepJoueurScore, StringSplitOptions.None);
 
@@ -70,6 +89,20 @@ public class ScoreBoardManager : MonoBehaviour
                     playerRanksObjects.transform.Find("PlayerScore" + i.ToString()).gameObject
                         .GetComponent<Text>()
                         .text = score_joueur;
+
+                    if(score_joueur == (scoreMade+"") && playerName == nom_joueur && premiereCorrespondance) {
+                        playerRanksObjects.transform.Find("PlayerRank" + i.ToString()).gameObject
+                            .GetComponent<Text>()
+                            .color = new Color(145/255.0f, 245/255.0f, 190/255.0f);
+                        playerRanksObjects.transform.Find("PlayerScore" + i.ToString()).gameObject
+                            .GetComponent<Text>()
+                            .color = new Color(145/255.0f, 245/255.0f, 190/255.0f);
+                        playerRanksObjects.transform.Find("PlayerIndicator" + i.ToString()).gameObject
+                            .GetComponent<Text>()
+                            .color = new Color(145/255.0f, 245/255.0f, 190/255.0f);
+                        
+                        premiereCorrespondance = false;
+                    }
                 }
 
 

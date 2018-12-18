@@ -139,5 +139,6 @@ public class ScoreManager : MonoBehaviour {
 		else {
 			Debug.Log("ERROR: " +requete.error);   
 		}
+        FindObjectOfType<OSceneManager>().ChangeScene(OSceneManager.SceneNames.SCOREBOARD);
 	}
 }
