@@ -319,6 +319,7 @@ public class GameManager:MonoBehaviour {
             hosts.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         }
 
+
         if (Input.GetMouseButtonUp(0))
         {
             Call call = null;
@@ -375,7 +376,8 @@ public class GameManager:MonoBehaviour {
                     call = c;
                 }
             }
-
+            Debug.Log("Bogue ? call : " + call);
+            Debug.Log("Bogue ? call.id : " + call.id);
             edgeCursor.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
         }
         
@@ -384,6 +386,7 @@ public class GameManager:MonoBehaviour {
 
             if(callsInTransmission[i].Update(gameIsOver)){//autodestruction du call car terminé
                 //si on supprimer call alors qu'on était en cours de transmission, on doit supprimer la trajectoire
+                Debug.Log("i : " + i + ", actualTrajectory.Count : " + actualTrajectory.Count);
                 if(actualTrajectory.Count>0 && callsInTransmission[i].caller == actualTrajectory[0]){
                     for(int j = 0; j < actualTrajectory.Count - 1; ++j){
                         actualTrajectory[j].edge(actualTrajectory[j+1]).TakePath(-1);
@@ -524,14 +527,9 @@ public class GameManager:MonoBehaviour {
             timerBeforeNextCall = Random.Range(7,12);
         else
             timerBeforeNextCall = Random.Range(5,7);*/
-        
+
         //Balancing Calls
-        if(score<10)
-            timerBeforeNextCall = Random.Range(10,20);
-        if(score<50)
-            timerBeforeNextCall = Random.Range(6,10);
-        else
-            timerBeforeNextCall = Random.Range(3,5);
+        timerBeforeNextCall = Call.durationBetweenCall(score);
 
         if (availableHosts.Count >= 2 && callsInTransmission.Count< maxCalls) {
             Debug.Log("Au moins 2 travaillent");
@@ -977,6 +975,7 @@ public class GameManager:MonoBehaviour {
 
             //réinitialiser
             score = 0;
+            oSceneManager.UpdateScore(score);
             lives = lives_max;
             multiplier = 1;
             increaseMultiCount = 0;

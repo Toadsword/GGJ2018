@@ -16,6 +16,8 @@ public class ScoreBehavior : MonoBehaviour {
         direction = center - transform.position;
         direction = direction.normalized*speed;
 	    Destroy(gameObject, timer_destruction);
+
+        GetComponent<MeshRenderer>().sortingOrder = 3;
     }
 	
 	// Update is called once per frame

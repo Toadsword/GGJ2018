@@ -22,6 +22,11 @@ public class Call
     public NodeController node_obligatory = null;
 
 
+    //niveau de difficulté en fonction du score
+    static int niveau1 = 20;
+    static int niveau2 = 200;
+    static int niveau3 = 300;
+
     public Call(bool isInf=false){
         id = ID;
         ID++;
@@ -261,14 +266,14 @@ public class Call
 
     private float durationWaiting()
     {
-        if (gameManager.Score() < 30)
-            return Random.Range(15, 20);
-        else if(gameManager.Score()<100)
+        if (gameManager.Score() < niveau1)
+            return Random.Range(15, 17);
+        else if(gameManager.Score()<niveau2)
             return Random.Range(10,15);
-        else if (gameManager.Score() < 200)
-            return Random.Range(7,10);
+        else if (gameManager.Score() < niveau3)
+            return Random.Range(8,9);
         else
-            return Random.Range(3, 5);
+            return Random.Range(4, 6);
     }
 
     private float durationCall()
@@ -279,21 +284,34 @@ public class Call
             return Random.Range(15, 25);
         else
             return Random.Range(20, 40);*/
-        if (gameManager.Score() < 30)
+        if (gameManager.Score() < niveau1)
             return Random.Range(10, 15);
-        else if(gameManager.Score() < 100)
-            return Random.Range(8, 12);
-        else if (gameManager.Score() < 300)
+        else if(gameManager.Score() < niveau2)
+            return Random.Range(10, 15);
+        else if (gameManager.Score() < niveau3)
             return Random.Range(10, 12);
         else
-            return Random.Range(6, 8);
+            return Random.Range(8, 10);
 
     }
+
+    static public float durationBetweenCall(int score)
+    {
+        if (score < niveau1)
+            return Random.Range(10, 12);
+        else if(score < niveau2)
+            return Random.Range(6, 7);
+        else if (score < niveau3)
+            return Random.Range(5, 7);
+        else
+            return Random.Range(3, 5);
+    }
+
     private float durationWaitingInterrupted()
     {
-        if(gameManager.Score()<100)
+        if(gameManager.Score()<niveau2)
             return Random.Range(7, 9);
-        else if (gameManager.Score() < 300)
+        else if (gameManager.Score() < niveau3)
             return Random.Range(5,7);
         else
             return Random.Range(3, 5);
