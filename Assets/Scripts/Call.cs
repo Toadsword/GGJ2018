@@ -159,6 +159,19 @@ public class Call
                             HaloManager(reciever, Color.white);
                     }
                     caller.DisplayMessageBox(false);
+                }else if(gameManager.ActualSource() == reciever) {
+                    if(node_obligatory!=null && !node_obligatory.isUsed) {
+                        if (status == Status.interruptedCall)
+                            HaloManager(node_obligatory, Color.red);
+                        else
+                            HaloManager(node_obligatory, Color.white);
+                    }else {
+                        if (status == Status.interruptedCall)
+                            HaloManager(caller, Color.red);
+                        else
+                            HaloManager(caller, Color.white);
+                    }
+                    caller.DisplayMessageBox(false);
                 }
                 else if (status == Status.calling  || status == Status.interruptedCall)
                 {

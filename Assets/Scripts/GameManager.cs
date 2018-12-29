@@ -329,6 +329,8 @@ public class GameManager:MonoBehaviour {
                 {
                     if (c.caller == actualTrajectory[0])
                         call = c;
+                    if (c.reciever == actualTrajectory[0])
+                        call = c;
                 }
                 call.status = Call.Status.calling;
                 if(call.node_obligatory!= null)
@@ -372,7 +374,7 @@ public class GameManager:MonoBehaviour {
 
             Call call = null;
             foreach(Call c in callsInTransmission){
-                if(c.caller==actualTrajectory[0]){
+                if(c.caller==actualTrajectory[0] || c.reciever==actualTrajectory[0]){
                     call = c;
                 }
             }
@@ -387,7 +389,7 @@ public class GameManager:MonoBehaviour {
             if(callsInTransmission[i].Update(gameIsOver)){//autodestruction du call car terminé
                 //si on supprimer call alors qu'on était en cours de transmission, on doit supprimer la trajectoire
                 Debug.Log("i : " + i + ", actualTrajectory.Count : " + actualTrajectory.Count);
-                if(actualTrajectory.Count>0 && callsInTransmission[i].caller == actualTrajectory[0]){
+                if(actualTrajectory.Count>0 && (callsInTransmission[i].caller == actualTrajectory[0] || callsInTransmission[i].reciever == actualTrajectory[0]) ){
                     for(int j = 0; j < actualTrajectory.Count - 1; ++j){
                         actualTrajectory[j].edge(actualTrajectory[j+1]).TakePath(-1);
                     }
@@ -429,7 +431,6 @@ public class GameManager:MonoBehaviour {
 
 
         //-------prise jack
-
 
         if(!pause){
             if(click){
@@ -541,8 +542,6 @@ public class GameManager:MonoBehaviour {
             unavailableHosts.Add(caller);
             caller.status=NodeController.Status.calling;
 
-            Debug.Log(caller.name + " is calling");
-
             int randomReciever = Random.Range(0, availableHosts.Count);
 
             NodeController reciever = availableHosts[randomReciever];
@@ -550,7 +549,8 @@ public class GameManager:MonoBehaviour {
             unavailableHosts.Add(reciever);
             reciever.status = NodeController.Status.waitingCall;
 
-            Debug.Log(reciever.name + " is called");
+            Debug.Log(caller.name + " is calling " + reciever.name);
+
 
             Call call = new Call();
             if(level==3) {
@@ -655,7 +655,7 @@ public class GameManager:MonoBehaviour {
     public void AddNodeToTrajectory(NodeController node) 
     {
         //vérifier que le node n'a jamais été ajouté, et qu'une trajectoire est en cours
-        if(actualTrajectory.Count>0 && !actualTrajectory.Contains(node)) 
+        if(actualTrajectory.Count>0 && /*!actualTrajectory.Contains(node)*/ !isAlreadyUsed(node, actualTrajectory[actualTrajectory.Count-1], actualTrajectory[0].call.id)) //todo à changer
         {
             //vérifier si on respecte les edges
             if(node.IsConnectedTo(actualTrajectory[actualTrajectory.Count - 1]))
@@ -666,7 +666,7 @@ public class GameManager:MonoBehaviour {
 
                 Call call = null;
                 foreach(Call c in callsInTransmission){
-                    if(c.caller==actualTrajectory[0]){
+                    if(c.caller==actualTrajectory[0] || c.reciever==actualTrajectory[0]){
                         call = c;
                     }
                 }
@@ -692,7 +692,7 @@ public class GameManager:MonoBehaviour {
 
     public void EndTrajectory(NodeController destination) {
        //vérifier que le node n'a jamais été ajouté, et qu'une trajectoire est en cours
-        if(actualTrajectory.Count>0 && !actualTrajectory.Contains(destination)) 
+        if(actualTrajectory.Count>0 && /*!actualTrajectory.Contains(destination)*/ !isAlreadyUsed(destination, actualTrajectory[actualTrajectory.Count-1], actualTrajectory[0].call.id)) 
         {
             //vérifier si on respecte les edges
             if(destination.IsConnectedTo(actualTrajectory[actualTrajectory.Count - 1]))
@@ -707,7 +707,7 @@ public class GameManager:MonoBehaviour {
                 Call call = null;
                 foreach(Call c in callsInTransmission)
                 {
-                    if(c.caller==actualTrajectory[0])
+                    if(c.caller==actualTrajectory[0] || c.reciever==actualTrajectory[0])
                         call = c;
                 }
                 //changer couleur du edge en question
@@ -749,11 +749,11 @@ public class GameManager:MonoBehaviour {
                     }
                 }
 
-                if(destination == HostFemme1)
+                if(destination == HostFemme1 || destination == HostHomme1)
                     launchGame(1);
-                else if(destination == HostFemme2)
+                else if(destination == HostFemme2 || destination == HostHomme2)
                     launchGame(2);
-                else if(destination == HostFemme3)
+                else if(destination == HostFemme3 || destination == HostHomme3)
                     launchGame(3);
                 
 
@@ -1068,5 +1068,15 @@ public class GameManager:MonoBehaviour {
         return node_candidat;
     }
 
-
+    bool isAlreadyUsed(NodeController node1, NodeController node2, int id) {
+        //regarder chaque edge,
+        foreach(Transform t in ListeEdges.transform) {
+            //si un edge est égal à node1-node2 et que son id est le même alors on retourne true
+            EdgeController actualEdge = t.GetComponent<EdgeController>();
+            if ((actualEdge.Node1() == node1 || actualEdge.Node2() == node1) && (actualEdge.Node1() == node2 || actualEdge.Node2() == node2) && actualEdge.idMessage == id)
+                return true;
+            //sinon, false
+        }
+        return false;
+    }
 }

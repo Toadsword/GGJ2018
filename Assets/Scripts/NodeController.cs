@@ -60,7 +60,7 @@ public class NodeController : MonoBehaviour {
 
         //mouse down
         if(Input.GetMouseButtonDown(0) && (Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10))-transform.position).magnitude<limit_radius){
-            if(isHost && status==Status.calling) {
+            if(isHost && (status==Status.calling || status==Status.waitingCall)) {
                 /*GameObject iCursor = Instantiate(cursorPrefab, cursorPrefab.transform.position, cursorPrefab.transform.rotation);
                 iCursor.GetComponent<CursorBehavior>().SetCurrentNode(this);*/
 
@@ -70,8 +70,8 @@ public class NodeController : MonoBehaviour {
         
         //mouse up
         if(/*Input.GetMouseButtonUp(0) &&*/ (Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10))-transform.position).magnitude<limit_radius*2) {
-            if(isHost && status==Status.waitingCall){
-                if(gameManager.Trajectory().Count>0 && gameManager.Trajectory()[0].call.reciever == this && (gameManager.Trajectory()[0].call.node_obligatory==null || gameManager.Trajectory()[0].call.node_obligatory.isUsed)){
+            if(isHost && (status==Status.waitingCall || status==Status.calling)){
+                if(gameManager.Trajectory().Count>0 && (gameManager.Trajectory()[0].call.reciever == this  || gameManager.Trajectory()[0].call.caller == this ) && gameManager.Trajectory()[0]!= this && (gameManager.Trajectory()[0].call.node_obligatory==null || gameManager.Trajectory()[0].call.node_obligatory.isUsed)){
                     gameManager.EndTrajectory(this);
                 }
             }

@@ -11,6 +11,12 @@ public class ScoreBoardManager : MonoBehaviour
     [SerializeField] private Text levelText;
     private GameObject playerRanksObjects;
 
+    public GameObject AffichageOnLine;
+    public GameObject AffichageOffLine;
+
+    public Text scoreGO;
+    public Text recordGO;
+
     string playerName;
     double scoreMade;
 
@@ -59,7 +65,9 @@ public class ScoreBoardManager : MonoBehaviour
     IEnumerator getScoreBoard (WWW requete){
 		yield return requete;
 		if (requete.error == null){
-
+        
+            AffichageOffLine.SetActive(false);
+            AffichageOnLine.SetActive(true);
 
             playerRanksObjects = FindObjectOfType<Canvas>().transform.Find("PlayerRanks").gameObject;
             ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
@@ -126,7 +134,29 @@ public class ScoreBoardManager : MonoBehaviour
             
 		}
 		else {
-			Debug.Log("ERROR: " +requete.error);   
+			Debug.Log("ERROR: " +requete.error);
+
+            AffichageOffLine.SetActive(true);
+            AffichageOnLine.SetActive(false);
+
+
+
+            scoreGO.text = scoreMade + "";
+
+            if (!PlayerPrefs.HasKey("record"))
+            {
+                recordGO.text = "-";
+            }
+            else {
+                int rec = PlayerPrefs.GetInt("record");
+
+                if(rec< scoreMade) {
+                    rec = (int)scoreMade;
+                    PlayerPrefs.SetInt("record", (int)scoreMade);
+                }
+                recordGO.text = rec + "";
+            }
+
 		}
 	}
 }
