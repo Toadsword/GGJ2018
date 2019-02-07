@@ -231,7 +231,7 @@ public class GameManager:MonoBehaviour {
 
             //zoom caméra
             float zoomCible=6.0f;
-            if(zoomCamera>zoomCible){
+            if(zoomCamera>zoomCible) {
                 zoomCamera += (zoomCible-zoomCamera)/30.0f;
                 GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = zoomCamera;
             }else{
@@ -302,7 +302,7 @@ public class GameManager:MonoBehaviour {
                 zoomCamera = zoomCible;
             }
         }
-
+        
         MenuPrincipal.transform.position += (cibleTitre-MenuPrincipal.transform.position) / 30.0f;
 
         actualizePositionEdges(ListeEdgesMenu);
@@ -388,7 +388,7 @@ public class GameManager:MonoBehaviour {
 
             if(callsInTransmission[i].Update(gameIsOver)){//autodestruction du call car terminé
                 //si on supprimer call alors qu'on était en cours de transmission, on doit supprimer la trajectoire
-                Debug.Log("i : " + i + ", actualTrajectory.Count : " + actualTrajectory.Count);
+                Debug.Log("i : " + i + ", actualTrajectory.Count : " + actualTrajectory.Count + ",callsintrans.count : " + callsInTransmission.Count);
                 if(actualTrajectory.Count>0 && (callsInTransmission[i].caller == actualTrajectory[0] || callsInTransmission[i].reciever == actualTrajectory[0]) ){
                     for(int j = 0; j < actualTrajectory.Count - 1; ++j){
                         actualTrajectory[j].edge(actualTrajectory[j+1]).TakePath(-1);
@@ -439,7 +439,7 @@ public class GameManager:MonoBehaviour {
                     soundManager.PlaySound(SoundManager.SoundList.UNPLUG);
                     soundManager.PlaySound(SoundManager.SoundList.SHUSH);
                     MenuPause.SetActive(true);
-                    JackGlobalTransform.SetParent(MenuPause.transform); // CA FONCTIONNE
+                    //JackGlobalTransform.SetParent(MenuPause.transform); // CA FONCTIONNE
 
                     if (level != 0)
                         TextPause.text = "Return to main menu";
@@ -456,8 +456,8 @@ public class GameManager:MonoBehaviour {
                     previousPos = JackPendu.transform.position-Input.mousePosition;
                 }
             }
-
-            if(Input.GetMouseButtonDown(0) && (Input.mousePosition-PriseTransform.position).magnitude<50)
+            
+            if (Input.GetMouseButtonDown(0) && (Input.mousePosition-PriseTransform.position).magnitude<100)
                 click = true;
             
             if(Input.GetMouseButtonUp(0)) 
@@ -487,9 +487,18 @@ public class GameManager:MonoBehaviour {
             }
 
             float marge = 30.0f;
-            if(Input.GetMouseButtonDown(0) 
-                && Input.mousePosition.x >= JackPendu.transform.position.x - marge && Input.mousePosition.x <= JackPendu.transform.position.x + JackPendu.rectTransform.sizeDelta.x + marge
-                && Input.mousePosition.y >= JackPendu.transform.position.y - marge && Input.mousePosition.y <= JackPendu.transform.position.y + JackPendu.rectTransform.sizeDelta.y + marge)
+
+            if (Input.mousePosition.x >= JackPendu.transform.position.x - marge && Input.mousePosition.x <= JackPendu.transform.position.x + JackPendu.rectTransform.sizeDelta.x*2 + marge
+                && Input.mousePosition.y >= JackPendu.transform.position.y - marge && Input.mousePosition.y <= JackPendu.transform.position.y + JackPendu.rectTransform.sizeDelta.y*2 + marge) {
+                Debug.Log("OK");
+
+
+            } else {
+                Debug.Log("PAS OK");
+            }
+                if (Input.GetMouseButtonDown(0) 
+                && Input.mousePosition.x >= JackPendu.transform.position.x - marge && Input.mousePosition.x <= JackPendu.transform.position.x + JackPendu.rectTransform.sizeDelta.x*2 + marge
+                && Input.mousePosition.y >= JackPendu.transform.position.y - marge && Input.mousePosition.y <= JackPendu.transform.position.y + JackPendu.rectTransform.sizeDelta.y*2 + marge)
             {
                 click=true;
                 previousPos = JackPendu.transform.position-Input.mousePosition;
@@ -498,12 +507,12 @@ public class GameManager:MonoBehaviour {
 
             if(Input.GetMouseButtonUp(0) && click) {
                 click=false;
-                if((Input.mousePosition-PriseTransform.position).magnitude<50){
+                if((Input.mousePosition-PriseTransform.position).magnitude<100){
                     //quitter pause
                     pause = false;
                     soundManager.PlaySound(SoundManager.SoundList.PLUG);
                     MenuPause.SetActive(false);
-                    JackGlobalTransform.SetParent(CanvasPrincipale.transform);
+                    //JackGlobalTransform.SetParent(CanvasPrincipale.transform);
                     JackGlobalTransform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
                     Time.timeScale = 1f;

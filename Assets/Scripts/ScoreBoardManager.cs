@@ -9,7 +9,7 @@ public class ScoreBoardManager : MonoBehaviour
 {
 
     [SerializeField] private Text levelText;
-    private GameObject playerRanksObjects;
+    [SerializeField] GameObject playerRanksObjects;
 
     public GameObject AffichageOnLine;
     public GameObject AffichageOffLine;
@@ -23,8 +23,10 @@ public class ScoreBoardManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-    
-        playerRanksObjects = FindObjectOfType<Canvas>().transform.Find("PlayerRanks").gameObject;
+
+        AffichageOffLine.gameObject.SetActive(false);
+        AffichageOnLine.gameObject.SetActive(true);
+
         ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
 
         playerName = scoreManager.GetPlayerName();
@@ -68,8 +70,7 @@ public class ScoreBoardManager : MonoBehaviour
         
             AffichageOffLine.SetActive(false);
             AffichageOnLine.SetActive(true);
-
-            playerRanksObjects = FindObjectOfType<Canvas>().transform.Find("PlayerRanks").gameObject;
+            
             ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
 
             if (scoreManager != null)
