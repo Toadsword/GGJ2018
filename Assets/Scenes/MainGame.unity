@@ -3015,6 +3015,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -1.200001
       objectReference: {fileID: 0}
+    - target: {fileID: 224147587677306552, guid: 3564d43c4503d144b8cd247c0069f7ba,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: -0.025
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 3}
 --- !u!114 &282364152 stripped
@@ -7601,7 +7606,7 @@ PrefabInstance:
     - target: {fileID: 224147587677306552, guid: 3564d43c4503d144b8cd247c0069f7ba,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.03
+      value: 0.025
       objectReference: {fileID: 0}
     - target: {fileID: 4074071191313152, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13943,7 +13948,7 @@ PrefabInstance:
     - target: {fileID: 224147587677306552, guid: 3564d43c4503d144b8cd247c0069f7ba,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: -0.025
+      value: 0.025
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3564d43c4503d144b8cd247c0069f7ba, type: 3}
@@ -16716,6 +16721,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1762396263737492, guid: f1083780398612249a3162fc748bf6ff, type: 3}
+      propertyPath: m_Name
+      value: SoundManager
+      objectReference: {fileID: 0}
     - target: {fileID: 4455931147967766, guid: f1083780398612249a3162fc748bf6ff, type: 3}
       propertyPath: m_LocalPosition.x
       value: 177.08502
@@ -16747,6 +16756,18 @@ PrefabInstance:
     - target: {fileID: 4455931147967766, guid: f1083780398612249a3162fc748bf6ff, type: 3}
       propertyPath: m_RootOrder
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455931147967766, guid: f1083780398612249a3162fc748bf6ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455931147967766, guid: f1083780398612249a3162fc748bf6ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455931147967766, guid: f1083780398612249a3162fc748bf6ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1083780398612249a3162fc748bf6ff, type: 3}
