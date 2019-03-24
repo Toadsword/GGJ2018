@@ -378,8 +378,8 @@ public class GameManager:MonoBehaviour {
                     call = c;
                 }
             }
-            Debug.Log("Bogue ? call : " + call);
-            Debug.Log("Bogue ? call.id : " + call.id);
+            //Debug.Log("Bogue ? call : " + call);
+            //Debug.Log("Bogue ? call.id : " + call.id);
             edgeCursor.GetComponent<SpriteRenderer>().color = GetColorFromId(call.id);
         }
         
@@ -1021,7 +1021,7 @@ public class GameManager:MonoBehaviour {
 
     void gameOver() {
         gameIsOver = true;
-
+        Debug.Log("GAME OVER");
         //supprimer chaque appel
         for (int i=0;i<callsInTransmission.Count;++i)
         {
