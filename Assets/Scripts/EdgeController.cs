@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EdgeController : MonoBehaviour {
 
+    public float epaisseur = 0.6f*1.8f;
+
     [SerializeField] NodeController nodeEdge1;
     [SerializeField] NodeController nodeEdge2;
 
@@ -15,6 +17,7 @@ public class EdgeController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
         idMessage = -1;
         nodeEdge1.AddEdge(this);
         nodeEdge2.AddEdge(this);

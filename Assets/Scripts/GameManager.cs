@@ -230,7 +230,7 @@ public class GameManager:MonoBehaviour {
 
 
             //zoom caméra
-            float zoomCible=6.0f;
+            float zoomCible=7.0f;
             if(zoomCamera>zoomCible) {
                 zoomCamera += (zoomCible-zoomCamera)/30.0f;
                 GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = zoomCamera;
@@ -369,7 +369,7 @@ public class GameManager:MonoBehaviour {
             float alpha = angle( n.x, n.y);
 
             edgeCursor.transform.position = (actualTrajectory[actualTrajectory.Count-1].transform.position+Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10)))/2.0f;
-            edgeCursor.transform.localScale = new Vector3(distance*1/8.5f,0.6f,1);
+            edgeCursor.transform.localScale = new Vector3(distance*1/8.5f,edgeCursor.epaisseur,1);
             edgeCursor.transform.localEulerAngles = new Vector3(0,0,alpha);
 
             Call call = null;
@@ -868,7 +868,7 @@ public class GameManager:MonoBehaviour {
                 float alpha = angle(n.x,n.y);
 
                 edge.transform.position = (pos1+pos2)/2.0f;
-                edge.transform.localScale = new Vector3(distance*1/8.5f,0.6f,1);
+                edge.transform.localScale = new Vector3(distance*1/8.5f,edge.epaisseur,1);
                 edge.transform.localEulerAngles = new Vector3(0,0,alpha);
             }
         }

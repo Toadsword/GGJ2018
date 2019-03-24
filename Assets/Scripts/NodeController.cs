@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class NodeController : MonoBehaviour {
-    
-    const double limit_radius = 0.8;//distance à partir de laquelle, la souris "touche" un node
+
+    const double limit_radius = 1.2;//0.8;//distance à partir de laquelle, la souris "touche" un node
     float m_timer_movement = 0;
 
     Vector3 positionInitiale;
@@ -31,6 +31,8 @@ public class NodeController : MonoBehaviour {
     
     private void Start()
     {
+        transform.localScale *= 1.8f;    
+
         render = GetComponent<SpriteRenderer>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         positionInitiale = transform.position;

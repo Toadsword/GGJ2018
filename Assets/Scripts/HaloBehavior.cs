@@ -17,7 +17,7 @@ public class HaloBehavior : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        startScale = new Vector2(this.transform.localScale.x, this.transform.localScale.y);
+        startScale = new Vector2(this.transform.localScale.x, this.transform.localScale.y)*1.8f;
         deltaScalePerSec = endScale - startScale * timeToFade;
         deltaOpacityPerSec = 1.0f / timeToFade;
 
