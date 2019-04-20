@@ -96,6 +96,7 @@ public class GameManager:MonoBehaviour {
     bool click=false;
     Vector3 previousPos;
     Vector3 positionJackInitiale;
+    float dist_jack = 60.0f;
 
     [SerializeField] Transform JackGlobalTransform;
     [SerializeField] Image JackPendu;
@@ -432,9 +433,10 @@ public class GameManager:MonoBehaviour {
 
         //-------prise jack
 
-        if(!pause){
+        Debug.Log((Input.mousePosition - PriseTransform.position).magnitude);
+        if (!pause){
             if(click){
-                if((Input.mousePosition-PriseTransform.position).magnitude>60) {
+                if ((Input.mousePosition-PriseTransform.position).magnitude> -1) {
                     pause = true;
                     soundManager.PlaySound(SoundManager.SoundList.UNPLUG);
                     soundManager.PlaySound(SoundManager.SoundList.SHUSH);
@@ -457,7 +459,7 @@ public class GameManager:MonoBehaviour {
                 }
             }
             
-            if (Input.GetMouseButtonDown(0) && (Input.mousePosition-PriseTransform.position).magnitude<100)
+            if (Input.GetMouseButtonDown(0) && (Input.mousePosition-PriseTransform.position).magnitude< dist_jack)
                 click = true;
             
             if(Input.GetMouseButtonUp(0)) 
@@ -507,7 +509,7 @@ public class GameManager:MonoBehaviour {
 
             if(Input.GetMouseButtonUp(0) && click) {
                 click=false;
-                if((Input.mousePosition-PriseTransform.position).magnitude<100){
+                if((Input.mousePosition-PriseTransform.position).magnitude<dist_jack){
                     //quitter pause
                     pause = false;
                     soundManager.PlaySound(SoundManager.SoundList.PLUG);
