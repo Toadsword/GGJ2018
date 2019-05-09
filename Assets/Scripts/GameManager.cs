@@ -432,8 +432,7 @@ public class GameManager:MonoBehaviour {
 
 
         //-------prise jack
-
-        Debug.Log((Input.mousePosition - PriseTransform.position).magnitude);
+        
         if (!pause){
             if(click){
                 if ((Input.mousePosition-PriseTransform.position).magnitude> -1) {
@@ -921,6 +920,9 @@ public class GameManager:MonoBehaviour {
         timer_game_launched = 1;
         timer_gameOver = 0;
         gameIsOver = false;
+
+        score = 0;
+        oSceneManager.UpdateScore(score);
     }
 
     public Call getCallFromId(int id)

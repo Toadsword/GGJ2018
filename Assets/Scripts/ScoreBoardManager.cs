@@ -114,6 +114,17 @@ public class ScoreBoardManager : MonoBehaviour
                     }
                 }
 
+                //quand même enregistrer le record personnel
+                if (!PlayerPrefs.HasKey("record" + level)) {
+                    PlayerPrefs.SetInt("record" + level, (int)scoreMade);
+                } else {
+                    int rec = PlayerPrefs.GetInt("record" + level);
+
+                    if (rec < scoreMade) {
+                        PlayerPrefs.SetInt("record" + level, (int)scoreMade);
+                    }
+                }
+
 
 
                 /* PLUS UTILES
@@ -141,21 +152,24 @@ public class ScoreBoardManager : MonoBehaviour
             AffichageOnLine.SetActive(false);
 
 
+            ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
 
-            scoreGO.text = scoreMade + "";
+            if (scoreManager != null) {
+                int level = scoreManager.GetLevel();
 
-            if (!PlayerPrefs.HasKey("record"))
-            {
-                recordGO.text = "-";
-            }
-            else {
-                int rec = PlayerPrefs.GetInt("record");
+                scoreGO.text = scoreMade + "";
 
-                if(rec< scoreMade) {
-                    rec = (int)scoreMade;
-                    PlayerPrefs.SetInt("record", (int)scoreMade);
+                if (!PlayerPrefs.HasKey("record"+level)) {
+                    recordGO.text = "-";
+                    PlayerPrefs.SetInt("record"+level, (int)scoreMade);
+                } else {
+                    int rec = PlayerPrefs.GetInt("record"+level);
+
+                    if (rec < scoreMade) {
+                        PlayerPrefs.SetInt("record"+level, (int)scoreMade);
+                    }
+                    recordGO.text = rec + "";
                 }
-                recordGO.text = rec + "";
             }
 
 		}

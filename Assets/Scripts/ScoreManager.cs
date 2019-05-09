@@ -18,6 +18,11 @@ public class ScoreManager : MonoBehaviour {
         {
             DestroyObject(gameObject);
         }
+
+        //récupérer pseudo enregistré
+        if (PlayerPrefs.HasKey("pseudo")) {
+            playerName = PlayerPrefs.GetString("pseudo");
+        }
     }
 
     [SerializeField] private string playerName = "Billy";
@@ -34,6 +39,9 @@ public class ScoreManager : MonoBehaviour {
     {
         //Get name of player
         playerName = FindObjectOfType<Canvas>().transform.GetChild(1).transform.Find("Text").GetComponent<Text>().text;
+        PlayerPrefs.SetString("pseudo", playerName);
+        
+
         Debug.Log(playerName);
         if (level == 0)
             return;
