@@ -99,7 +99,7 @@ public class ScoreBoardManager : MonoBehaviour
                         .GetComponent<Text>()
                         .text = score_joueur;
 
-                    if(score_joueur == (scoreMade+"") && playerName == nom_joueur && premiereCorrespondance) {
+                    if(score_joueur == (scoreMade+"") && playerName.ToUpper() == nom_joueur && premiereCorrespondance) {
                         playerRanksObjects.transform.Find("PlayerRank" + i.ToString()).gameObject
                             .GetComponent<Text>()
                             .color = new Color(145/255.0f, 245/255.0f, 190/255.0f);

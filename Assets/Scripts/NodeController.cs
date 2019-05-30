@@ -146,7 +146,7 @@ public class NodeController : MonoBehaviour {
         }
 
         timerText.text = time.ToString("F1");
-        timerText.transform.position = positionInitialeText + new Vector3(Mathf.Cos(m_timer_movement * 1.05f), Mathf.Sin(m_timer_movement * 0.91f)) * 0.2f;
+        //timerText.transform.position = positionInitialeText + new Vector3(Mathf.Cos(m_timer_movement * 1.05f), Mathf.Sin(m_timer_movement * 0.91f)) * 0.2f;
 
         if(status == Status.calling)
             timerText.color = Color.red;

@@ -311,7 +311,7 @@ public class Call
     static public float durationBetweenCall(int score)
     {
         if (score < niveau1)
-            return Random.Range(10, 12);
+            return Random.Range(12, 13);
         else if(score < niveau2)
             return Random.Range(6, 7);
         else if (score < niveau3)
