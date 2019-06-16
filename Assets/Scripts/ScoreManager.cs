@@ -80,7 +80,7 @@ public class ScoreManager : MonoBehaviour {
 			form.AddField("pseudo", playerName);
 			form.AddField("score", scoreMade);
 			form.AddField("level", level);
-		WWW requete = new WWW("https://brandygonz12.alwaysdata.net/save_score.php", form);
+		WWW requete = new WWW("https://brandygonz12.alwaysdata.net/limited_connection/save_score.php", form);
 		StartCoroutine(insertScore(requete));
     }
 

@@ -38,7 +38,7 @@ public class ScoreBoardManager : MonoBehaviour
 
             WWWForm form = new WWWForm();
 		    form.AddField("level", level);
-		    WWW requete = new WWW("https://brandygonz12.alwaysdata.net/login.php", form);
+		    WWW requete = new WWW("https://brandygonz12.alwaysdata.net/limited_connection/login.php", form);
 		    StartCoroutine(getScoreBoard(requete));
 
             
