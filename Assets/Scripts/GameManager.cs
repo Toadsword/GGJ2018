@@ -201,7 +201,6 @@ public class GameManager:MonoBehaviour {
         call.caller = caller;
         call.reciever = reciever;
 
-
         caller.DisplayMessageBox(true);
 
         call.status = Call.Status.calling;
@@ -618,17 +617,7 @@ public class GameManager:MonoBehaviour {
 
         } else if(call.status==Call.Status.calling || call.status==Call.Status.interruptedCall || call.status == Call.Status.transmitting) {
             lives--;
-            /*
-            BatterieVerte.gameObject.SetActive(false);
-            BatterieJaune.gameObject.SetActive(false);
-            BatterieRouge.gameObject.SetActive(false);
-            if(lives>=2) {
-                BatterieJaune.gameObject.SetActive(true);
-            }else
-            if(lives>=1) {
-                BatterieRouge.gameObject.SetActive(true);
-            }
-            */
+
             soundManager.PlaySound(SoundManager.SoundList.END_CALL_BAD,false);
             if(lives == 2)
                 BatterieVerte.gameObject.SetActive(false);

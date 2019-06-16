@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class NodeController : MonoBehaviour {
 
-    const double limit_radius = 1.2;//0.8;//distance à partir de laquelle, la souris "touche" un node
+    const double limit_radius = 1.1f;//0.8;//distance à partir de laquelle, la souris "touche" un node
     float m_timer_movement = 0;
 
     Vector3 positionInitiale;
@@ -71,7 +71,7 @@ public class NodeController : MonoBehaviour {
         }
         
         //mouse up
-        if(/*Input.GetMouseButtonUp(0) &&*/ (Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10))-transform.position).magnitude<limit_radius*2) {
+        if(/*Input.GetMouseButtonUp(0) &&*/ (Camera.main.ScreenToWorldPoint(Input.mousePosition+new Vector3(0,0,10))-transform.position).magnitude<limit_radius) {
             if(isHost && (status==Status.waitingCall || status==Status.calling)){
                 if(gameManager.Trajectory().Count>0 && (gameManager.Trajectory()[0].call.reciever == this  || gameManager.Trajectory()[0].call.caller == this ) && gameManager.Trajectory()[0]!= this && (gameManager.Trajectory()[0].call.node_obligatory==null || gameManager.Trajectory()[0].call.node_obligatory.isUsed)){
                     gameManager.EndTrajectory(this);
