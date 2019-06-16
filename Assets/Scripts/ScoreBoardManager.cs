@@ -17,6 +17,9 @@ public class ScoreBoardManager : MonoBehaviour
     public Text scoreGO;
     public Text recordGO;
 
+    public Text scoreGOOnline;
+    public Text recordGOOnline;
+
     string playerName;
     double scoreMade;
 
@@ -114,6 +117,7 @@ public class ScoreBoardManager : MonoBehaviour
                     }
                 }
 
+                scoreGOOnline.text = scoreMade + "";
                 //quand même enregistrer le record personnel
                 if (!PlayerPrefs.HasKey("record" + level)) {
                     PlayerPrefs.SetInt("record" + level, (int)scoreMade);
@@ -123,8 +127,8 @@ public class ScoreBoardManager : MonoBehaviour
                     if (rec < scoreMade) {
                         PlayerPrefs.SetInt("record" + level, (int)scoreMade);
                     }
+                    recordGOOnline.text = rec + "";
                 }
-
 
 
                 /* PLUS UTILES
